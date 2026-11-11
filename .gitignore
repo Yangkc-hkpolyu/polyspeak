@@ -1,0 +1,32 @@
+# Local credentials
+.env
+*.env
+.env.*
+!.env.example
+speaking.env
+*.pem
+*.key
+# Runtime and local dependencies
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+speaking-runtime/
+*.sqlite*
+*.db
+# Downloaded model/media assets and private handoff archives
+speaking-models/*
+!speaking-models/source.json
+speaking-resources/official/
+output/
+.downloads/
+*.zip
+*.tar
+*.tar.gz
+# Local editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

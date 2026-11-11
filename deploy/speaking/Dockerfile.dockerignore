@@ -1,0 +1,13 @@
+**
+!requirements-speaking.txt
+!backend/
+!backend/speaking/
+!backend/speaking/**
+!frontend/
+!frontend/dist-speaking/
+!frontend/dist-speaking/**
+!deploy/
+!deploy/speaking/
+!deploy/speaking/start.sh
+**/__pycache__/
+**/*.pyc

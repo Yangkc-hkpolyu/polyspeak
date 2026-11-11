@@ -1,0 +1,59 @@
+[
+  {
+    "source": "backend/livetalking/webrtc.py",
+    "source_sha256": "69234e610186d1c2eb2080df4f08643b7d3f094a2cba45f37516395e6b240783",
+    "vendored": "backend/speaking/vendor/livetalking/webrtc.py",
+    "vendored_sha256": "4141b6a9baf33ef58e61aee95e7b73c08dbed94c381431d2a6b34787568445ed"
+  },
+  {
+    "source": "backend/livetalking/basereal.py",
+    "source_sha256": "8c978a8ed332bcd65485d4e45a66718b835b18e155b920aa16705dd4c5a7d015",
+    "vendored": "backend/speaking/vendor/livetalking/basereal.py",
+    "vendored_sha256": "995b8ffa861832ee1e3210ce0252ea6e3c7f6744b89282fb2b7f8b3e58769049"
+  },
+  {
+    "source": "backend/livetalking/baseasr.py",
+    "source_sha256": "2386892bc3770e07ce17de2df1ef4ac3ae1411df58c8c8308df69c81ae516704",
+    "vendored": "backend/speaking/vendor/livetalking/baseasr.py",
+    "vendored_sha256": "23fb63c00388fb9a3dd462de2f23c37092aae8379602006dc5fd4f65150a1d7e"
+  },
+  {
+    "source": "backend/livetalking/lipasr.py",
+    "source_sha256": "94d2bda80f21dade90caacdbda5a46e24ee9a0468d9a23e6e26722a70704445e",
+    "vendored": "backend/speaking/vendor/livetalking/lipasr.py",
+    "vendored_sha256": "2f62f8abf34c16131cf09a2e54c0a208bbc9d8a5624fd7c03f49673e8f3d3175"
+  },
+  {
+    "source": "backend/livetalking/lipreal.py",
+    "source_sha256": "3ed77204bb166623af832d2da36c92bf1ef6b695794365a416f7d3bf287d41ec",
+    "vendored": "backend/speaking/vendor/livetalking/lipreal.py",
+    "vendored_sha256": "68b70391548df05e35bb206b343d481839ca61e4e0fbaf5106010b1416841893"
+  },
+  {
+    "source": "backend/livetalking/gpu_inference_scheduler.py",
+    "source_sha256": "ac15dfc5f394520b1d8850d1e0546f478704d173b9ee34b06282209831e98826",
+    "vendored": "backend/speaking/vendor/livetalking/gpu_inference_scheduler.py",
+    "vendored_sha256": "a77d9c81a608f982d34de20219e75b2d559a920a415d6656973f40c1e18738e2"
+  },
+  {
+    "source": "backend/livetalking/wav2lip/audio.py",
+    "source_sha256": "a44073c43c8b2cb10eb4cf8495b49c17461925314eb3e7ed00dbed0c4ddac6a1",
+    "vendored": "backend/speaking/vendor/livetalking/audio.py",
+    "vendored_sha256": "a44073c43c8b2cb10eb4cf8495b49c17461925314eb3e7ed00dbed0c4ddac6a1"
+  },
+  {
+    "source": "backend/livetalking/wav2lip/hparams.py",
+    "source_sha256": "c519e29147a5642e1f572e3e474da0ac2ebf8925dc00b04234a31aeac6fd43ed",
+    "vendored": "backend/speaking/vendor/livetalking/hparams.py",
+    "vendored_sha256": "c519e29147a5642e1f572e3e474da0ac2ebf8925dc00b04234a31aeac6fd43ed"
+  },
+  {
+    "source": "backend/services/final_evaluation_service.py",
+    "source_sha256": "9b00f7601c7073260e50cde22be3441e18a0949993a830aaecd6e0b0b2040e5b",
+    "vendored": "backend/speaking/vendor/evaluation_aggregation.py",
+    "methods": [
+      "_aggregate_aspects",
+      "_aggregate_features"
+    ]
+  }
+]
