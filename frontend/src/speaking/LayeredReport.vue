@@ -1,25 +1,25 @@
 <template>
   <section class="layered-report feedback-section">
-    <div class="layered-heading"><div><p class="eyebrow">FEATURES → ASPECTS → PROFICIENCY</p><h3>Explore the details of each answer.</h3></div><strong v-if="layer.proficiency.practice_score!==null">{{layer.proficiency.practice_score}}<small>/10 practice indicator</small></strong></div>
+    <div class="layered-heading"><div><p class="eyebrow">FEATURES → ASPECTS → PROFICIENCY</p><h3>Explore the details of every answer.</h3></div><strong v-if="layer.proficiency.practice_score!==null">{{layer.proficiency.practice_score}}<small>/10 practice score</small></strong></div>
     <p class="fine-print">{{layer.proficiency.scope}}</p>
-    <nav class="layered-tabs" aria-label="Feedback views"><button v-for="tab in tabs" :key="tab.id" :class="{active:active===tab.id}" @click="active=tab.id">{{tab.label}}</button></nav>
+    <nav class="layered-tabs" aria-label="Feedback sections"><button v-for="tab in tabs" :key="tab.id" :class="{active:active===tab.id}" @click="active=tab.id">{{tab.label}}</button></nav>
     <section class="layered-panel" v-show="active==='overview'">
       <div class="layered-steps"><span v-for="(step,index) in layer.pipeline" :key="step"><b>{{index+1}}</b>{{step}}</span></div>
-      <p>{{layer.questions.length}} valid answers were reviewed individually. Scores are available for {{availableFeatures}} features; missing independent audio or video evidence is not scored as zero.</p>
-      <p class="fine-print">Review the evidence for each answer, then use the aspect summaries to plan your next practice. Check language suggestions against the original recording.</p>
+      <p>This session includes {{layer.questions.length}} evaluated answers. {{availableFeatures}} features have scores; features without independent audio or video evidence are not scored as zero.</p>
+      <p class="fine-print">Review the evidence for each answer, then use the overall assessment to plan your next practice. Check suggestions against the original recording.</p>
     </section>
     <section class="layered-panel" v-show="active==='features'">
-      <div class="feature-table"><div class="feature-table-heading"><span>Assessment feature</span><span>Practice indicator</span><span>Valid answers</span></div><div v-for="(feature,key) in layer.features_summary" :key="key" class="feature-table-row"><span>{{feature.label}}</span><strong>{{feature.score===null?'Not assessed':feature.score+' / 10'}}</strong><span>{{feature.count}}</span></div></div>
-      <p class="fine-print">Pronunciation, prosody and fluency use only independent audio assessment results. Gaze, facial expression, posture and gestures remain unassessed without candidate video. Transcription differences are not treated as pronunciation errors.</p>
+      <div class="feature-table"><div class="feature-table-heading"><span>Feature</span><span>practice score</span><span>Answers assessed</span></div><div v-for="(feature,key) in layer.features_summary" :key="key" class="feature-table-row"><span>{{feature.label}}</span><strong>{{feature.score===null?'Not assessed':feature.score+' / 10'}}</strong><span>{{feature.count}}</span></div></div>
+      <p class="fine-print">Pronunciation, prosody and fluency use independent audio assessment only. Eye contact, expression, posture and gestures remain unassessed without candidate video. Recognition differences are not treated as pronunciation errors.</p>
     </section>
     <section class="layered-panel" v-show="active==='questions'">
       <button class="text-button" @click="expanded=!expanded">{{expanded?'Collapse answer details':'Expand all answer details'}}</button>
       <details v-for="(question,index) in layer.questions" :key="question.turn_id" :open="expanded||printing||index===0" class="question-review">
         <summary>{{index+1}}. {{question.question}}</summary>
         <div class="question-aspects"><article v-for="(aspect,key) in question.aspects" :key="key"><h4>{{aspectNames[key]}} <strong>{{aspect.score===null?'Insufficient evidence':aspect.score+'/10'}}</strong></h4><p>{{aspect.justification}}</p></article></div>
-        <h4>Features and evidence from your answer</h4>
+        <h4>Features and evidence for this answer</h4>
         <div v-for="(features,group) in question.assessment_criteria" :key="group" class="feature-group"><h5>{{groupNames[group]}}</h5><article v-for="(feature,key) in features" :key="key" class="feature-evidence"><div><strong>{{layer.feature_names[key]}}</strong><span>{{feature.score===null?'Not assessed':feature.score+'/10'}}</span></div><blockquote v-if="feature.quote">{{feature.quote}}</blockquote><p>{{feature.justification}}</p><p v-if="feature.suggestion" class="fine-print">{{feature.suggestion}}</p></article></div>
-        <div class="answer-polishing"><h4>Refine your own words</h4><p class="fine-print">{{question.polishing.scope}}</p><div class="polishing-columns"><article><h5>Original answer</h5><p>{{question.polishing.original}}</p></article><article><h5>Revised answer</h5><p>{{question.polishing.polished_answer}}</p></article></div><ul v-if="question.polishing.corrections.length"><li v-for="(correction,n) in question.polishing.corrections" :key="n"><q>{{correction.original}}</q> → <q>{{correction.revised}}</q><p>{{correction.reason}}</p></li></ul><p v-else class="fine-print">No reliable wording changes were returned for this question. Your original answer is retained.</p></div>
+        <div class="answer-polishing"><h4>Revise your answer</h4><p class="fine-print">{{question.polishing.scope}}</p><div class="polishing-columns"><article><h5>Original answer</h5><p>{{question.polishing.original}}</p></article><article><h5>Revised answer</h5><p>{{question.polishing.polished_answer}}</p></article></div><ul v-if="question.polishing.corrections.length"><li v-for="(correction,n) in question.polishing.corrections" :key="n"><q>{{correction.original}}</q> → <q>{{correction.revised}}</q><p>{{correction.reason}}</p></li></ul><p v-else class="fine-print">No safe revision was returned for this answer, so the original is retained.</p></div>
       </details>
     </section>
   </section>
@@ -30,9 +30,9 @@ export default {
   name: 'LayeredReport',
   props: { layer: { type: Object, required: true } },
   data: () => ({ active:'overview', expanded:false, printing:false,
-    tabs:[{id:'overview',label:'Overview'},{id:'features',label:'13 features'},{id:'questions',label:'Answer review & revision'}],
-    aspectNames:{coherence:'Coherence & cohesion',vocabulary:'Vocabulary',grammar:'Grammar',task_response:'Task response & development'},
-    groupNames:{professional_performance:'Content & task response',way_of_expression:'Language & organisation',oral_expression:'Independent audio evidence',nonverbal:'Candidate video evidence'},
+    tabs:[{id:'overview',label:'Overview'},{id:'features',label:'13 features'},{id:'questions',label:'Answer review and revisions'}],
+    aspectNames:{coherence:'Coherence',vocabulary:'Vocabulary',grammar:'Grammar',task_response:'Task response'},
+    groupNames:{professional_performance:'Content and task response',way_of_expression:'Language and organization',oral_expression:'Independent audio evidence',nonverbal:'Candidate video evidence'},
   }),
   computed:{ availableFeatures(){ return Object.values(this.layer.features_summary).filter(value=>value.score!==null).length } },
   mounted(){ this.beforePrint=()=>{this.printing=true};this.afterPrint=()=>{this.printing=false};window.addEventListener('beforeprint',this.beforePrint);window.addEventListener('afterprint',this.afterPrint) },

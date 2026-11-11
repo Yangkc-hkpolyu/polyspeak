@@ -57,7 +57,7 @@ class SpeechService:
             async with httpx.AsyncClient(timeout=60) as client:
                 response = await client.post(url, headers={"Authorization": f"Bearer {self.settings.api_key}"}, json={
                     "model": "qwen3-tts-flash",
-                    "input": {"text": text, "voice": "Cherry", "language_type": "Chinese" if language == "zh" else "English"},
+                    "input": {"text": text, "voice": self.settings.realtime_tts_voice, "language_type": "Chinese" if language == "zh" else "English"},
                 })
                 response.raise_for_status()
                 audio_url = response.json()["output"]["audio"]["url"]

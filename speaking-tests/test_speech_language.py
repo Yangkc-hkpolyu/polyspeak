@@ -62,8 +62,8 @@ def test_live_edge_uses_matching_voice_and_waits_for_complete_audio(monkeypatch,
     asyncio.run(run())
 
 
-@pytest.mark.parametrize("language,wire_language", [("en", "English"), ("zh", "Chinese")])
-def test_explicit_qwen_alternative_sends_the_requested_language(monkeypatch, language, wire_language):
+@pytest.mark.parametrize("language,wire_language,voice", [("en", "English", "Cherry"), ("zh", "Chinese", "Cherry"), ("en", "English", "Jennifer")])
+def test_explicit_qwen_alternative_sends_the_requested_language(monkeypatch, language, wire_language, voice):
     class Connection:
         def __init__(self):
             self.sent = []
@@ -91,12 +91,12 @@ def test_explicit_qwen_alternative_sends_the_requested_language(monkeypatch, lan
         return connection
 
     async def run():
-        settings = replace(Settings(), tts_provider="qwen")
+        settings = replace(Settings(), tts_provider="qwen", realtime_tts_voice=voice)
         audio = b"".join([chunk async for chunk in realtime_cloud.stream_tts(settings, "sample", language)])
         assert audio == b"\x01\x00" * 320
         session = next(e["session"] for e in connection.sent if e["type"] == "session.update")
         assert session["language_type"] == wire_language
-        assert session["voice"] == "Cherry"
+        assert session["voice"] == voice
         assert connection.closed
 
     monkeypatch.setattr(realtime_cloud, "connect", connect)
@@ -114,9 +114,12 @@ def test_provider_and_language_voices_are_loaded_from_configuration(monkeypatch,
     monkeypatch.setenv("SPEAKING_TTS_PROVIDER", "edgetts")
     monkeypatch.setenv("SPEAKING_VOICE_EN", "en-GB-SoniaNeural")
     monkeypatch.setenv("SPEAKING_VOICE_ZH", "zh-CN-XiaoxiaoNeural")
+    monkeypatch.setenv("SPEAKING_REALTIME_TTS_VOICE", "Jennifer")
     settings = config.load_settings()
     assert settings.tts_profile("en")["voice"] == "en-GB-SoniaNeural"
     assert settings.tts_profile("zh")["voice"] == "zh-CN-XiaoxiaoNeural"
+    assert replace(settings, tts_provider="qwen").tts_profile("en")["voice"] == "Jennifer"
+    assert settings.tts_profile("en")["provider"] == "edgetts"
 
 
 def test_edge_failure_does_not_silently_switch_provider(monkeypatch):

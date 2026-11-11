@@ -41,6 +41,9 @@ That multilingual voice supports English; it was not the original Chinese
 endpoint, but it was a different synthesis provider and voice. Qwen remains an
 explicit configuration alternative. Recognition and text generation still use
 Qwen; changing the output voice does not change those services.
+The optional Qwen voice is selected with `SPEAKING_REALTIME_TTS_VOICE` (default
+`Cherry`), applying to both live and compatibility synthesis. It has no effect
+on the default EdgeTTS language-specific voices.
 
 Both sources yield PCM16/24 kHz, statefully resampled to 16 kHz. The complete
 utterance audio is collected before its 320-sample packets enter LiveTalking,

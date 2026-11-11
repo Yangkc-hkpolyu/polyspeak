@@ -2,6 +2,25 @@
 
 Latest verification: 2026-11-11 in the E: sharing checkout.
 
+## Shared changes from the Live2D branch
+
+Selected compatible changes from `live2d-ver` commit
+`6032b87a6409e871ef586340b7f2cba99da387de` were integrated into the existing root
+layout. This is a selective integration, not a merge of the complete branch.
+It includes configurable Qwen voice selection, shared question-library/report
+wording, and readability, mobile layout and keyboard-focus styles. The Live2D
+renderer, assets, audio-only route replacement and nested project layout remain
+on that branch. The current English validation, provenance labels, error
+sanitization, EdgeTTS Jenny default and real-avatar synchronization fixes remain.
+
+All 50 automated checks and the production frontend build passed. The browser
+question-library check passed filtering, pagination, single-question practice,
+source attribution, English-only UI and mobile overflow checks. The live WebRTC
+check still reported `edgetts / en-US-JennyNeural / en`, zero source underruns,
+zero dropped frames and no receive gap above 100 ms in its synthetic greeting.
+The selected Qwen voice setting was verified with simulated protocol requests;
+it does not replace the live EdgeTTS default.
+
 ## Mouth movement before audible speech
 
 The Jenny greeting contains about 180 ms of near-silent leading PCM. Previously,

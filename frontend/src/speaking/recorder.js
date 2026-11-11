@@ -1,6 +1,6 @@
 export class VoiceRecorder {
   async authorize() {
-    if (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode) throw new Error('Open this local platform in Chrome or Edge to record live audio.')
+    if (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode) throw new Error('Open the local platform in Chrome or Edge to use live recording.')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
     stream.getTracks().forEach(track => track.stop())
   }
@@ -9,7 +9,7 @@ export class VoiceRecorder {
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 }, video: false })
       this.context = new AudioContext({ sampleRate: 16000 })
-      if (this.context.sampleRate !== 16000) throw new Error('This browser cannot record live audio at 16 kHz. Please use Chrome or Edge.')
+      if (this.context.sampleRate !== 16000) throw new Error('The browser cannot provide 16 kHz live recording. Use Chrome or Edge.')
       await this.context.audioWorklet.addModule('/speaking-assets/pcm-worklet.js')
       const socket = new WebSocket(location.origin.replace(/^http/, 'ws') + path)
       this.socket = socket
@@ -29,10 +29,10 @@ export class VoiceRecorder {
           clearTimeout(timer); readyReject(error); savedReject(error)
         }
       }
-      socket.onerror = () => { clearTimeout(timer); readyReject(new Error('Could not connect to live transcription.')); savedReject(new Error('Could not connect to live transcription.')) }
+      socket.onerror = () => { clearTimeout(timer); readyReject(new Error('Live transcription connection failed.')); savedReject(new Error('Live transcription connection failed.')) }
       socket.onclose = () => {
         clearTimeout(timer)
-        if (!result) { readyReject(new Error('The live transcription connection was lost.')); savedReject(new Error('The live transcription connection was lost.')) }
+        if (!result) { readyReject(new Error('Live transcription connection was closed.')); savedReject(new Error('Live transcription connection was closed.')) }
       }
       await ready
       this.source = this.context.createMediaStreamSource(this.stream)
@@ -47,7 +47,7 @@ export class VoiceRecorder {
     } catch (error) { this.abort(); throw error }
   }
   async stop() {
-    if (!this.socket || !this.completed) throw new Error('No recording is in progress.')
+    if (!this.socket || !this.completed) throw new Error('There is no active recording.')
     const socket = this.socket
     const completed = this.completed
     this.stopping = true

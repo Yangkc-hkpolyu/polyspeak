@@ -1,9 +1,9 @@
 export async function api(path, options = {}) {
   const response = await fetch(path, options)
   let data
-  try { data = await response.json() } catch { throw new Error('The server returned an unexpected response. Check that the local server is still running.') }
+  try { data = await response.json() } catch { throw new Error('Unexpected server response. Check that the local server is running.') }
   if (!response.ok) {
-    const error = new Error(typeof data.detail === 'string' ? data.detail : 'Please check your input and try again.')
+    const error = new Error(typeof data.detail === 'string' ? data.detail : 'Invalid input. Check your entries and try again.')
     error.status = response.status
     throw error
   }

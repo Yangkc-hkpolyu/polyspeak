@@ -14,6 +14,7 @@ class Settings:
     asr_model: str = "qwen3-asr-flash"
     realtime_asr_model: str = "qwen3-asr-flash-realtime"
     realtime_tts_model: str = "qwen3-tts-flash-realtime"
+    realtime_tts_voice: str = "Cherry"
     realtime_url: str = ""
     port: int = 8008
     runtime: Path = ROOT / "speaking-runtime"
@@ -40,7 +41,7 @@ class Settings:
             return {"provider": "edgetts", "model": "EdgeTTS", "voice": voice, "language": language}
         if self.tts_provider == "qwen":
             return {"provider": "qwen", "model": self.realtime_tts_model,
-                    "voice": "Cherry", "language": language}
+                    "voice": self.realtime_tts_voice, "language": language}
         raise ValueError("SPEAKING_TTS_PROVIDER must be edgetts or qwen.")
 
 
@@ -56,6 +57,7 @@ def load_settings():
         asr_model=values.get("SPEAKING_ASR_MODEL", Settings.asr_model),
         realtime_asr_model=values.get("SPEAKING_REALTIME_ASR_MODEL", Settings.realtime_asr_model),
         realtime_tts_model=values.get("SPEAKING_REALTIME_TTS_MODEL", Settings.realtime_tts_model),
+        realtime_tts_voice=values.get("SPEAKING_REALTIME_TTS_VOICE", Settings.realtime_tts_voice).strip() or Settings.realtime_tts_voice,
         realtime_url=values.get("SPEAKING_REALTIME_URL", ""),
         port=int(values.get("SPEAKING_PORT", "8008")),
         avatar_device=values.get("SPEAKING_AVATAR_DEVICE", "auto"),
