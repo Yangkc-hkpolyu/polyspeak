@@ -7,8 +7,8 @@
 - 模式：IELTS 模考、TOEFL 2026 模考，以及动态追问陪练。
 - 报告：逐题特征、语言维度、原话修订、录音复听、JSON 导出和打印。
 
-这是私有小组仓库，拥有访问权限的组员可以克隆。API Key、录音、历史记录和本机环境不在 Git 中。
-模型和人物素材在 [v3.0.0 Release](https://github.com/Yangkc-hkpolyu/polyspeak/releases/tag/v3.0.0)，下载同样需要仓库访问权限。
+这是公开仓库，可以直接分享链接、克隆代码或下载源码，无需添加协作者。API Key、录音、历史记录和本机环境不在 Git 中。
+模型和人物素材可从 [v3.0.0 Release](https://github.com/Yangkc-hkpolyu/polyspeak/releases/tag/v3.0.0) 直接下载。
 
 ## 第一次启动（Windows）
 
@@ -30,7 +30,7 @@ Copy-Item speaking.env.example speaking.env
 .\start-speaking.bat
 ```
 
-安装程序校验 SHA-256，再把模型和人物帧放入正确目录。若已安装 GitHub CLI 并通过 `gh auth login` 登录，可不带 `--archive` 运行安装程序，由它下载私有 Release。
+安装程序校验 SHA-256，再把模型和人物帧放入正确目录。若已安装 GitHub CLI 并通过 `gh auth login` 登录，可不带 `--archive` 运行安装程序，由它下载 Release；浏览器手动下载无需登录。
 
 浏览器打开 http://127.0.0.1:8008/，允许麦克风权限。首次数字人连接需要加载和预热口型模型。
 建议使用 NVIDIA GPU；纯 CPU 能否达到实时速度取决于硬件。根据本机驱动安装相应的 PyTorch CUDA 构建。

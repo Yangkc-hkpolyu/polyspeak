@@ -1,4 +1,4 @@
-"""Install the checksum-pinned model and avatar from the private GitHub release."""
+"""Install the checksum-pinned model and avatar from the GitHub release."""
 import argparse
 import hashlib
 import json
@@ -69,7 +69,7 @@ def main():
         archive = ROOT / '.downloads' / manifest['asset_archive']
         if not archive.is_file():
             if not shutil.which('gh'):
-                parser.error('Download the ZIP from the private GitHub Release, then use --archive PATH. See README.md.')
+                parser.error('Download the ZIP from the GitHub Release, then use --archive PATH. See README.md.')
             archive.parent.mkdir(parents=True, exist_ok=True)
             subprocess.run(['gh', 'release', 'download', manifest['release_tag'], '--repo', manifest['repository'],
                             '--pattern', manifest['asset_archive'], '--dir', str(archive.parent)], check=True)
