@@ -41,7 +41,7 @@ def test_each_question_is_practicable_without_becoming_a_full_mock():
     library = catalog()
     assert library["collection_stats"]["by_exam"] == dict(Counter(q["exam"] for q in DATA["questions"]))
     assert len(library["sources"]) == 7
-    assert any(n["publisher"] == "雅思哥" and n["kind"] == "unimported" for n in library["access_notes"])
+    assert any(n["publisher"] == "IELTS Bro" and n["kind"] == "unimported" for n in library["access_notes"])
     for q in library["collected_questions"]:
         single = get_set(q["set_id"])
         assert single["mock_allowed"] is False

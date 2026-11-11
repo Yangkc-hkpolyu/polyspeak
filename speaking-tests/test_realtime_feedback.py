@@ -6,6 +6,8 @@ import pytest
 
 from backend.speaking.layered_feedback import LayeredEvaluator, acoustic_features, grounded_polishing
 from backend.speaking.streaming_input import transcript_event
+from backend.speaking.feedback import DIMENSIONS, normalize_feedback
+from backend.speaking.provider import ProviderError
 
 
 def test_realtime_transcript_preserves_completed_segments_and_does_not_duplicate_partial_prefix():
@@ -22,9 +24,9 @@ def test_realtime_transcript_preserves_completed_segments_and_does_not_duplicate
 def test_polishing_applies_only_matching_spans_and_rejects_invented_names_numbers_and_experiences():
     answer = "I likes this park. It is quiet."
     value = grounded_polishing(answer, {"corrections": [
-        {"original": "I likes this park.", "revised": "I like this park.", "reason": "主谓一致。"},
-        {"original": "It is quiet.", "revised": "It is quiet in London.", "reason": "添加地点。"},
-        {"original": "It is quiet.", "revised": "It is quiet for 30 years.", "reason": "添加年份。"}]})
+        {"original": "I likes this park.", "revised": "I like this park.", "reason": "Subject-verb agreement."},
+        {"original": "It is quiet.", "revised": "It is quiet in London.", "reason": "Adds a location."},
+        {"original": "It is quiet.", "revised": "It is quiet for 30 years.", "reason": "Adds a number of years."}]})
     assert value["polished_answer"] == "I like this park. It is quiet."
     assert len(value["corrections"]) == 1
     assert grounded_polishing("I learned to bake bread.", {"corrections": [{"original": "bake bread", "revised": "bake sourdough with my aunt"}]})["corrections"] == []
@@ -41,6 +43,27 @@ def test_missing_acoustic_evidence_is_unavailable_not_zero_or_guessed_from_trans
     assert result["accuracy"]["score"] == 8.4
     assert result["fluency"]["score"] == 7.6
     assert result["prosody"]["score"] is None
+
+
+def test_non_english_generated_feedback_is_retryable_without_rewriting_user_evidence():
+    raw = {"summary": "这次回答很好。", "dimensions": [
+        {"key": key, "score": 6, "comment": "Based on the answer."} for key in DIMENSIONS]}
+    with pytest.raises(ProviderError, match="feedback in English"):
+        normalize_feedback(raw, [], "live")
+    answer = "I likes this park. 我的原话。"
+    revised = grounded_polishing(answer, {"corrections": [{
+        "original": "I likes this park.", "revised": "I like this park.", "reason": "Subject-verb agreement."}]})
+    assert revised["original"] == answer
+    assert revised["polished_answer"] == "I like this park. 我的原话。"
+
+
+def test_generated_chinese_correction_is_skipped_without_changing_original_evidence():
+    answer = "I likes books. 我的原话。"
+    result = grounded_polishing(answer, {"corrections": [{
+        "original": "I likes books.", "revised": "我喜欢书。", "reason": "Subject-verb agreement."}]})
+    assert result["original"] == answer
+    assert result["polished_answer"] == answer
+    assert result["corrections"] == []
 
 
 def test_original_report_aggregation_excludes_unavailable_features_and_counts_real_answers():

@@ -10,6 +10,7 @@ import wave
 from fastapi import WebSocketDisconnect
 
 from .provider import ProviderError
+from .errors import public_error_message
 from .realtime_cloud import connect, event, receive_until
 
 
@@ -53,7 +54,7 @@ async def streaming_capture(websocket, session_id, question_id, settings, engine
         question = engine.pending(session, question_id)
         if session["setup"]["mode"] == "mock" and (
                 question["phase"] == "listening" or (question["prepare_until"] or 0) > clock()):
-            raise ValueError("请在问题播放和准备环节结束后开始作答。")
+            raise ValueError("Wait until the question and preparation time have finished before answering.")
         cap = min(125, question["answer_seconds"] + 1.5) if session["setup"]["mode"] == "mock" else 125
         upstream = await connect(settings, settings.realtime_asr_model)
         await receive_until(upstream, "session.created")
@@ -72,12 +73,12 @@ async def streaming_capture(websocket, session_id, question_id, settings, engine
                     if payload:
                         await send(payload)
                     if value.get("type") == "error":
-                        error = "实时识别服务本次未完成；已收到的录音将保留。"
+                        error = "Live speech recognition could not be completed. The recording received so far will be kept."
                         break
                     if value.get("type") == "session.finished":
                         break
             except Exception:
-                error = "实时识别连接中断，转写可能不完整。"
+                error = "The live recognition connection was interrupted. The transcript may be incomplete."
             finally:
                 finished.set()
         reader = asyncio.create_task(receive_results())
@@ -95,7 +96,7 @@ async def streaming_capture(websocket, session_id, question_id, settings, engine
             content = incoming.get("bytes")
             if content is not None:
                 if len(content) % 2 or len(content) > 64000:
-                    raise ValueError("实时录音应为 16 kHz 单声道 PCM16 分块。")
+                    raise ValueError("Live recordings must use 16 kHz mono PCM16 chunks.")
                 remaining = max(0, int(cap * 32000) - len(pcm))
                 chunk = content[:remaining]
                 pcm.extend(chunk)
@@ -111,11 +112,11 @@ async def streaming_capture(websocket, session_id, question_id, settings, engine
         try:
             await asyncio.wait_for(finished.wait(), 15)
         except TimeoutError:
-            error = "录音已保存，最终转写等待超时，结果可能不完整。"
+            error = "Your recording is saved. The final transcript timed out and may be incomplete."
     except (ValueError, KeyError, ProviderError) as exc:
-        error = str(exc) if isinstance(exc, (ValueError, ProviderError)) else "找不到本次练习。"
+        error = public_error_message(exc, "Live speech recognition could not be completed. Your received recording will be kept.", settings) if isinstance(exc, (ValueError, ProviderError)) else "This practice session could not be found."
     except Exception:
-        error = "实时语音连接中断；已收到的录音将保留。"
+        error = "The live speech connection was interrupted. The recording received so far will be kept."
     finally:
         if reader:
             reader.cancel()
@@ -124,7 +125,7 @@ async def streaming_capture(websocket, session_id, question_id, settings, engine
             await upstream.close()
     try:
         if len(pcm) < 9600:
-            await send({"type": "error", "message": error or "录音太短，请至少说完一句话。"})
+            await send({"type": "error", "message": error or "The recording is too short. Please say at least one complete sentence."})
             await websocket.close()
             return
         identifier = uuid.uuid4().hex

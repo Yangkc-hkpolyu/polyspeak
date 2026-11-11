@@ -1,6 +1,7 @@
 from dataclasses import replace
 from io import BytesIO
 import json
+import re
 import wave
 import pytest
 from fastapi.testclient import TestClient
@@ -28,7 +29,7 @@ class FakeProvider:
         if data["task"] in ("adaptive", "coach_followup"):
             return {"question": "How could that affect the wider community, and why?"}
         if data["task"] == "assessment_features":
-            return {"features": {key: {"score": 6, "quote": data["answer"][:10], "justification": "Based on the actual words.", "suggestion": "可以进一步解释原因。"} for key in data["definitions"]}}
+            return {"features": {key: {"score": 6, "quote": data["answer"][:10], "justification": "Based on the actual words.", "suggestion": "Explain the reason in more detail."} for key in data["definitions"]}}
         if data["task"] == "assessment_aspects":
             return {"aspects": {key: {"score": 6, "justification": "Based on the submitted feature evidence."} for key in DIMENSIONS}}
         if data["task"] == "answer_polishing":
@@ -37,7 +38,7 @@ class FakeProvider:
             if self.fail_report:
                 raise ProviderError("Temporary feedback failure")
             turn = next(x for x in data["turns"] if x["answer"])
-            return {"summary": "A useful example.", "dimensions": [{"key": key, "score": 6, "comment": "Based on the submitted words."} for key in DIMENSIONS], "strengths": ["Clear point."], "improvements": ["Develop the reason."], "next_steps": ["Try one specific example."], "examples": [{"turn_id": turn["id"], "quote": turn["answer"][:10], "suggestion": "可以补充一个真实的原因。", "improved": ""}, {"turn_id": turn["id"], "quote": "I earned a million dollars.", "suggestion": "不真实的引用应过滤。"}]}
+            return {"summary": "A useful example.", "dimensions": [{"key": key, "score": 6, "comment": "Based on the submitted words."} for key in DIMENSIONS], "strengths": ["Clear point."], "improvements": ["Develop the reason."], "next_steps": ["Try one specific example."], "examples": [{"turn_id": turn["id"], "quote": turn["answer"][:10], "suggestion": "Add a reason based on your own experience.", "improved": ""}, {"turn_id": turn["id"], "quote": "I earned a million dollars.", "suggestion": "Quotes not found in the answer must be removed."}]}
         return {"ok": True}
 
 
@@ -243,9 +244,27 @@ def test_full_autobiographical_expansions_are_filtered_from_suggestions():
     turn = {"id": "t1", "answer": "I learned to bake bread."}
     raw = {"dimensions": [{"key": key, "score": 6} for key in DIMENSIONS], "examples": [
         {"turn_id": "t1", "quote": turn["answer"], "suggestion": "I learned to bake sourdough bread from my aunt, who has been baking for thirty years."},
-        {"turn_id": "t1", "quote": turn["answer"], "suggestion": "可改写为 I learned to bake sourdough bread from my aunt who has been baking for thirty years."},
-        {"turn_id": "t1", "quote": turn["answer"], "suggestion": "可以解释这项技能对自己的实际意义，不要增加没有发生的经历。"},
+        {"turn_id": "t1", "quote": turn["answer"], "suggestion": "You could say: I learned to bake sourdough bread from my aunt who has been baking for thirty years."},
+        {"turn_id": "t1", "quote": turn["answer"], "suggestion": "Explain what this skill means to you without adding experiences that did not happen."},
     ]}
     report = normalize_feedback(raw, [turn], "live")
     assert len(report["examples"]) == 1
     assert "thirty" not in str(report)
+
+
+def test_english_catalog_session_feedback_and_errors(ctx):
+    client = ctx[0]
+    responses = [client.get('/api/speaking/library'), client.get('/api/speaking/status'),
+                 client.get('/api/speaking/sessions/missing'),
+                 client.post('/api/speaking/sessions', json={}, headers={'Origin': 'https://unrelated.example'})]
+    session = start(ctx)
+    assert not re.search(r'[\u3400-\u9fff]', json.dumps(session, ensure_ascii=False))
+    session = submit(ctx, session).json()
+    result = client.post(f"/api/speaking/sessions/{session['id']}/finish")
+    assert result.status_code == 200
+    assert result.json()['report']['examples'], 'English coaching suggestions must remain visible'
+    assert result.json()['turns'][0]['answer'] == 'I learned to repair a bicycle with my brother.'
+    responses += [result, client.get('/api/speaking/sessions'),
+                  client.get(f"/api/speaking/sessions/{session['id']}/export")]
+    for response in responses:
+        assert not re.search(r'[\u3400-\u9fff]', response.text), str(response.request.url)

@@ -6,7 +6,7 @@ import LayeredReport from './LayeredReport.vue'
 
 const recorder = new VoiceRecorder();
 const stages = { part1: 'Part 1 · Introduction & interview', part2: 'Part 2 · Individual long turn', rounding: 'Part 2 · Rounding off', part3: 'Part 3 · Two-way discussion', repeat: 'Listen and Repeat', interview: 'Take an Interview' };
-const sections = { ielts: [{ value: 'full', label: '完整流程 · Part 1–3' }, { value: 'part1', label: 'Part 1 · 日常问答' }, { value: 'part2', label: 'Part 2 · 个人长答' }, { value: 'part3', label: 'Part 3 · 深入讨论' }], toefl: [{ value: 'full', label: '完整流程 · 7 条复述 + 4 道访谈' }, { value: 'repeat', label: 'Listen and Repeat · 听后复述' }, { value: 'interview', label: 'Take an Interview · 访谈作答' }] };
+const sections = { ielts: [{ value: 'full', label: 'Full test · Parts 1–3' }, { value: 'part1', label: 'Part 1 · Introduction & interview' }, { value: 'part2', label: 'Part 2 · Individual long turn' }, { value: 'part3', label: 'Part 3 · Two-way discussion' }], toefl: [{ value: 'full', label: 'Full test · 7 repetitions + 4 interview questions' }, { value: 'repeat', label: 'Listen and Repeat' }, { value: 'interview', label: 'Take an Interview' }] };
 
 
 export default {
@@ -18,10 +18,10 @@ export default {
     offlineMode: false, quickMode: false, busy: false, busyLabel: '', draft: '', notes: '', recordingResult: null,
     recording: false, startingRecording: false, transcribing: false, recordStarted: 0, recordTimer: null,
     mediaBusy: false, mediaToken: 0, mediaProgress: 0, mediaLabel: '', videoVisible: false, playBlocked: false,
-    playing: false, mediaQuestionId: null, mediaFailed: false, avatarCaption: '准备好了，我们就开始。',
+    playing: false, mediaQuestionId: null, mediaFailed: false, avatarCaption: 'Ready when you are.',
     liveConnected: false, liveConnecting: false,
     now: Date.now(), serverOffset: 0, ticker: null, toastMessage: '', toastTimer: null, settingsOpen: false, testingConnection: false,
-    showTranscript: false, dimensionName: { coherence: '内容组织与衔接', vocabulary: '词汇使用', grammar: '语法表达', task_response: '问题回应与展开' },
+    showTranscript: false, dimensionName: { coherence: 'Coherence & cohesion', vocabulary: 'Vocabulary', grammar: 'Grammar', task_response: 'Task response & development' },
   }),
   computed: {
     navigationLocked() { return this.busy || this.recording || this.transcribing || this.mediaBusy || this.playing || this.startingRecording || this.isMock && !!this.currentQuestion; },
@@ -30,12 +30,12 @@ export default {
     officialSets() { return this.library.sets.filter(x => x.kind === 'official_excerpt'); },
     selectedSet() { return this.library.sets.find(x => x.id === this.form.set_id); },
     currentQuestionSource() { return this.currentQuestion?.provenance; },
-    sections() { const selected = this.selectedSet; return sections[this.form.exam].filter(x => x.value === 'full' || !selected || selected.sections.includes(x.value)).map(x => x.value === 'full' && selected && !selected.mock_allowed ? {...x, label:'所选题目 · 分项陪练'} : x); },
+    sections() { const selected = this.selectedSet; return sections[this.form.exam].filter(x => x.value === 'full' || !selected || selected.sections.includes(x.value)).map(x => x.value === 'full' && selected && !selected.mock_allowed ? {...x, label:'Selected questions · Guided practice'} : x); },
     isMock() { return !!this.session && this.session.setup.mode === 'mock'; },
     progress() { return this.session ? this.session.completed_questions / this.session.total_questions * 100 : 0; },
     sessionStages() {
       const selected = this.library.sets.find(x => x.id === this.session?.setup.set_id);
-      const items = this.session?.setup.exam === 'toefl' ? [{ value: 'repeat', includes: ['repeat'], title: 'Listen and Repeat', description: selected?.mock_allowed ? '7 条 · 听完复述一次' : '听后复述短题例' }, { value: 'interview', includes: ['interview'], title: 'Take an Interview', description: selected?.mock_allowed ? '4 道 · 每道回答 45 秒' : '访谈单题 · 支持一轮追问' }] : [{ value: 'part1', includes: ['part1'], title: 'Introduction & interview', description: '熟悉话题的日常问答' }, { value: 'part2', includes: ['part2', 'rounding'], title: 'Individual long turn', description: '准备 1 分钟 · 长答最多 2 分钟' }, { value: 'part3', includes: ['part3'], title: 'Two-way discussion', description: '围绕主题分析、比较与讨论' }];
+      const items = this.session?.setup.exam === 'toefl' ? [{ value: 'repeat', includes: ['repeat'], title: 'Listen and Repeat', description: selected?.mock_allowed ? '7 sentences · Listen, then repeat once' : 'Short repetition examples' }, { value: 'interview', includes: ['interview'], title: 'Take an Interview', description: selected?.mock_allowed ? '4 questions · 45 seconds per answer' : 'Interview question · One follow-up available' }] : [{ value: 'part1', includes: ['part1'], title: 'Introduction & interview', description: 'Everyday questions on familiar topics' }, { value: 'part2', includes: ['part2', 'rounding'], title: 'Individual long turn', description: '1 minute to prepare · Up to 2 minutes to speak' }, { value: 'part3', includes: ['part3'], title: 'Two-way discussion', description: 'Analyse, compare and discuss the topic' }];
       return selected?.mock_allowed ? items : items.filter(x => selected?.sections.some(s => x.includes.includes(s)));
     },
     secondsLeft() {
@@ -44,9 +44,9 @@ export default {
       return Math.max(0, Math.ceil(deadline - this.now / 1000));
     },
     timerDisplay() { const value = this.secondsLeft; return value === null ? '— : —' : `${String(Math.floor(value / 60)).padStart(2, '0')} : ${String(value % 60).padStart(2, '0')}`; },
-    timerPhase() { return !this.currentQuestion ? 'YOUR MOMENT' : !this.isMock ? '陪练参考时间' : this.currentQuestion.phase === 'listening' ? '先听问题' : this.currentQuestion.phase === 'preparing' ? '准备时间' : this.recording ? '作答倒计时' : '本题作答时间'; },
-    timerHint() { const q = this.currentQuestion; return !q ? '不用完美，只要开始。' : !this.isMock ? '计时仅作参考，单次录音最多两分钟。' : q.phase === 'listening' ? '问题播放结束后开始计时。' : q.phase === 'preparing' ? '可以记笔记，准备时间结束后开口。' : '到时自动结束录音并提交。'; },
-    composerHint() { return !this.currentQuestion ? '选择左侧练习后开始' : this.currentQuestion.phase === 'listening' ? '请先听 Nora 提问' : this.currentQuestion.phase === 'preparing' ? '正在准备，先整理思路' : this.isMock ? '模考录音会自动提交' : '轮到你表达了'; },
+    timerPhase() { return !this.currentQuestion ? 'YOUR MOMENT' : !this.isMock ? 'Practice timer' : this.currentQuestion.phase === 'listening' ? 'Listen first' : this.currentQuestion.phase === 'preparing' ? 'Preparation time' : this.recording ? 'Time remaining' : 'Answer time'; },
+    timerHint() { const q = this.currentQuestion; return !q ? 'Start with what you want to say.' : !this.isMock ? 'Use the timer as a guide. Each recording can last up to two minutes.' : q.phase === 'listening' ? 'The timer starts after the question finishes playing.' : q.phase === 'preparing' ? 'Take notes, then start speaking when preparation time ends.' : 'Your recording stops and submits automatically when time runs out.'; },
+    composerHint() { return !this.currentQuestion ? 'Choose a practice session to begin' : this.currentQuestion.phase === 'listening' ? 'Listen to Nora first' : this.currentQuestion.phase === 'preparing' ? 'Preparation time: organise your ideas' : this.isMock ? 'Mock test recordings submit automatically' : 'Your turn to speak'; },
     canRecord() { return this.recording || (!!this.currentQuestion && !this.busy && !this.mediaBusy && !this.playing && !this.startingRecording && !this.transcribing && (!this.isMock || this.currentQuestion.phase === 'answering' && this.secondsLeft > 0)); },
     canSend() { return !!this.currentQuestion && !this.busy && !this.recording && !this.transcribing && !this.startingRecording && (this.draft.trim().length > 1 || !!this.recordingResult); },
     canReplay() { return !!this.currentQuestion && !this.busy && !this.recording && !this.transcribing && !this.startingRecording && !this.mediaBusy && !this.playing && (!this.isMock || this.currentQuestion.phase === 'listening'); },
@@ -83,14 +83,14 @@ export default {
     },
     disconnectAvatar() { this.liveConnected = false; this.videoVisible = false; if (this.live) this.live.close(); },
     liveEvent(event) {
-      if (event.type === 'connection.ready') { this.liveConnected = true; this.videoVisible = true; this.avatarCaption = '实时连接已就绪，我在听。'; }
+      if (event.type === 'connection.ready') { this.liveConnected = true; this.videoVisible = true; this.avatarCaption = 'Connected and ready to listen.'; }
       if (event.type === 'connection.error') { this.liveConnected = false; this.videoVisible = false; this.avatarCaption = event.message; }
-      if (event.type === 'speech.start') { this.playing = true; this.mediaBusy = false; this.avatarCaption = '仔细听，接下来轮到你。'; }
+      if (event.type === 'speech.start') { this.playing = true; this.mediaBusy = false; this.avatarCaption = 'Listen closely. Your turn is next.'; }
       if (event.type === 'speech.end') this.playing = false;
     },
     stageName(value) { return stages[value] || value; },
-    sourceLabel(value) { return ({ official_excerpt: '官方样题短摘录', original_practice: '原创模拟题', institution_excerpt: '机构当季题库短摘', recalled_excerpt: '机构整理考场回忆', ai_generated: '根据回答生成的提问' })[value] || ''; },
-    wordingLabel(value) { return ({verbatim_excerpt:'原文短摘', edited_excerpt:'已校正拼写', translated_recall:'中文回忆英译，非英文原句', rephrased_recall:'回忆题重述，非英文原句'})[value] || ''; },
+    sourceLabel(value) { return ({ official_excerpt: 'Official sample excerpt', original_practice: 'Original practice questions', institution_excerpt: 'Provider question bank excerpt', recalled_excerpt: 'Provider-collected recalled questions', ai_generated: 'Follow-up based on your answer' })[value] || ''; },
+    wordingLabel(value) { return ({verbatim_excerpt:'Verbatim excerpt', edited_excerpt:'Spelling corrected', translated_recall:'Translated from a Chinese recall; not the original English wording', rephrased_recall:'Rephrased recall; not the original English wording'})[value] || ''; },
     toast(text) { this.toastMessage = text; clearTimeout(this.toastTimer); this.toastTimer = setTimeout(() => { this.toastMessage = ''; }, 6500); },
     path(suffix = '') { return `/api/speaking/sessions/${this.session.id}${suffix}`; },
     changeExam(exam) { this.form.exam = exam; this.form.section = 'full'; this.validateSelection(); },
@@ -103,18 +103,18 @@ export default {
       if (value.report) { this.stopMedia(); this.disconnectAvatar(); }
     },
     async startSession() {
-      if (this.busy) return; this.busy = true; this.busyLabel = '准备你的口语练习'; this.stopMedia();
+      if (this.busy) return; this.busy = true; this.busyLabel = 'Preparing your speaking practice'; this.stopMedia();
       try {
         if (this.form.mode === 'mock') await recorder.authorize();
         const value = await post('/api/speaking/sessions', { ...this.form, pace: this.quickMode ? 'demo' : 'standard', execution: this.offlineMode ? 'demo' : 'live' });
         this.takeSession(value); this.busy = false; this.$nextTick(this.playQuestion);
-      } catch (error) { this.toast(error.name === 'NotAllowedError' ? '模考需要麦克风权限，请在浏览器中允许录音，或选择互动陪练输入文字。' : error.message); }
+      } catch (error) { this.toast(error.name === 'NotAllowedError' ? 'Mock tests require microphone access. Allow recording in your browser, or choose guided practice to type an answer.' : error.message); }
       finally { this.busy = false; }
     },
     async restore(id, play = false) {
       this.stopMedia(); this.view = 'practice'; this.takeSession(await api(`/api/speaking/sessions/${id}`));
       if (this.currentQuestion?.phase === 'listening' && play) this.$nextTick(this.playQuestion);
-      else if (this.isMock && this.currentQuestion?.phase === 'answering' && this.secondsLeft > 0) this.toast('已恢复计时。请点击开始录音继续本题。');
+      else if (this.isMock && this.currentQuestion?.phase === 'answering' && this.secondsLeft > 0) this.toast('The timer has resumed. Select Start recording to continue this question.');
     },
     async openHistory() { this.view = 'history'; try { this.history = await api('/api/speaking/sessions'); } catch (error) { this.toast(error.message); } },
     resetPractice() { this.stopMedia(); this.session = null; this.draft = ''; this.notes = ''; this.recordingResult = null; this.showTranscript = false; localStorage.removeItem('polyspeak-session'); this.view = 'practice'; this.$nextTick(this.connectAvatar); window.scrollTo({ top: 0, behavior: 'smooth' }); },
@@ -130,19 +130,19 @@ export default {
     },
     async previewNora() { await this.playMedia(liveId => post(`/api/speaking/live/${liveId}/preview`, { text: "Hi, I'm Nora. Let's practise English together, one question at a time. Listen, speak, and discover what you can improve.", language: 'en' }), null); },
     async playMedia(create, questionId) {
-      await this.stopMedia(); const token = this.mediaToken; this.mediaQuestionId = questionId; this.mediaBusy = true; this.mediaFailed = false; this.mediaProgress = 10; this.mediaLabel = '正在连接实时语音…';
+      await this.stopMedia(); const token = this.mediaToken; this.mediaQuestionId = questionId; this.mediaBusy = true; this.mediaFailed = false; this.mediaProgress = 10; this.mediaLabel = 'Connecting to live speech…';
       try {
         await this.connectAvatar();
-        if (!this.liveConnected) throw new Error('数字人实时连接尚未就绪，请点击重连。');
-        this.mediaLabel = '正在等待第一段实时语音…';
+        if (!this.liveConnected) throw new Error('The live avatar is not connected yet. Select Reconnect Nora.');
+        this.mediaLabel = 'Waiting for live speech…';
         await this.live.speak(create);
         if (token === this.mediaToken) { await new Promise(resolve => setTimeout(resolve, 180)); if (token === this.mediaToken) await this.mediaEnded(questionId); }
-      } catch (error) { if (token === this.mediaToken) { this.mediaFailed = true; this.playing = false; this.playBlocked = error.name === 'NotAllowedError'; this.avatarCaption = '实时语音未完成，可以重试。'; this.toast(error.message); } }
+      } catch (error) { if (token === this.mediaToken) { this.mediaFailed = true; this.playing = false; this.playBlocked = error.name === 'NotAllowedError'; this.avatarCaption = 'Live speech did not finish. Please try again.'; this.toast(error.message); } }
       finally { if (token === this.mediaToken) this.mediaBusy = false; }
     },
-    async resumeVideo() { try { this.$refs.avatarVideo.muted = false; await this.$refs.avatarVideo.play(); this.playBlocked = false; if (this.currentQuestion) this.playQuestion(); else this.previewNora(); } catch { this.toast('实时视频无法播放，请重试。'); } },
+    async resumeVideo() { try { this.$refs.avatarVideo.muted = false; await this.$refs.avatarVideo.play(); this.playBlocked = false; if (this.currentQuestion) this.playQuestion(); else this.previewNora(); } catch { this.toast('Could not play the live video. Please try again.'); } },
     async mediaEnded(questionId = this.mediaQuestionId) {
-      this.videoVisible = this.liveConnected; this.playing = false; this.avatarCaption = '轮到你了，我在听。';
+      this.videoVisible = this.liveConnected; this.playing = false; this.avatarCaption = 'Your turn. I am listening.';
       if (questionId && this.currentQuestion?.id === questionId && this.currentQuestion.phase === 'listening') await this.questionReady();
     },
     async questionReady() {
@@ -162,12 +162,12 @@ export default {
       this.startingRecording = true;
       try {
         this.takeSession(await post(this.path('/begin-answer'), { question_id: this.currentQuestion.id }));
-        if (this.isMock && this.secondsLeft <= 0) throw new Error('本题时间已到，可跳过本题后继续。');
+        if (this.isMock && this.secondsLeft <= 0) throw new Error('Time is up for this question. Skip it to continue.');
         await recorder.start({ path: this.path(`/stt?question_id=${encodeURIComponent(this.currentQuestion.id)}`), onTranscript: text => { this.draft = text; } }); this.recording = true; this.recordStarted = Date.now();
         this.recordingResult = null; this.draft = '';
         const duration = this.isMock ? Math.max(0.3, this.currentQuestion.answer_until - (Date.now() + this.serverOffset) / 1000) : 120;
         this.recordTimer = setTimeout(this.stopRecording, duration * 1000);
-      } catch (error) { this.toast(error.name === 'NotAllowedError' ? '麦克风未获授权，请在浏览器中允许录音。' : error.message); }
+      } catch (error) { this.toast(error.name === 'NotAllowedError' ? 'Microphone access was denied. Allow recording in your browser.' : error.message); }
       finally { this.startingRecording = false; }
     },
     async stopRecording() {
@@ -176,26 +176,26 @@ export default {
       try {
         this.recordingResult = await recorder.stop();
         this.draft = this.recordingResult.text || ''; submit = this.isMock;
-        if (this.recordingResult.transcription_error) this.toast('录音已保存，但转写未完成。本题会标记文字证据不足。');
+        if (this.recordingResult.transcription_error) this.toast('Your recording was saved, but transcription did not finish. This answer will be marked as having insufficient text evidence.');
       } catch (error) { this.toast(error.message); }
       finally { this.transcribing = false; }
       if (submit) await this.sendAnswer();
     },
     async sendAnswer(skipped = false) {
       if (!this.currentQuestion || this.busy || this.recording || this.transcribing) return;
-      this.stopMedia(); this.busy = true; this.busyLabel = skipped ? '记录本题，准备下一问' : '保存回答，准备下一问';
+      this.stopMedia(); this.busy = true; this.busyLabel = skipped ? 'Saving this question and preparing the next' : 'Saving your answer and preparing the next question';
       try {
         this.takeSession(await post(this.path('/answers'), { question_id: this.currentQuestion.id, answer: this.draft, audio_id: this.recordingResult?.id || null, skipped }));
         this.busy = false;
         if (this.currentQuestion) this.$nextTick(this.playQuestion);
-        if (this.session.report_error) this.toast('回答已保存，反馈暂未完成，可以重试。');
+        if (this.session.report_error) this.toast('Your answer was saved. Feedback is not ready yet; please try again.');
       } catch (error) { this.toast(error.message); if (error.status === 409) this.takeSession(await api(this.path())); }
       finally { this.busy = false; }
     },
     skipQuestion() { this.sendAnswer(true); },
     async finishSession() {
       if (this.busy || this.recording || this.transcribing) return;
-      this.stopMedia(); this.busy = true; this.busyLabel = '根据实际回答，整理反馈';
+      this.stopMedia(); this.busy = true; this.busyLabel = 'Preparing feedback from your answers';
       try { this.takeSession(await post(this.path('/finish'), {})); } catch (error) { this.toast(error.message); }
       finally { this.busy = false; }
     },
@@ -203,14 +203,14 @@ export default {
     async playWord(turn, word) {
       const ref = this.$refs['audio-' + turn.id], player = Array.isArray(ref) ? ref[0] : ref;
       if (!player) return;
-      try { player.currentTime = Math.max(0, word.offset_seconds - .15); await player.play(); } catch { this.toast('请先使用录音播放器载入音频，再点击词语复听。'); }
+      try { player.currentTime = Math.max(0, word.offset_seconds - .15); await player.play(); } catch { this.toast('Load the audio using the recording player, then select a word to replay it.'); }
     },
     exportReport() { window.location.href = this.path('/export'); },
     printReport() { window.print(); },
-    dateLabel(value) { return new Date(value).toLocaleString('zh-CN'); },
+    dateLabel(value) { return new Date(value).toLocaleString('en-GB'); },
     async testConnection() {
       this.testingConnection = true;
-      try { await post('/api/speaking/check-connection', {}); this.toast('对话连接正常。语音与发音服务需分别验证。'); } catch (error) { this.toast(error.message); }
+      try { await post('/api/speaking/check-connection', {}); this.toast('The conversation service is connected. Speech and pronunciation services need separate checks.'); } catch (error) { this.toast(error.message); }
       finally { this.testingConnection = false; }
     },
   },

@@ -5,6 +5,7 @@ from pathlib import Path
 import threading
 
 from .config import Settings
+from .errors import public_error_message
 
 
 class PronunciationService:
@@ -13,12 +14,13 @@ class PronunciationService:
 
     async def assess(self, audio_path: Path, reference: str = ""):
         if not self.settings.azure_key:
-            return {"status": "not_configured", "message": "未配置 Azure 语音凭据，发音暂未评测。"}
+            return {"status": "not_configured", "message": "Azure Speech credentials are not configured. Pronunciation has not been assessed."}
         try:
             return await asyncio.to_thread(self._continuous, audio_path, reference)
-        except Exception:
+        except Exception as exc:
             # SDK errors may include service internals; keep credentials and paths private.
-            return {"status": "unavailable", "message": "发音服务本次未完成；录音和文字仍已保存。"}
+            public_error_message(exc, "Pronunciation assessment could not be completed.", self.settings)
+            return {"status": "unavailable", "message": "Pronunciation assessment could not be completed. Your recording and transcript are saved."}
 
     def _continuous(self, path, reference):
         import azure.cognitiveservices.speech as sdk
@@ -66,4 +68,4 @@ class PronunciationService:
                 details = item.get("PronunciationAssessment", {})
                 words.append({"word": item.get("Word", ""), "accuracy": details.get("AccuracyScore"), "error_type": details.get("ErrorType"), "offset_seconds": item.get("Offset", 0) / 10_000_000, "duration_seconds": item.get("Duration", 0) / 10_000_000, "phonemes": [{"phoneme": p.get("Phoneme", ""), "accuracy": p.get("PronunciationAssessment", {}).get("AccuracyScore")} for p in item.get("Phonemes", [])]})
         values = [x["accuracy"] for x in words if isinstance(x.get("accuracy"), (float, int))]
-        return {"status": "available", "provider": "Azure Pronunciation Assessment", "locale": "en-US", "word_accuracy_mean": round(sum(values) / len(values), 1) if values else None, "words": words, "segments": [{"text": x["text"], "scores": x["scores"]} for x in segments], "scope": "Azure 音频诊断；均值为本应用的逐词平均，不是官方考试分数。低分音素仅是复听线索，不据此推断具体错读成了哪个音。"}
+        return {"status": "available", "provider": "Azure Pronunciation Assessment", "locale": "en-US", "word_accuracy_mean": round(sum(values) / len(values), 1) if values else None, "words": words, "segments": [{"text": x["text"], "scores": x["scores"]} for x in segments], "scope": "Azure audio assessment. The mean is an application-calculated word average, not an official exam score. Low-scoring phonemes are cues for replaying the audio; they do not identify which sound was substituted."}

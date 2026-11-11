@@ -21,13 +21,13 @@ def realtime_url(settings, model):
 
 async def connect(settings, model):
     if not settings.api_key:
-        raise ProviderError("实时语音服务尚未配置 API Key。")
+        raise ProviderError("The live speech service API key is not configured.")
     try:
         return await websockets.connect(realtime_url(settings, model),
                                         additional_headers={"Authorization": "Bearer " + settings.api_key},
                                         open_timeout=15, close_timeout=3, max_size=4 * 1024 * 1024)
     except Exception as exc:
-        raise ProviderError("实时语音连接失败，请检查网络、服务地域和模型权限。") from exc
+        raise ProviderError("The live speech connection failed. Check your network, service region, and model access.") from exc
 
 
 async def receive_until(connection, expected, timeout=20):
@@ -35,7 +35,7 @@ async def receive_until(connection, expected, timeout=20):
         while True:
             item = json.loads(await connection.recv())
             if item.get("type") == "error":
-                raise ProviderError("实时语音服务拒绝了请求，请检查模型权限和配置。")
+                raise ProviderError("The live speech service rejected the request. Check model access and configuration.")
             if item.get("type") == expected:
                 return item
 
@@ -60,6 +60,6 @@ async def stream_tts(settings, text):
                 elif item.get("type") == "session.finished":
                     return
                 elif item.get("type") == "error":
-                    raise ProviderError("实时语音合成失败，请检查该模型的使用权限。")
+                    raise ProviderError("Live speech synthesis failed. Check access to this model.")
     finally:
         await connection.close()

@@ -16,9 +16,9 @@ def parse_json(text: str) -> dict:
     try:
         value = json.loads(clean)
     except json.JSONDecodeError as exc:
-        raise ProviderError("模型回复的格式不正确，请重试。本轮回答尚未提交。") from exc
+        raise ProviderError("The model response format is invalid. Please try again.") from exc
     if not isinstance(value, dict):
-        raise ProviderError("模型没有返回有效的结构化结果，请重试。")
+        raise ProviderError("The model did not return a valid structured result. Please try again.")
     return value
 
 
@@ -28,7 +28,7 @@ class ModelProvider:
 
     async def complete(self, system: str, data: dict, *, json_mode: bool = True) -> Any:
         if not self.settings.api_key:
-            raise ProviderError("尚未配置百炼 API Key。请在本机 .env 配置，或选择明确标注的离线演示模式。")
+            raise ProviderError("The Alibaba Cloud Model Studio API key is not configured. Set it in the local .env file or select the labeled offline demo mode.")
         payload = {
             "model": self.settings.chat_model,
             "messages": [
@@ -44,7 +44,7 @@ class ModelProvider:
         result = await self.request(payload)
         text = result.get("choices", [{}])[0].get("message", {}).get("content", "")
         if not isinstance(text, str) or not text.strip():
-            raise ProviderError("模型返回了空回复，请稍后重试。")
+            raise ProviderError("The model returned an empty response. Please try again shortly.")
         return parse_json(text) if json_mode else text
 
     async def request(self, payload: dict) -> dict:
@@ -56,22 +56,22 @@ class ModelProvider:
                     json=payload,
                 )
         except httpx.RequestError as exc:
-            raise ProviderError("连接模型服务失败，请检查网络和 .env 中的服务地址。") from exc
+            raise ProviderError("The model service could not be reached. Check your network and the service URL in .env.") from exc
         if response.status_code in (401, 403):
-            raise ProviderError("API Key 或模型权限不可用，请检查百炼账户及地域。")
+            raise ProviderError("The API key or model access is unavailable. Check your Alibaba Cloud Model Studio account and region.")
         if response.status_code == 429:
-            raise ProviderError("模型服务当前限流或额度不足，请稍后重试并检查账户额度。")
+            raise ProviderError("The model service is rate-limited or has insufficient quota. Check your account quota and try again later.")
         if response.status_code >= 400:
             try:
                 code = response.json().get("error", {}).get("code", str(response.status_code))
             except ValueError:
                 code = str(response.status_code)
-            raise ProviderError(f"模型服务请求失败（{code}）。请确认模型名称与服务地域匹配。")
+            raise ProviderError(f"The model service request failed ({code}). Check that the model name matches the service region.")
         try:
             value = response.json()
         except ValueError as exc:
-            raise ProviderError("模型服务没有返回有效结果，请稍后重试。") from exc
+            raise ProviderError("The model service did not return a valid result. Please try again shortly.") from exc
         if not isinstance(value, dict):
-            raise ProviderError("模型服务返回了异常结果，请稍后重试。")
+            raise ProviderError("The model service returned an unexpected result. Please try again shortly.")
         return value
 

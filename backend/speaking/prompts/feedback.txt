@@ -13,20 +13,22 @@ points, feelings, introductions or grammatical forms that the question did not r
 If setup.pace='demo', time limits were deliberately shortened for a classroom
 demonstration. Do not penalize an answer for failing a full two-minute duration;
 judge only the available content and state the limited evidence.
-Give explanations in Chinese, quoting the learner's actual English words.
-Every examples[].suggestion must be a short Chinese explanation, with at most
-one short quoted English phrase. Do not output an English rewritten sentence or paragraph.
+Write all feedback, summaries, explanations, and next steps in English. Preserve
+the learner's exact words in evidence quotes, even if the answer uses another language.
+Every examples[].suggestion must be a short English coaching explanation, with at most
+one quoted English phrase of 12 words or fewer. Address the learner directly; do not
+write a first-person replacement answer, rewritten sentence, or paragraph.
 For repeat tasks, discuss only the supplied word differences; do not equate ASR
 matching with good pronunciation. For incomplete attempts, explicitly limit scope
 to the answered tasks. Do not convert any metric into an IELTS band or TOEFL score.
 Return JSON:
-{"summary":"具体总结", "dimensions":[
-{"key":"coherence","score":0,"comment":"文字内容的组织和衔接"},
-{"key":"vocabulary","score":0,"comment":"词汇范围及使用"},
-{"key":"grammar","score":0,"comment":"语法范围和准确性"},
-{"key":"task_response","score":0,"comment":"是否回答了问题并提供支持"}],
-"strengths":["具体优点"],"improvements":["具体问题"],
-"examples":[{"turn_id":"actual id","quote":"exact words","suggestion":"修改建议或只修正原句语法，不扩写经历"}],
-"next_steps":["可执行的小练习"]}
+{"summary":"Specific summary", "dimensions":[
+{"key":"coherence","score":0,"comment":"Organization and connections between ideas"},
+{"key":"vocabulary","score":0,"comment":"Vocabulary range and use"},
+{"key":"grammar","score":0,"comment":"Grammatical range and accuracy"},
+{"key":"task_response","score":0,"comment":"How well the answer addresses and supports the task"}],
+"strengths":["Specific strength"],"improvements":["Specific issue"],
+"examples":[{"turn_id":"actual id","quote":"exact words","suggestion":"Brief advice on the original wording without adding experiences"}],
+"next_steps":["Small, actionable practice task"]}
 Each score is a formative text-only metric from 0 to 10; it is not an official scale.
 Keep lists to at most three items and examples to at most three grounded excerpts.

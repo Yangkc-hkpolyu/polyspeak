@@ -11,6 +11,7 @@ import torch
 from aiortc import RTCConfiguration, RTCPeerConnection, RTCSessionDescription, RTCRtpSender
 
 from .avatar import apply_scene_face_mask
+from .errors import public_error_message
 from .provider import ProviderError
 from .vendor.livetalking.gpu_inference_scheduler import GPUInferenceScheduler
 from .vendor.livetalking.lipreal import LipReal
@@ -75,6 +76,8 @@ class LiveSession:
             pass
 
     def send(self, event):
+        if event["type"] == "speech.error":
+            event = {**event, "message": public_error_message(event.get("message", ""), "Live speech could not be completed. Check your connection and try again.", self.manager.settings)}
         job = self.jobs.get(event.get("job_id"))
         if job is not None and job["status"] == "interrupted" and event["type"] != "speech.interrupted":
             return
@@ -84,15 +87,15 @@ class LiveSession:
             elif event["type"] == "speech.end":
                 job["status"] = "completed"
             elif event["type"] == "speech.error":
-                job.update(status="failed", error=event.get("message", "实时语音未完成。"))
+                job.update(status="failed", error=event["message"])
         if self.dc and self.dc.readyState == "open":
             self.dc.send(json.dumps(event))
 
     def speak(self, text, question_id=None):
         if self.closed or self.pc.connectionState != "connected":
-            raise ValueError("数字人实时连接尚未就绪，请重连后重试。")
+            raise ValueError("The live avatar connection is not ready. Reconnect and try again.")
         if any(job["status"] in ("queued", "speaking") for job in self.jobs.values()):
-            raise ValueError("数字人正在说话，请等待结束或停止当前语音。")
+            raise ValueError("The avatar is speaking. Wait for it to finish or stop the current speech.")
         job = {"id": uuid.uuid4().hex, "status": "queued", "transport": "webrtc", "question_id": question_id}
         self.jobs[job["id"]] = job
         self.avatar.put_msg_txt(text, {"job_id": job["id"]})
@@ -153,10 +156,10 @@ class LiveAvatarManager:
 
     async def offer(self, sdp, description_type):
         if len(self.sessions) >= 2:
-            raise ValueError("当前数字人连接已满，请关闭其他练习页面后重试。")
+            raise ValueError("All avatar connections are in use. Close other practice pages and try again.")
         await self.ensure_model()
         if len(self.sessions) >= 2:
-            raise ValueError("当前数字人连接已满，请关闭其他练习页面后重试。")
+            raise ValueError("All avatar connections are in use. Close other practice pages and try again.")
         session = LiveSession(self)
         self.sessions[session.id] = session
         try:

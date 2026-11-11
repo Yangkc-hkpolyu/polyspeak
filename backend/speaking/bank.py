@@ -9,18 +9,18 @@ from .collected_bank import collection_catalog, collection_sets
 IELTS_URL = "https://ielts.org/cdn/ielts-downloadable-assets/ielts-sample-tests/ielts-speaking-sample-tasks-2023.pdf"
 ETS_ROOT = "https://www.ets.org/content/dam/ets-org/pdfs/toefl/"
 SOURCES = [
-    {"id": "ielts-sample", "exam": "ielts", "title": "IELTS 官方 Speaking Sample Tasks", "url": IELTS_URL, "filename": "ielts-speaking-sample-tasks.pdf", "pages": "PDF 第 3–7 页", "kind": "official_sample", "description": "家乡与住所问答、重要物品长答、消费价值观与广告讨论；附考生答语。", "question_count": 14},
-    {"id": "ets-full-1", "exam": "toefl", "title": "ETS 2026 Full-length Practice Test 1", "url": ETS_ROOT + "toefl-ibt-full-length-practice-test-1.pdf", "filename": "toefl-2026-full-1.pdf", "pages": "PDF 第 34–35 页", "kind": "official_sample", "description": "动物园场景的 7 条复述；城市生活主题的 4 道访谈。", "question_count": 11},
-    {"id": "ets-full-2", "exam": "toefl", "title": "ETS 2026 Full-length Practice Test 2", "url": ETS_ROOT + "toefl-ibt-full-length-practice-test-2.pdf", "filename": "toefl-2026-full-2.pdf", "pages": "PDF 第 35–36 页", "kind": "official_sample", "description": "校园健身房的 7 条复述；通勤习惯主题的 4 道访谈。", "question_count": 11},
-    {"id": "ets-teacher-1", "exam": "toefl", "title": "ETS Teacher Resources Practice Test 1", "url": ETS_ROOT + "toefl-ibt-teachers-resources-practice-test-1.pdf", "filename": "toefl-2026-teacher-1.pdf", "pages": "PDF 第 33–34 页", "kind": "official_sample", "description": "大学迎新活动的 7 条复述；工作与生活平衡主题的 4 道访谈。", "question_count": 11},
-    {"id": "ets-teacher-2", "exam": "toefl", "title": "ETS Teacher Resources Practice Test 2", "url": ETS_ROOT + "toefl-ibt-teachers-resources-practice-test-2.pdf", "filename": "toefl-2026-teacher-2.pdf", "pages": "PDF 第 35–36 页", "kind": "official_sample", "description": "图书馆借还书的 7 条复述；锻炼习惯主题的 4 道访谈。", "question_count": 11},
-    {"id": "ets-rubric", "exam": "toefl", "title": "ETS 2026 Speaking Rubrics", "url": ETS_ROOT + "speaking-rubrics.pdf", "filename": "toefl-speaking-rubrics.pdf", "pages": "PDF 第 1–2 页", "kind": "official_rubric", "description": "听后复述与访谈任务的官方评分描述。"},
-    {"id": "ets-overview", "exam": "toefl", "title": "ETS Updated TOEFL iBT Test Overview", "url": ETS_ROOT + "toefl-ibt-test-overview.pdf", "filename": "toefl-2026-overview.pdf", "pages": "Speaking Sample Tasks", "kind": "official_format", "description": "2026 新版考试结构、口语题型与计时说明。"},
+    {"id": "ielts-sample", "exam": "ielts", "title": "IELTS Official Speaking Sample Tasks", "url": IELTS_URL, "filename": "ielts-speaking-sample-tasks.pdf", "pages": "PDF pages 3–7", "kind": "official_sample", "description": "Questions about hometowns and homes, a long turn about an important possession, and discussions about consumer values and advertising; includes candidate responses.", "question_count": 14},
+    {"id": "ets-full-1", "exam": "toefl", "title": "ETS 2026 Full-length Practice Test 1", "url": ETS_ROOT + "toefl-ibt-full-length-practice-test-1.pdf", "filename": "toefl-2026-full-1.pdf", "pages": "PDF pages 34–35", "kind": "official_sample", "description": "Seven Listen and Repeat items set in a zoo, plus four interview questions about city life.", "question_count": 11},
+    {"id": "ets-full-2", "exam": "toefl", "title": "ETS 2026 Full-length Practice Test 2", "url": ETS_ROOT + "toefl-ibt-full-length-practice-test-2.pdf", "filename": "toefl-2026-full-2.pdf", "pages": "PDF pages 35–36", "kind": "official_sample", "description": "Seven Listen and Repeat items set in a campus gym, plus four interview questions about commuting habits.", "question_count": 11},
+    {"id": "ets-teacher-1", "exam": "toefl", "title": "ETS Teacher Resources Practice Test 1", "url": ETS_ROOT + "toefl-ibt-teachers-resources-practice-test-1.pdf", "filename": "toefl-2026-teacher-1.pdf", "pages": "PDF pages 33–34", "kind": "official_sample", "description": "Seven Listen and Repeat items set at a university orientation event, plus four interview questions about work-life balance.", "question_count": 11},
+    {"id": "ets-teacher-2", "exam": "toefl", "title": "ETS Teacher Resources Practice Test 2", "url": ETS_ROOT + "toefl-ibt-teachers-resources-practice-test-2.pdf", "filename": "toefl-2026-teacher-2.pdf", "pages": "PDF pages 35–36", "kind": "official_sample", "description": "Seven Listen and Repeat items about borrowing and returning library books, plus four interview questions about exercise habits.", "question_count": 11},
+    {"id": "ets-rubric", "exam": "toefl", "title": "ETS 2026 Speaking Rubrics", "url": ETS_ROOT + "speaking-rubrics.pdf", "filename": "toefl-speaking-rubrics.pdf", "pages": "PDF pages 1–2", "kind": "official_rubric", "description": "Official scoring descriptors for Listen and Repeat and Take an Interview tasks."},
+    {"id": "ets-overview", "exam": "toefl", "title": "ETS Updated TOEFL iBT Test Overview", "url": ETS_ROOT + "toefl-ibt-test-overview.pdf", "filename": "toefl-2026-overview.pdf", "pages": "Speaking Sample Tasks", "kind": "official_format", "description": "The updated 2026 test structure, speaking task types, and timing information."},
 ]
 FORMAT_SOURCES = [
-    {"title": "IELTS 官方口语流程", "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-speaking"},
-    {"title": "ETS 官方口语题型", "url": "https://www.ets.org/toefl/test-takers/ibt/about/content/speaking.html"},
-    {"title": "ETS 教师资源与配套原版音频", "url": "https://www.ets.org/toefl/teachers-advisors-agents/ibt/teaching/preparing-students.html"},
+    {"title": "IELTS official speaking test format", "url": "https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-speaking"},
+    {"title": "ETS official speaking task types", "url": "https://www.ets.org/toefl/test-takers/ibt/about/content/speaking.html"},
+    {"title": "ETS teacher resources and accompanying original audio", "url": "https://www.ets.org/toefl/teachers-advisors-agents/ibt/teaching/preparing-students.html"},
 ]
 
 
@@ -137,20 +137,20 @@ SETS = [
 ]
 
 # Short quotations from the IELTS document; full source is linked.
-SETS.append({"id": "ielts-official-excerpts", "exam": "ielts", "title": "官方短题例 · 家乡、住所与重要物品", "kind": "official_excerpt", "mock_allowed": False, "questions": [
-    {**question("part1", "What kind of place is it?", source_id="ielts-sample"), "context": "话题：你的家乡或村庄。"},
-    {**question("part1", "How long have you lived there?", source_id="ielts-sample"), "context": "话题：你目前居住的住所。"},
-    question("part2", "Describe something you own which is very important to you.", card=["说明物品的来历、持有时间和用途，再解释其个人意义。此行为题卡要点摘要，完整英文题卡见官方 PDF。"], source_id="ielts-sample"),
+SETS.append({"id": "ielts-official-excerpts", "exam": "ielts", "title": "Official short excerpts · Hometowns, homes and important possessions", "kind": "official_excerpt", "mock_allowed": False, "questions": [
+    {**question("part1", "What kind of place is it?", source_id="ielts-sample"), "context": "Topic: your hometown or village."},
+    {**question("part1", "How long have you lived there?", source_id="ielts-sample"), "context": "Topic: the home where you currently live."},
+    question("part2", "Describe something you own which is very important to you.", card=["Explain how you obtained the item, how long you have had it, what you use it for, and why it matters to you. This is a summary of the cue-card points; see the official PDF for the full card."], source_id="ielts-sample"),
 ]})
 for key, title, text in [
-    ("ets-full-1", "动物园", "We have a variety of wildlife."),
-    ("ets-full-2", "校园健身房", "Welcome to our campus gym."),
-    ("ets-teacher-1", "大学迎新", "Welcome to our event."),
-    ("ets-teacher-2", "图书馆", "Welcome to the library."),
+    ("ets-full-1", "Zoo", "We have a variety of wildlife."),
+    ("ets-full-2", "Campus gym", "Welcome to our campus gym."),
+    ("ets-teacher-1", "University orientation", "Welcome to our event."),
+    ("ets-teacher-2", "Library", "Welcome to the library."),
 ]:
     item = question("repeat", text, source_id=key)
     item["answer_seconds"] = 8
-    SETS.append({"id": key + "-excerpt", "exam": "toefl", "title": "官方复述短题例 · " + title, "kind": "official_excerpt", "mock_allowed": False, "questions": [item]})
+    SETS.append({"id": key + "-excerpt", "exam": "toefl", "title": "Official Listen and Repeat excerpt · " + title, "kind": "official_excerpt", "mock_allowed": False, "questions": [item]})
 
 
 SETS.extend(collection_sets(question))
@@ -160,8 +160,8 @@ def get_set(set_id):
     for item in SETS:
         if item["id"] == set_id:
             return deepcopy(item)
-    raise ValueError("找不到这套练习题，请重新选择。")
+    raise ValueError("This practice set could not be found. Please choose another set.")
 
 
 def catalog():
-    return {"sets": [{k: v for k, v in x.items() if k != "questions"} | {"count": len(x["questions"]), "sections": sorted({q["stage"] for q in x["questions"] if q["stage"] != "rounding"})} for x in SETS], "sources": deepcopy(SOURCES), "format_sources": FORMAT_SOURCES, "verified_on": "2026-10-24", "notice": "机构当季题库、考场回忆、官方样题与原创模拟题分别标注。回忆题并非官方确认原题，英译或重述也不代表考试英文原句。", **collection_catalog()}
+    return {"sets": [{k: v for k, v in x.items() if k != "questions"} | {"count": len(x["questions"]), "sections": sorted({q["stage"] for q in x["questions"] if q["stage"] != "rounding"})} for x in SETS], "sources": deepcopy(SOURCES), "format_sources": FORMAT_SOURCES, "verified_on": "2026-10-24", "notice": "Institutional topic banks, recalled exam questions, official samples, and original practice sets are labelled separately. Recalled questions are not officially confirmed exam questions, and translations or paraphrases do not reproduce the original English exam wording.", **collection_catalog()}

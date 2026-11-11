@@ -16,16 +16,16 @@ class SpeechService:
 
     async def transcribe(self, audio: bytes, language: str) -> str:
         if not self.settings.api_key:
-            raise ProviderError("语音识别需要配置百炼 API Key。你也可以先输入文字回答。")
+            raise ProviderError("Speech recognition requires an Alibaba Cloud Model Studio API key. You can also type an answer.")
         if len(audio) > 5 * 1024 * 1024:
-            raise ValueError("录音过长，请将每次回答控制在两分钟以内。")
+            raise ValueError("The recording is too long. Keep each answer within two minutes.")
         try:
             with wave.open(io.BytesIO(audio)) as wav:
                 duration = wav.getnframes() / wav.getframerate()
                 if wav.getnchannels() != 1 or wav.getsampwidth() != 2 or not 0.3 <= duration <= 125:
-                    raise ValueError("请上传 0.3 至 125 秒的单声道 PCM WAV 录音。")
+                    raise ValueError("Upload a mono PCM WAV recording between 0.3 and 125 seconds long.")
         except (wave.Error, EOFError) as exc:
-            raise ValueError("无法读取录音，请重新录制。") from exc
+            raise ValueError("The recording could not be read. Please record it again.") from exc
         encoded = base64.b64encode(audio).decode("ascii")
         data = await self.provider.request({
             "model": self.settings.asr_model,
@@ -35,7 +35,7 @@ class SpeechService:
         })
         content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
         if not isinstance(content, str) or not content.strip():
-            raise ProviderError("没有识别到清晰的语音。请重录，或输入文字回答。")
+            raise ProviderError("No clear speech was recognized. Record again or type your answer.")
         return content.strip()
 
     async def synthesize(self, text: str, language: str, target: Path) -> str:
@@ -50,7 +50,7 @@ class SpeechService:
             # A configured cloud TTS is a genuine audio fallback, not browser-only lip animation.
             pass
         if not self.settings.api_key:
-            raise ProviderError("语音合成服务暂时不可用。请检查网络或配置百炼 API Key。")
+            raise ProviderError("Speech synthesis is temporarily unavailable. Check your network or configure an Alibaba Cloud Model Studio API key.")
         return await self.cloud_synthesize(text, language, target)
 
     async def cloud_synthesize(self, text: str, language: str, target: Path) -> str:
@@ -69,5 +69,5 @@ class SpeechService:
                 target.write_bytes(audio.content)
             return "Qwen3-TTS-Flash"
         except (httpx.HTTPError, KeyError, TypeError, ValueError) as exc:
-            raise ProviderError("语音合成失败，请稍后点击“重新播放”重试。") from exc
+            raise ProviderError("Speech synthesis failed. Select Replay to try again shortly.") from exc
 

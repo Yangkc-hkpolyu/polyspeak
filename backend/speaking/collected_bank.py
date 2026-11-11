@@ -15,8 +15,8 @@ def collection_sets(question_factory):
         item = question_factory(entry["stage"], entry["text"], source_id=entry["source_id"])
         item.update({key: deepcopy(entry[key]) for key in ("source_kind", "wording", "topic", "season")})
         item["bank_question_id"] = entry["id"]
-        item["provenance"] = {key: source[key] for key in ("publisher", "title", "url", "published_on", "reported_exam_on", "verified_on") if source.get(key)}
-        item["context"] = "话题：" + entry["topic"] + "。题干节选，完整题卡及问题见来源。"
+        item["provenance"] = {key: source[key] for key in ("publisher", "title", "title_is_translation", "url", "published_on", "reported_exam_on", "verified_on") if source.get(key)}
+        item["context"] = "Topic: " + entry["topic"] + ". Question excerpt; see the source for the full cue card and questions."
         if entry.get("editorial_edits"):
             item["editorial_edits"] = deepcopy(entry["editorial_edits"])
         sets.append({"id": "bank-" + entry["id"], "exam": entry["exam"], "title": entry["topic"], "kind": entry["source_kind"], "from_collection": True, "mock_allowed": False, "questions": [item]})

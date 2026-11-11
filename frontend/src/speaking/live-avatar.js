@@ -34,14 +34,14 @@ export class LiveAvatar {
     }
     pc.onconnectionstatechange = () => {
       if (['failed', 'disconnected', 'closed'].includes(pc.connectionState) && !this.closed) {
-        this.state({ type: 'connection.error', message: '数字人实时连接中断，请重试连接。' })
-        for (const waiter of this.jobs.values()) waiter.reject(new Error('数字人实时连接中断。'))
+        this.state({ type: 'connection.error', message: 'The live avatar connection was lost. Please reconnect.' })
+        for (const waiter of this.jobs.values()) waiter.reject(new Error('The live avatar connection was lost.'))
         this.jobs.clear()
       }
     }
     await pc.setLocalDescription(await pc.createOffer())
     if (pc.iceGatheringState !== 'complete') await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('数字人网络协商超时。')), 12000)
+      const timer = setTimeout(() => reject(new Error('The avatar connection setup timed out.')), 12000)
       const listener = () => { if (pc.iceGatheringState === 'complete') { clearTimeout(timer); pc.removeEventListener('icegatheringstatechange', listener); resolve() } }
       pc.addEventListener('icegatheringstatechange', listener)
       listener()
@@ -50,7 +50,7 @@ export class LiveAvatar {
     this.id = answer.live_id
     await pc.setRemoteDescription({ type: answer.type, sdp: answer.sdp })
     await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('数字人实时连接超时，请检查网络后重试。')), 20000)
+      const timer = setTimeout(() => reject(new Error('The live avatar connection timed out. Check your network and try again.')), 20000)
       const ready = () => {
         if (this.channel.readyState === 'open' && pc.connectionState === 'connected') { clearTimeout(timer); resolve() }
       }
@@ -66,7 +66,7 @@ export class LiveAvatar {
     if (waiter && event.type === 'speech.end') { this.jobs.delete(event.job_id); waiter.resolve() }
     if (waiter && ['speech.error', 'speech.interrupted'].includes(event.type)) {
       this.jobs.delete(event.job_id)
-      waiter.reject(new Error(event.message || '语音已停止。'))
+      waiter.reject(new Error(event.message || 'Speech playback stopped.'))
     }
   }
   async speak(create) {
@@ -77,7 +77,7 @@ export class LiveAvatar {
     const job = await create(this.id)
     this.currentJob = job.id
     return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => { this.jobs.delete(job.id); reject(new Error('实时语音等待超时，请重试。')) }, 120000)
+      const timeout = setTimeout(() => { this.jobs.delete(job.id); reject(new Error('Live speech timed out. Please try again.')) }, 120000)
       this.jobs.set(job.id, {
         resolve: () => { clearTimeout(timeout); resolve() },
         reject: error => { clearTimeout(timeout); reject(error) },
@@ -93,7 +93,7 @@ export class LiveAvatar {
   async close() {
     this.closed = true
     window.removeEventListener('pagehide',this.unload)
-    for (const waiter of this.jobs.values()) waiter.reject(new Error('数字人连接已关闭。'))
+    for (const waiter of this.jobs.values()) waiter.reject(new Error('The avatar connection is closed.'))
     this.jobs.clear()
     this.pc?.close()
     this.video.srcObject?.getTracks().forEach(track => track.stop())

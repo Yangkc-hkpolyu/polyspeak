@@ -5,6 +5,7 @@ from pathlib import Path
 import time
 
 from .avatar import AvatarRenderer
+from .errors import public_error_message
 from .speech import SpeechService
 
 
@@ -49,6 +50,7 @@ class MediaManager:
             job.update(result)
             job.update(status="ready", progress=100, video_url=f"/media/{job_id}.mp4", generation_seconds=round(time.perf_counter()-start, 2))
         except Exception as exc:
-            job.update(status="failed", error=str(exc)[:400])
+            message = public_error_message(exc, "Speech or avatar rendering failed. Check your connection and avatar setup, then try again.", getattr(self.speech, "settings", None))
+            job.update(status="failed", error=message)
             target.unlink(missing_ok=True)
 

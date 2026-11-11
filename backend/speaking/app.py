@@ -14,6 +14,7 @@ from .avatar import AvatarRenderer
 from .bank import SOURCES, catalog
 from .config import ROOT, load_settings
 from .engine import SpeakingEngine
+from .errors import public_error_message
 from .media import MediaManager
 from .live_avatar import LiveAvatarManager
 from .live_routes import live_router
@@ -64,7 +65,7 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
         origin = request.headers.get("origin")
         allowed = {str(request.base_url).rstrip("/"), "http://127.0.0.1:8088", "http://localhost:8088"}
         if origin and origin not in allowed and request.method not in ("GET", "HEAD"):
-            return JSONResponse({"detail": "请从本机平台页面发起请求。"}, status_code=403)
+            return JSONResponse({"detail": "Please send this request from the local application page."}, status_code=403)
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "same-origin"
@@ -72,7 +73,7 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
 
     @app.exception_handler(ProviderError)
     async def provider_error(_request, exc):
-        return JSONResponse({"detail": str(exc)}, status_code=502)
+        return JSONResponse({"detail": public_error_message(exc, "The service request could not be completed. Please try again.", settings)}, status_code=502)
 
     @app.exception_handler(ConflictError)
     async def conflict_error(_request, exc):
@@ -80,11 +81,11 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
 
     @app.exception_handler(KeyError)
     async def missing(_request, _exc):
-        return JSONResponse({"detail": "找不到这次练习，请重新开始。"}, status_code=404)
+        return JSONResponse({"detail": "This practice session could not be found. Please start again."}, status_code=404)
 
     @app.exception_handler(ValueError)
     async def invalid(_request, exc):
-        return JSONResponse({"detail": str(exc)}, status_code=422)
+        return JSONResponse({"detail": public_error_message(exc, "The request could not be completed. Check your input and try again.", settings)}, status_code=422)
 
     @app.get("/api/speaking/status")
     async def status():
@@ -102,17 +103,17 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
     async def resource(source_id: str):
         source = next((x for x in SOURCES if x["id"] == source_id), None)
         if not source:
-            raise HTTPException(404, "没有这份资料。")
+            raise HTTPException(404, "This resource could not be found.")
         target = ROOT / "speaking-resources/official" / source["filename"]
         if not target.is_file():
-            raise HTTPException(404, "尚未下载原文件，可打开官方来源链接。")
+            raise HTTPException(404, "The original file has not been downloaded. Open the official source link instead.")
         return FileResponse(target, media_type="application/pdf")
 
     @app.post("/api/speaking/check-connection")
     async def check_connection():
         result = await provider.complete('Return only {"ok":true}.', {"task": "connection_test"})
         if result.get("ok") is not True:
-            raise ProviderError("连接测试未得到有效回复。")
+            raise ProviderError("The connection test did not receive a valid response.")
         return {"ok": True}
 
     @app.get("/api/speaking/sessions")
@@ -150,19 +151,19 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
         current = store.get(session_id)
         question = engine.pending(current, body.question_id)
         if len(media.tasks) >= 4:
-            raise HTTPException(409, "已有语音在生成，请稍后再试。")
+            raise HTTPException(409, "Speech is already being generated. Please try again shortly.")
         return media.submit(question["text"], "en")
 
     @app.post("/api/speaking/media")
     async def preview(body: SpeechRequest):
         if len(media.tasks) >= 4:
-            raise HTTPException(409, "已有语音在生成，请稍后再试。")
+            raise HTTPException(409, "Speech is already being generated. Please try again shortly.")
         return media.submit(body.text, body.language)
 
     @app.get("/api/speaking/media/{job_id}")
     async def get_media(job_id: str):
         if job_id not in media.jobs:
-            raise HTTPException(404, "找不到这段语音，请重新播放。")
+            raise HTTPException(404, "This speech clip could not be found. Please play it again.")
         return media.jobs[job_id].copy()
 
     @app.post("/api/speaking/sessions/{session_id}/capture")
@@ -170,20 +171,20 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
         current = store.get(session_id)
         question = engine.pending(current, question_id)
         if current["setup"]["mode"] == "mock" and (question["phase"] == "listening" or question["prepare_until"] > clock()):
-            raise ValueError("请在问题播放和准备环节结束后开始作答。")
+            raise ValueError("Wait until the question and preparation time have finished before answering.")
         content = await audio.read(5 * 1024 * 1024 + 1)
         if len(content) > 5 * 1024 * 1024:
-            raise ValueError("录音不能超过 5 MB。")
+            raise ValueError("Recordings must not exceed 5 MB.")
         try:
             with wave.open(BytesIO(content)) as wav:
                 duration = wav.getnframes() / wav.getframerate()
                 if wav.getnchannels() != 1 or wav.getsampwidth() != 2 or wav.getframerate() != 16000:
-                    raise ValueError("请使用 16 kHz 单声道 PCM WAV 录音。")
+                    raise ValueError("Use a 16 kHz mono PCM WAV recording.")
         except (wave.Error, EOFError, ZeroDivisionError) as exc:
-            raise ValueError("无法读取录音，请重录。") from exc
+            raise ValueError("The recording could not be read. Please record it again.") from exc
         cap = question["answer_seconds"] + 1.5 if current["setup"]["mode"] == "mock" else 125
         if not 0.3 <= duration <= min(cap, 125):
-            raise ValueError("录音时长超出本题范围，请重新录制。")
+            raise ValueError("The recording length is outside the limit for this question. Please record it again.")
         audio_id = uuid.uuid4().hex
         path = recordings_folder / f"{audio_id}.wav"
         path.write_bytes(content)
@@ -205,14 +206,14 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
     async def recording(session_id: str, audio_id: str):
         current = store.get(session_id)
         if audio_id not in current["recordings"]:
-            raise HTTPException(404, "没有这段录音。")
+            raise HTTPException(404, "This recording could not be found.")
         return FileResponse(recordings_folder / f"{audio_id}.wav", media_type="audio/wav")
 
     @app.get("/api/speaking/sessions/{session_id}/export")
     async def export(session_id: str):
         current = store.get(session_id)
         if not current["report"]:
-            raise HTTPException(409, "反馈尚未生成。")
+            raise HTTPException(409, "Feedback has not been generated yet.")
         payload = {"created_at": current["created_at"], "setup": current["setup"], "set_title": current["set_title"], "report": engine.public(current)["report"], "turns": current["turns"]}
         return Response(json.dumps(payload, ensure_ascii=False, indent=2), media_type="application/json", headers={"Content-Disposition": 'attachment; filename="polyspeak-feedback.json"'})
 

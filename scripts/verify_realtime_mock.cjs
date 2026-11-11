@@ -1,3 +1,4 @@
+const assertEnglishUI = require('./assert_english_ui.cjs');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
@@ -13,11 +14,11 @@ const {chromium}=require('../frontend/node_modules/playwright');
     let sessionId;
     page.on('response',async response=>{if(response.url().endsWith('/api/speaking/sessions')&&response.request().method()==='POST') sessionId=(await response.json()).id;});
     await page.goto('http://127.0.0.1:8008/',{waitUntil:'networkidle'});
-    await page.getByRole('button',{name:/TOEFL 2026 新版/}).click();
+    await page.getByRole('button',{name:/TOEFL.*2026 format/}).click();
     await page.selectOption('#section','repeat');
     await page.locator('#quickMode').check();
-    await page.getByRole('button',{name:/进入口语练习室/}).click();
-    await page.waitForFunction(()=>document.querySelector('#recordButton')?.textContent.includes('结束'),null,{timeout:60000});
+    await page.getByRole('button',{name:/Enter the speaking room/}).click();
+    await page.waitForFunction(()=>document.querySelector('#recordButton')?.textContent.includes('Stop recording'),null,{timeout:60000});
     const during=await (await page.request.get(`http://127.0.0.1:8008/api/speaking/sessions/${sessionId}`)).json();
     assert.equal(during.completed_questions,0);
     assert.equal(during.current_question.text,'Listen carefully, then repeat the sentence once.');
@@ -28,6 +29,7 @@ const {chromium}=require('../frontend/node_modules/playwright');
     assert(after.turns[0].repetition.target.length>5);
     assert.equal(after.current_question.text,'Listen carefully, then repeat the sentence once.');
     assert.deepEqual(errors,[]);
+    await assertEnglishUI(page, 'verify_realtime_mock');
     await page.screenshot({path:'speaking-runtime/qa/realtime-mock-ui.png',fullPage:true});
     const result={mock_automatic_recording:true,mock_timed_submission:true,repeat_hidden_before_submit:true,
       submitted_original_server_transcript:true,recording_seconds:after.turns[0].duration_seconds,errors};

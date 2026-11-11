@@ -39,11 +39,11 @@ def select_device(requested):
     if requested == "auto":
         return "cuda" if torch.cuda.is_available() else "mps" if mps_available else "cpu"
     if requested.startswith("cuda") and not torch.cuda.is_available():
-        raise RuntimeError("当前环境无法使用 CUDA，请检查 PyTorch 和显卡驱动。")
+        raise RuntimeError("CUDA is unavailable. Check PyTorch and the graphics driver.")
     if requested == "mps" and not mps_available:
-        raise RuntimeError("当前环境无法使用 Apple MPS，请检查 Mac、macOS 和 PyTorch。")
+        raise RuntimeError("Apple MPS is unavailable. Check your Mac, macOS, and PyTorch.")
     if requested not in ("cpu", "mps") and not requested.startswith("cuda"):
-        raise ValueError("数字人设备应为 auto、cpu、mps 或 cuda。")
+        raise ValueError("The avatar device must be auto, cpu, mps, or cuda.")
     return requested
 
 
@@ -77,32 +77,32 @@ class AvatarRenderer:
         root = self.settings.avatar_directory.resolve()
         manifest_path = root / "avatar.json"
         if not manifest_path.is_file():
-            raise RuntimeError("缺少动态人物素材，请解压头像素材包或运行 prepare_speaking_avatar.py。")
+            raise RuntimeError("Avatar animation assets are missing. Extract the avatar asset package or run prepare_speaking_avatar.py.")
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         entries = manifest.get("frames", [])
         if len(entries) < 2 or manifest.get("fps") != self.settings.avatar_fps:
-            raise ValueError("动态人物素材需要多帧且帧率须与渲染配置一致。")
+            raise ValueError("Avatar animation assets need multiple frames and a frame rate matching the renderer settings.")
         frames, faces, coords, masks = [], [], [], []
         for item in entries:
             paths = [(root / item[key]).resolve() for key in ("full", "face")]
             if not all(path.is_relative_to(root) for path in paths):
-                raise ValueError("人物素材路径越界。")
+                raise ValueError("The avatar asset path is outside the allowed directory.")
             frame, face = [cv2.imread(str(path)) for path in paths]
             if frame is None or face is None or face.shape != (256, 256, 3):
-                raise ValueError("动态人物帧或 256 像素人脸帧损坏。")
+                raise ValueError("An avatar frame or 256-pixel face frame is damaged.")
             if frame.shape[:2] != (manifest["height"], manifest["width"]):
-                raise ValueError("动态人物完整帧的尺寸不一致。")
+                raise ValueError("The full avatar frames have inconsistent dimensions.")
             y1, y2, x1, x2 = item["coords"]
             if not 0 <= y1 < y2 <= frame.shape[0] or not 0 <= x1 < x2 <= frame.shape[1]:
-                raise ValueError("人物逐帧坐标无效。")
+                raise ValueError("The avatar frame coordinates are invalid.")
             mask = None
             if "lip_mask" in item:
                 path = (root / item["lip_mask"]).resolve()
                 if not path.is_relative_to(root):
-                    raise ValueError("人物素材路径越界。")
+                    raise ValueError("The avatar asset path is outside the allowed directory.")
                 mask = cv2.imread(str(path), cv2.IMREAD_GRAYSCALE)
                 if mask is None or mask.shape != (y2 - y1, x2 - x1):
-                    raise ValueError("人物场景遮罩损坏或尺寸不一致。")
+                    raise ValueError("The avatar scene mask is damaged or has inconsistent dimensions.")
             frames.append(frame); faces.append(face); coords.append((y1, y2, x1, x2))
             masks.append(mask)
         self.frames, self.coords = frames, coords
@@ -112,14 +112,14 @@ class AvatarRenderer:
         self.face_frames = faces
         self.height, self.width = frames[0].shape[:2]
         if self.width % 2 or self.height % 2:
-            raise ValueError("视频尺寸必须为偶数。")
+            raise ValueError("Video dimensions must be even numbers.")
         self.avatar_source = manifest.get("source_avatar", "custom")
 
     def load(self):
         if self.model is not None:
             return
         if not self.settings.model_path.is_file():
-            raise RuntimeError("缺少口型模型，请按 README-SPEAKING.md 下载或放入 speaking-models。")
+            raise RuntimeError("The lip-sync model is missing. Follow README-SPEAKING.md to download it or place it in speaking-models.")
         torch.set_num_threads(self.settings.torch_threads)
         self.device = select_device(self.settings.avatar_device)
         self.load_sequence()
@@ -164,7 +164,7 @@ class AvatarRenderer:
                 stderr = process.stderr.read()
                 code = process.wait(timeout=30)
                 if code:
-                    raise RuntimeError("视频编码失败：" + stderr.decode("utf-8", errors="replace")[-300:])
+                    raise RuntimeError("Video encoding failed: " + stderr.decode("utf-8", errors="replace")[-300:])
                 staging.replace(target)
             except Exception:
                 process.kill()

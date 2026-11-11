@@ -2,10 +2,12 @@ import asyncio
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
+import re
 import time
 import uuid
 
 from .bank import get_set
+from .errors import public_error_message
 from .feedback import concise_explanation, normalize_feedback, repetition_check
 from .provider import ProviderError
 from .schemas import ExamSetup
@@ -39,11 +41,12 @@ class SpeakingEngine:
         failed = False
         for turn, result in zip(pending, results):
             if isinstance(result, BaseException):
+                public_error_message(result, "A per-question evaluation could not be completed.", getattr(self.provider, "settings", None))
                 failed = True
             else:
                 turn["evaluation"] = result
         if failed:
-            raise ProviderError("部分逐题分层评价未完成，回答和录音已保存，请重试反馈。")
+            raise ProviderError("Some per-question evaluations could not be completed. Your answers and recordings are saved. Please retry feedback.")
         return self.evaluator.aggregate(turns)
 
     async def close(self):
@@ -57,15 +60,15 @@ class SpeakingEngine:
     def start(self, setup: ExamSetup):
         bank = get_set(setup.set_id)
         if bank["exam"] != setup.exam:
-            raise ValueError("题库与考试类型不匹配。")
+            raise ValueError("The question set does not match the selected exam.")
         if not bank["mock_allowed"] and setup.mode == "mock":
-            raise ValueError("题干节选仅用于分项陪练；完整模拟考试请选择原创模拟题组。")
+            raise ValueError("Question excerpts are for section practice. Choose an original practice set for a full mock exam.")
         allowed = {"ielts": {"full", "part1", "part2", "part3"}, "toefl": {"full", "repeat", "interview"}}
         if setup.section not in allowed[setup.exam]:
-            raise ValueError("该考试没有所选的环节。")
+            raise ValueError("The selected section is not available for this exam.")
         plan = [q for q in bank["questions"] if setup.section == "full" or q["stage"] == setup.section or setup.section == "part2" and q["stage"] == "rounding"]
         if not plan:
-            raise ValueError("这套材料不包含所选环节。")
+            raise ValueError("This question set does not include the selected section.")
         if setup.pace == "demo":
             for q in plan:
                 q["prepare_seconds"] = 3 if q["prepare_seconds"] else 0
@@ -84,7 +87,7 @@ class SpeakingEngine:
     @staticmethod
     def pending(session, question_id):
         if session["status"] != "active" or session["pending_question_id"] != question_id:
-            raise ConflictError("本题已处理或练习已结束，请刷新后继续。")
+            raise ConflictError("This question has already been processed or the session has ended. Refresh to continue.")
         return next(x for x in session["messages"] if x["id"] == question_id)
 
     async def ready(self, session_id, question_id, begin=False):
@@ -98,7 +101,7 @@ class SpeakingEngine:
                 q["phase"] = "preparing" if q["prepare_seconds"] else "answering"
             if begin and q["phase"] == "preparing":
                 if session["setup"]["mode"] == "mock" and now < q["prepare_until"]:
-                    raise ValueError("准备时间尚未结束。")
+                    raise ValueError("The preparation time has not ended yet.")
                 if session["setup"]["mode"] == "coach":
                     q["prepare_until"] = now
                     q["answer_until"] = now + q["answer_seconds"]
@@ -119,11 +122,11 @@ class SpeakingEngine:
         try:
             raw = await self.provider.complete(self.examiner_prompt, {"task": task, "exam": session["setup"]["exam"], "mode": session["setup"]["mode"], "planned_question": question, "long_turn_topic": next((q["text"] for q in session["plan"] if q["stage"] == "part2"), ""), "turns": session["turns"][-5:]})
             value = raw.get("question")
-            if not isinstance(value, str) or not 5 <= len(value.strip()) <= 600:
+            if not isinstance(value, str) or not 5 <= len(value.strip()) <= 600 or re.search(r"[\u3400-\u9fff\uf900-\ufaff]", value):
                 raise ProviderError("Invalid follow-up")
             return value.strip()
         except ProviderError:
-            session["notices"].append("本轮动态提问未完成，已继续使用原定题库问题。")
+            session["notices"].append("A follow-up question could not be generated. The session is continuing with the planned question.")
             return None
 
     async def answer(self, session_id, request):
@@ -132,13 +135,13 @@ class SpeakingEngine:
             q = self.pending(session, request.question_id)
             recording = session["recordings"].get(request.audio_id) if request.audio_id else None
             if request.audio_id and (not recording or recording["question_id"] != q["id"]):
-                raise ValueError("录音不属于当前问题，请重新录音。")
+                raise ValueError("This recording does not belong to the current question. Please record it again.")
             if not request.skipped and session["setup"]["mode"] == "mock" and not recording:
-                raise ValueError("模拟考试需要录音回答；文字回答请使用互动陪练。")
+                raise ValueError("Mock exams require recorded answers. Use coaching mode for typed answers.")
             answer = (recording.get("text", "") if session["setup"]["mode"] == "mock" and recording else request.answer.strip() or (recording or {}).get("text", ""))
             if not request.skipped and not recording and len(answer) < 2:
-                raise ValueError("请先录音或输入回答。")
-            turn = {"id": uuid.uuid4().hex, "question_id": q["id"], "question": q["text"], "stage": q["stage"], "kind": q["kind"], "answer": answer if not request.skipped else "", "skipped": request.skipped, "source_kind": q["source_kind"], "source_id": q.get("source_id"), "audio_id": request.audio_id if not request.skipped else None, "duration_seconds": (recording or {}).get("duration_seconds"), "transcript_available": bool(answer), "pronunciation": (recording or {}).get("pronunciation", {"status": "no_audio", "message": "本题未提供可评测录音。"})}
+                raise ValueError("Record or type an answer first.")
+            turn = {"id": uuid.uuid4().hex, "question_id": q["id"], "question": q["text"], "stage": q["stage"], "kind": q["kind"], "answer": answer if not request.skipped else "", "skipped": request.skipped, "source_kind": q["source_kind"], "source_id": q.get("source_id"), "audio_id": request.audio_id if not request.skipped else None, "duration_seconds": (recording or {}).get("duration_seconds"), "transcript_available": bool(answer), "pronunciation": (recording or {}).get("pronunciation", {"status": "no_audio", "message": "No assessable recording was provided for this question."})}
             for key in ("bank_question_id", "wording", "season", "topic", "provenance", "editorial_edits"):
                 if key in q:
                     turn[key] = deepcopy(q[key])
@@ -183,12 +186,12 @@ class SpeakingEngine:
         usable = [t for t in session["turns"] if not t["skipped"] and t["transcript_available"]]
         try:
             if session["setup"]["execution"] == "demo" or not usable:
-                raw = {"summary": "离线流程演示，不生成模型评分。" if usable else "本次没有可分析的文字回答；请在对话记录中复听录音或重新练习。", "strengths": [], "improvements": [], "next_steps": ["选择一道题，用一个观点、一个原因和一个具体例子重新回答。"], "examples": []}
+                raw = {"summary": "This is an offline demonstration. Model scores are not generated." if usable else "No transcript is available to analyze. Replay your recordings in the conversation or start another practice session.", "strengths": [], "improvements": [], "next_steps": ["Choose one question and answer it again with one point, one reason, and one specific example."], "examples": []}
                 report = normalize_feedback(raw, session["turns"], "demo")
                 if session["setup"]["execution"] == "live":
                     report["source"] = "insufficient_evidence"
             elif all(t["stage"] == "repeat" for t in usable):
-                report = normalize_feedback({"summary": "复述练习已完成。请对照下方原句与识别文字复听录音；文字差异不能证明发音错误。发音诊断仅在 Azure 返回真实音频结果时提供。", "next_steps": ["先复听有用词差异的句子，再按短语意群重说一次。"]}, session["turns"], "demo")
+                report = normalize_feedback({"summary": "Repetition practice is complete. Replay the recording alongside the target sentence and recognized words below. Text differences do not prove pronunciation errors. Pronunciation feedback is available only when Azure returns an assessment of the actual audio.", "next_steps": ["Replay sentences with word differences, then repeat them in meaningful phrase groups."]}, session["turns"], "demo")
                 report["source"] = "repetition_comparison"
             else:
                 layered = await self.layered_report(session)
@@ -196,9 +199,9 @@ class SpeakingEngine:
                 report = normalize_feedback(raw, session["turns"], "live")
                 report["layered"] = layered
                 comments = {item["key"]: item["comment"] for item in report["dimensions"]}
-                report["dimensions"] = [{"key": key, "score": item["score"], "comment": comments.get(key, "基于本次已答题目的逐题评价汇总。")}
+                report["dimensions"] = [{"key": key, "score": item["score"], "comment": comments.get(key, "Based on the per-question evaluations of the answers submitted in this session.")}
                                         for key, item in layered["aspects_summary"].items()]
-                report["scope"] = "反馈包含逐题特征、语言维度和综合总结；分值为练习指标，不是 IELTS Band 或 TOEFL 成绩。音频和视频缺少证据的项目保持未评估。"
+                report["scope"] = "Feedback covers per-question features, language dimensions, and an overall summary. Scores are practice metrics, not IELTS bands or TOEFL scores. Audio and video criteria remain unassessed when evidence is unavailable."
             report["coverage"] = {"answered": len(usable), "submitted": len(session["turns"]), "skipped": sum(t["skipped"] for t in session["turns"]), "planned": len(session["plan"]), "early_finish": session["index"] < len(session["plan"])}
             session.update(report=report, status="completed", report_error=None)
         except ProviderError as exc:
@@ -211,7 +214,7 @@ class SpeakingEngine:
             if session["status"] == "completed":
                 return self.public(session)
             if not session["turns"]:
-                raise ValueError("请先提交至少一道题。")
+                raise ValueError("Submit at least one answer first.")
             session.update(status="feedback_pending", pending_question_id=None)
             self.store.save(session)
             await self.generate_report(session)

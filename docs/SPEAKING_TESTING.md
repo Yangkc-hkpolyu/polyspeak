@@ -1,6 +1,28 @@
 # Speaking platform validation
 
-Latest verification: 2026-10-25 in the E: copy. No production service was changed.
+Latest verification: 2026-11-11 in the E: sharing checkout.
+
+## English interface update
+
+All 30 automated checks and the production frontend build passed. The English
+catalog preserves 282 questions and their source provenance. Browser checks
+covered the homepage, settings, history, question filters, pagination, empty
+results, single-question practice and a 390-pixel layout, with no Chinese UI
+text or horizontal overflow.
+
+Live checks received the WebRTC avatar stream and incremental speech transcripts
+from synthetic microphone audio. The first feedback attempt returned a retryable
+failure; the existing session then produced an English report after one UI retry:
+13 features, four assessed dimensions, and no Chinese generated commentary.
+The full browser report/export script did not complete in that initial run;
+the successful retry was verified through the saved report API. Original user
+answers and evidence are preserved, even when the user supplies another language.
+
+Use `verify_question_bank.cjs`, `verify_realtime_speaking.cjs` and
+`verify_realtime_mock.cjs` for the current English app. The older
+`verify_speaking_browser.cjs` is a historical MP4-era check and is excluded from
+the current source package. Timed TOEFL capture has previous-version evidence
+below; it was not rerun for this text update.
 
 ## Current realtime version
 

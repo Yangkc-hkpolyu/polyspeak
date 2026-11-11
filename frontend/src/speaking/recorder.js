@@ -1,6 +1,6 @@
 export class VoiceRecorder {
   async authorize() {
-    if (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode) throw new Error('请用 Chrome / Edge 打开本机平台，以使用实时录音。')
+    if (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode) throw new Error('Open this local platform in Chrome or Edge to record live audio.')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
     stream.getTracks().forEach(track => track.stop())
   }
@@ -9,7 +9,7 @@ export class VoiceRecorder {
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 }, video: false })
       this.context = new AudioContext({ sampleRate: 16000 })
-      if (this.context.sampleRate !== 16000) throw new Error('浏览器无法提供 16 kHz 实时录音，请使用 Chrome / Edge。')
+      if (this.context.sampleRate !== 16000) throw new Error('This browser cannot record live audio at 16 kHz. Please use Chrome or Edge.')
       await this.context.audioWorklet.addModule('/speaking-assets/pcm-worklet.js')
       const socket = new WebSocket(location.origin.replace(/^http/, 'ws') + path)
       this.socket = socket
@@ -17,7 +17,7 @@ export class VoiceRecorder {
       const ready = new Promise((resolve, reject) => { readyResolve = resolve; readyReject = reject })
       this.completed = new Promise((resolve, reject) => { savedResolve = resolve; savedReject = reject })
       this.completed.catch(() => {})
-      const timer = setTimeout(() => readyReject(new Error('实时识别连接超时。')), 22000)
+      const timer = setTimeout(() => readyReject(new Error('Live transcription connection timed out.')), 22000)
       socket.onmessage = event => {
         let data
         try { data = JSON.parse(event.data) } catch { return }
@@ -25,14 +25,14 @@ export class VoiceRecorder {
         if (data.type === 'transcript' && this.socket === socket) onTranscript(data.text, data.final)
         if (data.type === 'recording.saved') { result = data.recording; savedResolve(data.recording) }
         if (data.type === 'error') {
-          const error = new Error(data.message || '实时识别未完成。')
+          const error = new Error(data.message || 'Live transcription did not finish.')
           clearTimeout(timer); readyReject(error); savedReject(error)
         }
       }
-      socket.onerror = () => { clearTimeout(timer); readyReject(new Error('实时识别连接失败。')); savedReject(new Error('实时识别连接失败。')) }
+      socket.onerror = () => { clearTimeout(timer); readyReject(new Error('Could not connect to live transcription.')); savedReject(new Error('Could not connect to live transcription.')) }
       socket.onclose = () => {
         clearTimeout(timer)
-        if (!result) { readyReject(new Error('实时识别连接已断开。')); savedReject(new Error('实时识别连接已断开。')) }
+        if (!result) { readyReject(new Error('The live transcription connection was lost.')); savedReject(new Error('The live transcription connection was lost.')) }
       }
       await ready
       this.source = this.context.createMediaStreamSource(this.stream)
@@ -47,7 +47,7 @@ export class VoiceRecorder {
     } catch (error) { this.abort(); throw error }
   }
   async stop() {
-    if (!this.socket || !this.completed) throw new Error('没有正在进行的录音。')
+    if (!this.socket || !this.completed) throw new Error('No recording is in progress.')
     const socket = this.socket
     const completed = this.completed
     this.stopping = true

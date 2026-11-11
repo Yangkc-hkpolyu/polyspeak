@@ -39,6 +39,6 @@ class InterviewStore:
                 (version + 1, json.dumps(updated, ensure_ascii=False), session["id"], version),
             )
             if cursor.rowcount != 1:
-                raise ConflictError("这轮回答已经处理，请刷新面试状态后继续。")
+                raise ConflictError("This answer has already been processed. Refresh the session to continue.")
         session["version"] = version + 1
 

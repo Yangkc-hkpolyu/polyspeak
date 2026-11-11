@@ -50,7 +50,7 @@ class StreamingTTS:
                 pass
             except Exception:
                 self.parent.live_event({"type": "speech.error", "job_id": metadata.get("job_id"),
-                                        "message": "实时语音合成未完成，请检查模型权限或重试。"})
+                                        "message": "Live speech synthesis could not be completed. Check model access or try again."})
             finally:
                 self.loop = self.active_task = None
 

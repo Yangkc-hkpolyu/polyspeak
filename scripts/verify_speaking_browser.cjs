@@ -1,4 +1,7 @@
-// Real local UI + live APIs. Audio is SYNTHETIC, not a real test participant.
+// Historical MP4-era UI verification; selectors target the retired Chinese UI.
+// For the current English WebRTC app, use verify_question_bank.cjs,
+// verify_realtime_speaking.cjs and verify_realtime_mock.cjs instead.
+// Audio is SYNTHETIC, not a real test participant.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');

@@ -30,7 +30,7 @@ def test_avatar_frames_cannot_escape_the_asset_directory(tmp_path):
     record = {"full": "../outside.png", "face": "face.png", "coords": [0, 10, 0, 10]}
     (tmp_path / "avatar.json").write_text(json.dumps({"fps": 25, "frames": [record, record]}))
     renderer = AvatarRenderer(replace(Settings(), avatar_directory=tmp_path))
-    with pytest.raises(ValueError, match="越界"):
+    with pytest.raises(ValueError, match="outside the allowed directory"):
         renderer.load_sequence()
 
 

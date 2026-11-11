@@ -1,25 +1,25 @@
 <template>
   <section class="layered-report feedback-section">
-    <div class="layered-heading"><div><p class="eyebrow">FEATURES → ASPECTS → PROFICIENCY</p><h3>从每一道回答，看见表达的细节。</h3></div><strong v-if="layer.proficiency.practice_score!==null">{{layer.proficiency.practice_score}}<small>/10 练习指标</small></strong></div>
+    <div class="layered-heading"><div><p class="eyebrow">FEATURES → ASPECTS → PROFICIENCY</p><h3>Explore the details of each answer.</h3></div><strong v-if="layer.proficiency.practice_score!==null">{{layer.proficiency.practice_score}}<small>/10 practice indicator</small></strong></div>
     <p class="fine-print">{{layer.proficiency.scope}}</p>
-    <nav class="layered-tabs" aria-label="反馈层级"><button v-for="tab in tabs" :key="tab.id" :class="{active:active===tab.id}" @click="active=tab.id">{{tab.label}}</button></nav>
+    <nav class="layered-tabs" aria-label="Feedback views"><button v-for="tab in tabs" :key="tab.id" :class="{active:active===tab.id}" @click="active=tab.id">{{tab.label}}</button></nav>
     <section class="layered-panel" v-show="active==='overview'">
       <div class="layered-steps"><span v-for="(step,index) in layer.pipeline" :key="step"><b>{{index+1}}</b>{{step}}</span></div>
-      <p>本次 {{layer.questions.length}} 道有效回答完成逐题分层评价。{{availableFeatures}} 项特征有可用分数；缺少独立音频或视频证据的项目没有计为零分。</p>
-      <p class="fine-print">先查看逐题证据，再结合维度总结安排下一次练习。表达建议请与原始录音一起核对。</p>
+      <p>{{layer.questions.length}} valid answers were reviewed individually. Scores are available for {{availableFeatures}} features; missing independent audio or video evidence is not scored as zero.</p>
+      <p class="fine-print">Review the evidence for each answer, then use the aspect summaries to plan your next practice. Check language suggestions against the original recording.</p>
     </section>
     <section class="layered-panel" v-show="active==='features'">
-      <div class="feature-table"><div class="feature-table-heading"><span>评价特征</span><span>练习指标</span><span>有效题数</span></div><div v-for="(feature,key) in layer.features_summary" :key="key" class="feature-table-row"><span>{{feature.label}}</span><strong>{{feature.score===null?'未评估':feature.score+' / 10'}}</strong><span>{{feature.count}}</span></div></div>
-      <p class="fine-print">发音、韵律和流利度只使用独立音频接口结果；目光、表情、姿态和手势在未采集考生视频时保持未评估。这里不把词汇识别差异当作发音错误。</p>
+      <div class="feature-table"><div class="feature-table-heading"><span>Assessment feature</span><span>Practice indicator</span><span>Valid answers</span></div><div v-for="(feature,key) in layer.features_summary" :key="key" class="feature-table-row"><span>{{feature.label}}</span><strong>{{feature.score===null?'Not assessed':feature.score+' / 10'}}</strong><span>{{feature.count}}</span></div></div>
+      <p class="fine-print">Pronunciation, prosody and fluency use only independent audio assessment results. Gaze, facial expression, posture and gestures remain unassessed without candidate video. Transcription differences are not treated as pronunciation errors.</p>
     </section>
     <section class="layered-panel" v-show="active==='questions'">
-      <button class="text-button" @click="expanded=!expanded">{{expanded?'收起逐题详情':'全部展开逐题详情'}}</button>
+      <button class="text-button" @click="expanded=!expanded">{{expanded?'Collapse answer details':'Expand all answer details'}}</button>
       <details v-for="(question,index) in layer.questions" :key="question.turn_id" :open="expanded||printing||index===0" class="question-review">
         <summary>{{index+1}}. {{question.question}}</summary>
-        <div class="question-aspects"><article v-for="(aspect,key) in question.aspects" :key="key"><h4>{{aspectNames[key]}} <strong>{{aspect.score===null?'证据不足':aspect.score+'/10'}}</strong></h4><p>{{aspect.justification}}</p></article></div>
-        <h4>逐题特征与原话证据</h4>
-        <div v-for="(features,group) in question.assessment_criteria" :key="group" class="feature-group"><h5>{{groupNames[group]}}</h5><article v-for="(feature,key) in features" :key="key" class="feature-evidence"><div><strong>{{layer.feature_names[key]}}</strong><span>{{feature.score===null?'未评估':feature.score+'/10'}}</span></div><blockquote v-if="feature.quote">{{feature.quote}}</blockquote><p>{{feature.justification}}</p><p v-if="feature.suggestion" class="fine-print">{{feature.suggestion}}</p></article></div>
-        <div class="answer-polishing"><h4>在你的原话上修订</h4><p class="fine-print">{{question.polishing.scope}}</p><div class="polishing-columns"><article><h5>原始回答</h5><p>{{question.polishing.original}}</p></article><article><h5>表达修订稿</h5><p>{{question.polishing.polished_answer}}</p></article></div><ul v-if="question.polishing.corrections.length"><li v-for="(correction,n) in question.polishing.corrections" :key="n"><q>{{correction.original}}</q> → <q>{{correction.revised}}</q><p>{{correction.reason}}</p></li></ul><p v-else class="fine-print">本题没有返回可安全应用的表达替换，保留原回答。</p></div>
+        <div class="question-aspects"><article v-for="(aspect,key) in question.aspects" :key="key"><h4>{{aspectNames[key]}} <strong>{{aspect.score===null?'Insufficient evidence':aspect.score+'/10'}}</strong></h4><p>{{aspect.justification}}</p></article></div>
+        <h4>Features and evidence from your answer</h4>
+        <div v-for="(features,group) in question.assessment_criteria" :key="group" class="feature-group"><h5>{{groupNames[group]}}</h5><article v-for="(feature,key) in features" :key="key" class="feature-evidence"><div><strong>{{layer.feature_names[key]}}</strong><span>{{feature.score===null?'Not assessed':feature.score+'/10'}}</span></div><blockquote v-if="feature.quote">{{feature.quote}}</blockquote><p>{{feature.justification}}</p><p v-if="feature.suggestion" class="fine-print">{{feature.suggestion}}</p></article></div>
+        <div class="answer-polishing"><h4>Refine your own words</h4><p class="fine-print">{{question.polishing.scope}}</p><div class="polishing-columns"><article><h5>Original answer</h5><p>{{question.polishing.original}}</p></article><article><h5>Revised answer</h5><p>{{question.polishing.polished_answer}}</p></article></div><ul v-if="question.polishing.corrections.length"><li v-for="(correction,n) in question.polishing.corrections" :key="n"><q>{{correction.original}}</q> → <q>{{correction.revised}}</q><p>{{correction.reason}}</p></li></ul><p v-else class="fine-print">No reliable wording changes were returned for this question. Your original answer is retained.</p></div>
       </details>
     </section>
   </section>
@@ -30,9 +30,9 @@ export default {
   name: 'LayeredReport',
   props: { layer: { type: Object, required: true } },
   data: () => ({ active:'overview', expanded:false, printing:false,
-    tabs:[{id:'overview',label:'综合概览'},{id:'features',label:'13 项特征'},{id:'questions',label:'逐题复盘与修订'}],
-    aspectNames:{coherence:'内容组织与衔接',vocabulary:'词汇使用',grammar:'语法表达',task_response:'问题回应与展开'},
-    groupNames:{professional_performance:'内容与任务回应',way_of_expression:'语言与组织',oral_expression:'独立音频证据',nonverbal:'考生视频证据'},
+    tabs:[{id:'overview',label:'Overview'},{id:'features',label:'13 features'},{id:'questions',label:'Answer review & revision'}],
+    aspectNames:{coherence:'Coherence & cohesion',vocabulary:'Vocabulary',grammar:'Grammar',task_response:'Task response & development'},
+    groupNames:{professional_performance:'Content & task response',way_of_expression:'Language & organisation',oral_expression:'Independent audio evidence',nonverbal:'Candidate video evidence'},
   }),
   computed:{ availableFeatures(){ return Object.values(this.layer.features_summary).filter(value=>value.score!==null).length } },
   mounted(){ this.beforePrint=()=>{this.printing=true};this.afterPrint=()=>{this.printing=false};window.addEventListener('beforeprint',this.beforePrint);window.addEventListener('afterprint',this.afterPrint) },
