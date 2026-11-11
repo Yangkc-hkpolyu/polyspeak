@@ -39,19 +39,16 @@ class SpeechService:
         return content.strip()
 
     async def synthesize(self, text: str, language: str, target: Path) -> str:
-        if self.settings.tts_provider == "qwen" and self.settings.api_key:
+        profile = self.settings.tts_profile(language)
+        if profile["provider"] == "qwen":
             return await self.cloud_synthesize(text, language, target)
-        voice = self.settings.voice_zh if language == "zh" else self.settings.voice_en
         try:
-            await edge_tts.Communicate(text, voice, rate="-4%", connect_timeout=15, receive_timeout=30).save(str(target))
+            await edge_tts.Communicate(text, profile["voice"], connect_timeout=15, receive_timeout=30).save(str(target))
             if target.exists() and target.stat().st_size > 100:
                 return "EdgeTTS"
-        except Exception:
-            # A configured cloud TTS is a genuine audio fallback, not browser-only lip animation.
-            pass
-        if not self.settings.api_key:
-            raise ProviderError("Speech synthesis is temporarily unavailable. Check your network or configure an Alibaba Cloud Model Studio API key.")
-        return await self.cloud_synthesize(text, language, target)
+        except Exception as exc:
+            raise ProviderError("The selected speech service is temporarily unavailable. Check your connection and retry.") from exc
+        raise ProviderError("The selected speech service returned no audio.")
 
     async def cloud_synthesize(self, text: str, language: str, target: Path) -> str:
         base = self.settings.base_url.removesuffix("/compatible-mode/v1")

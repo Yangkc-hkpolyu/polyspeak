@@ -1,7 +1,10 @@
 """PolyInterview's original LiveTalking player, inference scheduler and RTC session."""
 import asyncio
+from dataclasses import replace
 import json
-from queue import Queue
+from queue import Empty, Full, Queue
+from threading import Event, Thread, local
+import time
 from types import SimpleNamespace
 import uuid
 
@@ -18,16 +21,227 @@ from .vendor.livetalking.lipreal import LipReal
 from .vendor.livetalking.webrtc import HumanPlayer
 
 
+class OrderedBatchScheduler:
+    """Finish one session batch before its producer can emit later silence."""
+    def __init__(self, scheduler, stopped, current_epoch, batch_epoch, stats):
+        self.scheduler, self.stopped = scheduler, stopped
+        self.current_epoch, self.batch_epoch, self.stats = current_epoch, batch_epoch, stats
+
+    def submit(self, request):
+        epoch = self.batch_epoch()
+        active = lambda: not self.stopped() and self.current_epoch() == epoch
+        if not active():
+            return
+        # Each request owns its mailbox, so a late cancelled result cannot be
+        # mistaken for the next utterance's result.
+        mailbox = Queue(maxsize=1)
+        started = time.monotonic()
+        self.scheduler.submit(replace(request, result_queue=mailbox))
+        self.stats["gpu_batches"] += 1
+        try:
+            while active():
+                try:
+                    result = mailbox.get(timeout=0.05)
+                    break
+                except Empty:
+                    continue
+            else:
+                self.stats["cancelled_gpu_batches"] += 1
+                return
+            while active():
+                try:
+                    if hasattr(request.result_queue, "put_for_epoch"):
+                        request.result_queue.put_for_epoch(result, epoch, timeout=0.05)
+                    else:
+                        request.result_queue.put(result, timeout=0.05)
+                    return
+                except Full:
+                    continue
+            self.stats["cancelled_gpu_batches"] += 1
+        finally:
+            elapsed = time.monotonic() - started
+            self.stats["gpu_wait_seconds"] += elapsed
+            self.stats["max_gpu_wait_seconds"] = max(self.stats["max_gpu_wait_seconds"], elapsed)
+
+
+class EpochResultQueue(Queue):
+    """Associate output batches with the utterance generation that produced them."""
+    def __init__(self, maxsize, epoch, output_epoch):
+        super().__init__(maxsize)
+        self.epoch, self.output_epoch = epoch, output_epoch
+
+    def put(self, item, block=True, timeout=None):
+        self.put_for_epoch(item, self.epoch(), block=block, timeout=timeout)
+
+    def put_for_epoch(self, item, epoch, block=True, timeout=None):
+        super().put((epoch, item), block=block, timeout=timeout)
+
+    def get(self, block=True, timeout=None):
+        epoch, item = super().get(block=block, timeout=timeout)
+        self.output_epoch.value = epoch
+        return item
+
+    def pending_frames(self):
+        with self.mutex:
+            return sum(len(item) if isinstance(item, list) else 1 for _, item in self.queue)
+
+
+class EpochOutputTrack:
+    """Suppress only frames invalidated by an explicit interruption."""
+    def __init__(self, track, avatar):
+        self.track, self.avatar = track, avatar
+
+    def __getattr__(self, name):
+        return getattr(self.track, name)
+
+    def put_frame_nowait(self, item):
+        if getattr(self.avatar._output_epoch, "value", None) != self.avatar._stream_epoch:
+            self.avatar.stats["cancelled_output_frames"] += 1
+            return False
+        return self.track.put_frame_nowait(item)
+
+
+def media_reserve_seconds(audio_track, video_track, pending_video_frames=0):
+    """Conservative queued duration; neither stream may hold the other empty."""
+    reserves = []
+    for track, frame_seconds in ((audio_track, 0.02), (video_track, 0.04)):
+        if track is not None:
+            queued = track._queue.qsize()
+            async_queue = getattr(track, "_async_queue", None)
+            if async_queue is not None:
+                queued += async_queue.qsize()
+            reserves.append(queued * frame_seconds)
+    return min(reserves, default=0.0) + pending_video_frames * 0.04
+
+
 class SpeakingLipReal(LipReal):
-    """Scene and cadence overrides; media queues/inference/render loop stay upstream."""
+    """Scene, ordered inference, and paced production around upstream rendering."""
     def __init__(self, renderer, scheduler, settings, owner):
         self.renderer, self.owner = renderer, owner
+        self._stream_epoch = self._render_epoch = 0
+        self._render_quit = None
+        self._flush_requested, self._producer_wake = Event(), Event()
+        self._audio_track = self._video_track = None
+        self._output_epoch = local()
+        self._active_audio_job = None
+        self.stats = {"gpu_batches": 0, "cancelled_gpu_batches": 0,
+                      "gpu_wait_seconds": 0.0, "max_gpu_wait_seconds": 0.0,
+                      "producer_wait_seconds": 0.0, "max_media_reserve_seconds": 0.0,
+                      "audio_input_frames": 0, "speech_starts": 0, "speech_ends": 0,
+                      "audio_input_silence_frames_during_speech": 0, "source_underrun_frames": 0,
+                      "quiet_lip_frames": 0,
+                      "audio_dropped_frames": 0, "video_dropped_frames": 0,
+                      "cancelled_output_frames": 0}
         options = SimpleNamespace(fps=50, batch_size=8, l=10, r=10,
                                   transport="webrtc", customopt=[],
                                   sessionid=int(owner.id[:8], 16), speaking_settings=settings)
         avatar = (renderer.frames, renderer.face_frames, renderer.coords)
         super().__init__(options, avatar, scheduler, renderer.device)
+        self.res_frame_queue = EpochResultQueue(self.batch_size * 6, lambda: self._render_epoch, self._output_epoch)
         self.asr.queue = Queue(maxsize=200)
+        self._scheduler = OrderedBatchScheduler(scheduler, self._stopped,
+            lambda: self._stream_epoch, lambda: self._render_epoch, self.stats)
+        self._source_audio_frame = self.asr.get_audio_frame
+        self.asr.get_audio_frame = self._get_audio_frame
+
+    def _stopped(self):
+        return self.owner.closed or (self._render_quit is not None and self._render_quit.is_set())
+
+    def _get_audio_frame(self):
+        frame, kind, metadata = self._source_audio_frame()
+        self.stats["audio_input_frames"] += 1
+        status = metadata.get("status") if isinstance(metadata, dict) else None
+        if status == "start":
+            self._active_audio_job = metadata.get("job_id", True)
+            self.stats["speech_starts"] += 1
+        if kind == 1 and self._active_audio_job is not None:
+            self.stats["audio_input_silence_frames_during_speech"] += 1
+            self.stats["source_underrun_frames"] += 1
+        if status == "end":
+            self._active_audio_job = None
+            self.stats["speech_ends"] += 1
+        if kind == 0 and isinstance(metadata, dict) and (metadata.get("lip_silent") or status == "end"):
+            # Rendering silence is independent of transport underflow. Preserve
+            # the exact PCM and its clock, but use the neutral frame for padding.
+            kind = 1
+            self.stats["quiet_lip_frames"] = self.stats.get("quiet_lip_frames", 0) + 1
+        return frame, kind, metadata
+
+    def flush_talk(self):
+        self._stream_epoch += 1
+        self.tts.flush_talk()
+        self._flush_requested.set()
+        self._producer_wake.set()
+        for track in (self._audio_track, self._video_track):
+            async_queue = getattr(track, "_async_queue", None)
+            if async_queue is not None:
+                self.owner.loop.call_soon_threadsafe(self._empty_queue, async_queue)
+
+    @staticmethod
+    def _empty_queue(target):
+        if target is not None:
+            while True:
+                try:
+                    target.get_nowait()
+                except (Empty, asyncio.QueueEmpty):
+                    return
+
+    def _reset_interrupted_audio(self):
+        # Perform feature resets on the producer thread, not concurrently with
+        # run_step(). Only an explicit stop discards queued utterance frames.
+        epoch = self._stream_epoch
+        self.asr.flush_talk()
+        context = self.asr.stride_left_size + self.asr.stride_right_size
+        self.asr.frames = [np.zeros(self.asr.chunk, np.float32) for _ in range(context)]
+        for _ in range(self.asr.stride_right_size):
+            self.asr.output_queue.put((np.zeros(self.asr.chunk, np.float32), 1, None))
+        self._empty_queue(self.res_frame_queue)
+        for track in (self._audio_track, self._video_track):
+            if track is not None:
+                self._empty_queue(track._queue)
+        self._active_audio_job = None
+        if epoch == self._stream_epoch:
+            self._flush_requested.clear()
+
+    def _pending_video_frames(self):
+        return self.res_frame_queue.pending_frames()
+
+    def render(self, quit_event, loop=None, audio_track=None, video_track=None):
+        self._render_quit = quit_event
+        self._audio_track, self._video_track = audio_track, video_track
+        self.init_customindex()
+        self.tts.render(quit_event)
+        process_quit = Event()
+        process_thread = Thread(target=self.process_frames,
+            args=(process_quit, loop,
+                  EpochOutputTrack(audio_track, self) if audio_track is not None else None,
+                  EpochOutputTrack(video_track, self) if video_track is not None else None),
+            name="speaking-frame-output")
+        process_thread.start()
+        # One 320 ms batch plus processing headroom. Keep the normal 50 Hz audio
+        # and 25 Hz video clocks; only control how far production runs ahead.
+        reserve_target = self.batch_size * 0.04 + 0.16
+        try:
+            while not self._stopped():
+                if self._flush_requested.is_set():
+                    self._reset_interrupted_audio()
+                reserve = media_reserve_seconds(audio_track, video_track, self._pending_video_frames())
+                self.stats["max_media_reserve_seconds"] = max(self.stats["max_media_reserve_seconds"], reserve)
+                self.stats["audio_dropped_frames"] = getattr(audio_track, "_drop_count", 0)
+                self.stats["video_dropped_frames"] = getattr(video_track, "_drop_count", 0)
+                if reserve > reserve_target:
+                    started = time.monotonic()
+                    self._producer_wake.wait(min(reserve - reserve_target, 0.05))
+                    self._producer_wake.clear()
+                    self.stats["producer_wait_seconds"] += time.monotonic() - started
+                    continue
+                self._render_epoch = self._stream_epoch
+                self.asr.run_step()
+                if self._render_epoch == self._stream_epoch:
+                    self._drain_inference_batches()
+        finally:
+            process_quit.set()
+            process_thread.join(timeout=2.0)
 
     def _mirror_index(self, index):
         cycle = self.renderer.playback_cycle
@@ -91,14 +305,16 @@ class LiveSession:
         if self.dc and self.dc.readyState == "open":
             self.dc.send(json.dumps(event))
 
-    def speak(self, text, question_id=None):
+    def speak(self, text, question_id=None, language="en"):
         if self.closed or self.pc.connectionState != "connected":
             raise ValueError("The live avatar connection is not ready. Reconnect and try again.")
         if any(job["status"] in ("queued", "speaking") for job in self.jobs.values()):
             raise ValueError("The avatar is speaking. Wait for it to finish or stop the current speech.")
-        job = {"id": uuid.uuid4().hex, "status": "queued", "transport": "webrtc", "question_id": question_id}
+        self.manager.settings.tts_profile(language)
+        job = {"id": uuid.uuid4().hex, "status": "queued", "transport": "webrtc", "question_id": question_id,
+               "language": language}
         self.jobs[job["id"]] = job
-        self.avatar.put_msg_txt(text, {"job_id": job["id"]})
+        self.avatar.put_msg_txt(text, {"job_id": job["id"], "language": language})
         if len(self.jobs) > 30:
             oldest = next(iter(self.jobs))
             if self.jobs[oldest]["status"] not in ("queued", "speaking"):

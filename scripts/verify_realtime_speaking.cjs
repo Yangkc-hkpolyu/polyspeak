@@ -31,6 +31,17 @@ const {chromium} = require('../frontend/node_modules/playwright');
     await assertEnglishUI(page, 'verify_realtime_speaking');
     await page.screenshot({path:'speaking-runtime/qa/realtime-avatar-ui.png',fullPage:true});
     await page.waitForFunction(()=>document.querySelector('.nameplate p')?.textContent.includes('Your turn'),null,{timeout:30000});
+    const previewResponse=await page.request.get(`http://127.0.0.1:8008/api/speaking/live/${liveId}/jobs/${previewJobId}`);
+    assert.equal(previewResponse.status(),200);
+    const previewJob=await previewResponse.json();
+    assert.equal(previewJob.status,'completed');
+    const previewMetrics=previewJob.stream_metrics;
+    assert(previewMetrics?.render && previewMetrics?.tts,'Completed speech must expose stream metrics');
+    assert.equal(previewMetrics.audio_dropped_frames,0,'Preview audio frames must not be dropped');
+    assert.equal(previewMetrics.render.audio_input_silence_frames_during_speech,0,'Preview must not insert silence while waiting for speech input');
+    assert.equal(previewMetrics.render.source_underrun_frames,0,'Preview speech input must not underrun');
+    assert.equal(previewMetrics.tts.synthesis_complete,true);
+    assert(previewMetrics.tts.audio_samples>0,'Preview must contain generated audio');
     assert(await video.evaluate(v=>v.currentTime)>idleTime);
     assert.equal(await video.evaluate(v=>v.currentSrc),'');
     await page.selectOption('#mode','coach');
@@ -81,7 +92,7 @@ const {chromium} = require('../frontend/node_modules/playwright');
     assert.deepEqual(errors,[]);
     const result={webrtc_media_stream_received:true,continuous_idle_after_speech:true,
       no_utterance_mp4_requests:true,realtime_transcript_before_stop:true,
-      asr_events:asrEvents.length,transcript:answer,errors};
+      asr_events:asrEvents.length,transcript:answer,preview_stream_metrics:previewMetrics,errors};
     result.layered_features=13;
     result.grounded_polishing_and_export_verified=true;
     fs.writeFileSync('speaking-runtime/qa/realtime-browser.json',JSON.stringify(result,null,2));

@@ -5,7 +5,7 @@
 网页界面、题库标签、服务提示和 AI 反馈报告统一使用英文；原始回答与引用保持原样。
 
 - 数字人：人物视频帧 + 本地 Wav2Lip 口型模型，LiveTalking + WebRTC 持续传输音视频。
-- 对话与反馈：Qwen 文本 API；语音识别、语音合成为 Qwen 实时 API。
+- 对话与反馈：Qwen 文本 API；语音识别为 Qwen 实时 API；英文发声使用与 PolyInterview 一致的 EdgeTTS `en-US-JennyNeural`。
 - 模式：IELTS 模考、TOEFL 2026 模考，以及动态追问陪练。
 - 报告：逐题特征、语言维度、原话修订、录音复听、JSON 导出和打印。
 

@@ -24,11 +24,24 @@ class Settings:
     avatar_fps: int = 25
     avatar_batch_size: int = 4
     torch_threads: int = 4
-    voice_en: str = "en-US-AriaNeural"
+    voice_en: str = "en-US-JennyNeural"
     voice_zh: str = "zh-CN-XiaoxiaoNeural"
-    tts_provider: str = "qwen"
+    tts_provider: str = "edgetts"
     azure_key: str = ""
     azure_region: str = "eastus"
+
+    def tts_profile(self, language="en"):
+        if language not in ("en", "zh"):
+            raise ValueError("Unsupported speech language.")
+        if self.tts_provider == "edgetts":
+            voice = self.voice_en if language == "en" else self.voice_zh
+            if not voice.startswith(language + "-"):
+                raise ValueError("The configured speech voice does not match the requested language.")
+            return {"provider": "edgetts", "model": "EdgeTTS", "voice": voice, "language": language}
+        if self.tts_provider == "qwen":
+            return {"provider": "qwen", "model": self.realtime_tts_model,
+                    "voice": "Cherry", "language": language}
+        raise ValueError("SPEAKING_TTS_PROVIDER must be edgetts or qwen.")
 
 
 def load_settings():
@@ -47,7 +60,9 @@ def load_settings():
         port=int(values.get("SPEAKING_PORT", "8008")),
         avatar_device=values.get("SPEAKING_AVATAR_DEVICE", "auto"),
         avatar_directory=Path(values.get("SPEAKING_AVATAR_DIR", str(Settings.avatar_directory))),
-        tts_provider=values.get("SPEAKING_TTS_PROVIDER", "qwen"),
+        tts_provider=values.get("SPEAKING_TTS_PROVIDER", Settings.tts_provider).strip().lower(),
+        voice_en=values.get("SPEAKING_VOICE_EN", Settings.voice_en).strip(),
+        voice_zh=values.get("SPEAKING_VOICE_ZH", Settings.voice_zh).strip(),
         azure_key=values.get("AZURE_SPEECH_KEY", "").strip() or values.get("AZURE_KEY", "").strip(),
         azure_region=values.get("AZURE_REGION", "eastus"),
     )

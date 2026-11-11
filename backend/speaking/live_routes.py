@@ -20,7 +20,7 @@ def live_router(manager, store, engine):
 
     @router.post("/{live_id}/preview")
     async def preview(live_id: str, body: SpeechRequest):
-        return manager.get(live_id).speak(body.text)
+        return manager.get(live_id).speak(body.text, language=body.language)
 
     @router.post("/{live_id}/question/{session_id}")
     async def question(live_id: str, session_id: str, body: QuestionRequest):
@@ -30,7 +30,17 @@ def live_router(manager, store, engine):
 
     @router.get("/{live_id}/jobs/{job_id}")
     async def job(live_id: str, job_id: str):
-        return dict(manager.get(live_id).jobs[job_id])
+        session = manager.get(live_id)
+        result = dict(session.jobs[job_id])
+        # Playback diagnostics only: no prompts, recordings or credentials.
+        result["stream_metrics"] = {
+            "scope": "Current connection counters and latest utterance synthesis",
+            "render": dict(getattr(session.avatar, "stats", {})),
+            "tts": dict(getattr(session.avatar.tts, "stats", {})),
+            "audio_dropped_frames": session.player.audio._drop_count,
+            "video_dropped_frames": session.player.video._drop_count,
+        }
+        return result
 
     @router.post("/{live_id}/interrupt")
     async def interrupt(live_id: str):

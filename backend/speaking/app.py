@@ -89,7 +89,8 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
 
     @app.get("/api/speaking/status")
     async def status():
-        return {"name": "PolySpeak", "api_configured": bool(settings.api_key), "chat_model": settings.chat_model, "asr_model": settings.realtime_asr_model, "avatar_available": settings.model_path.is_file() and (settings.avatar_directory / "avatar.json").is_file(), "pronunciation_configured": bool(settings.azure_key), "model_finetuned": False, "format_version": "TOEFL 2026 / IELTS Speaking", "speech_input": "Qwen realtime WebSocket ASR", "speech_output": settings.realtime_tts_model, "avatar": "Nora · PolyInterview LiveTalking", "avatar_pipeline": "livetalking_webrtc", "original_project_modified": False}
+        output = settings.tts_profile("en")
+        return {"name": "PolySpeak", "api_configured": bool(settings.api_key), "chat_model": settings.chat_model, "asr_model": settings.realtime_asr_model, "avatar_available": settings.model_path.is_file() and (settings.avatar_directory / "avatar.json").is_file(), "pronunciation_configured": bool(settings.azure_key), "model_finetuned": False, "format_version": "TOEFL 2026 / IELTS Speaking", "speech_input": "Qwen realtime WebSocket ASR", "speech_output": output["model"], "speech_provider": output["provider"], "speech_voice": output["voice"], "speech_language": output["language"], "avatar": "Nora · PolyInterview LiveTalking", "avatar_pipeline": "livetalking_webrtc", "original_project_modified": False}
 
     @app.get("/api/speaking/library")
     async def library():

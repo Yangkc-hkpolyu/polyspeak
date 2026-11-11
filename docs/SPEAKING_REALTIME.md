@@ -1,6 +1,6 @@
 # PolyInterview realtime interaction port
 
-Updated 2026-10-25. The selected scope is the original application's live avatar,
+Updated 2026-11-11. The selected scope is the original application's live avatar,
 streaming speech input, and feature/aspect/proficiency feedback architecture.
 The IELTS/TOEFL product, current Lisa/Nora visual and exam-room scene remain.
 Neither the protected E: `backend/livetalking/` nor the C: project was edited.
@@ -27,13 +27,51 @@ retained. CPU mel extraction is selected by default because this portable
 environment does not include a matching torchaudio CUDA installation; it is the
 upstream-supported CPU path, not a change to mel parameters.
 
-Qwen realtime TTS supplies PCM16/24 kHz chunks, statefully resampled to 16 kHz
-and split into 320-sample packets before entering LiveTalking. Playback starts
-from the stream rather than waiting for the whole audio or video. Speech end
-events come from audio-track consumption, and the same live track continues
+Speech output defaults to EdgeTTS with `en-US-JennyNeural`, matching the original
+PolyInterview Amy English configuration. Chinese requests select
+`zh-CN-XiaoxiaoNeural` separately; exam questions always use English. The original
+application has separate language ports and injects the selected voice per
+session. PolySpeak selects the voice per utterance within its existing service.
+`SPEAKING_TTS_PROVIDER`, `SPEAKING_VOICE_EN`, and `SPEAKING_VOICE_ZH` apply to the
+live path as well as the compatibility renderer. A mismatched Edge voice locale
+is rejected, and provider failures never silently switch to another voice.
+
+The previous live path was fixed to Qwen `Cherry` with `language_type=English`.
+That multilingual voice supports English; it was not the original Chinese
+endpoint, but it was a different synthesis provider and voice. Qwen remains an
+explicit configuration alternative. Recognition and text generation still use
+Qwen; changing the output voice does not change those services.
+
+Both sources yield PCM16/24 kHz, statefully resampled to 16 kHz. The complete
+utterance audio is collected before its 320-sample packets enter LiveTalking,
+matching the original configured EdgeTTS buffering boundary.
+This adds startup wait but prevents cloud chunk gaps from becoming mid-sentence
+silence. The video is still generated and transmitted over live WebRTC; no
+utterance MP4 is built. Speech end events come from audio-track consumption,
+and the same live track continues
 with idle frames afterward. Disconnect, interruption and page unload close
 sessions and stop the original producer threads. The model/scheduler are shared
 across at most two local live connections.
+
+The speaking adapter serializes each session's GPU batch completion so later
+silent frames cannot overtake speech. Its producer retains approximately 480 ms
+of queued media, instead of sleeping until the entire audio queue is empty.
+Explicit interruption invalidates pending batches and their output. Rates stay
+at 50 audio packets and 25 video frames per second. Vendor files are unchanged.
+
+Leading/trailing near-silence supplied by TTS selects neutral rendering instead
+of speech rendering; the audio itself is retained. This prevents the model's
+future audio context from opening the mouth during the utterance's silent
+padding. Inner pauses keep their normal lip animation. The `quiet_lip_frames`
+counter records this separately from source underruns.
+
+The existing job-status endpoint exposes connection counters and the latest
+utterance's synthesis metrics, including provider, voice and language, not
+historical metrics for each job. Run
+`python scripts/verify_speaking_stream.py` against the local service to measure
+synthetic speech continuity without microphone input. A passing connection test
+alone is insufficient: inspect inserted silence, frame drops, source/playback
+duration agreement and receive gaps.
 
 The retired MP4 renderer and endpoints remain for compatibility and developer
 comparisons; the active frontend does not use them as a silent fallback.

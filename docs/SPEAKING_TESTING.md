@@ -2,6 +2,81 @@
 
 Latest verification: 2026-11-11 in the E: sharing checkout.
 
+## Mouth movement before audible speech
+
+The Jenny greeting contains about 180 ms of near-silent leading PCM. Previously,
+every supplied audio packet was classified as speech, including that padding.
+Wav2Lip's forward-looking mel window could therefore animate the mouth before
+the corresponding audio was audible. The idle source images were checked and
+have closed mouths; there was no need to freeze the idle blink/head motion.
+
+The adapter now identifies only the outer quiet extent of each complete
+utterance using 20 ms RMS windows (threshold 0.0002 of full scale). Those packets
+keep their original PCM, timestamps and events but select idle rendering.
+Internal pauses and quiet speech inside the utterance retain normal animation.
+Intentional visual silence is counted separately from missing source audio.
+
+All 49 automated checks passed, including retained PCM duration, correct event
+markers, quiet-consonant/internal-pause bounds and underflow classification.
+The real greeting was received over WebRTC before and after this change and its
+face crops were visually inspected. Relative to the first received audio frame
+with RMS above 0.001, generated mouth movement began about 200 ms early before
+the fix and about 20 ms early afterward (within one 40 ms video frame). These
+are media-timestamp comparisons; they do not measure browser/device playout
+latency. The 8.784-second source was retained, with zero underruns and frame drops.
+Local JSON, WAV and annotated frame evidence is saved as
+`speaking-runtime/qa/av-onset-before.*` and `av-onset-after.*`.
+
+## English voice selection
+
+The original Amy configuration uses EdgeTTS `en-US-JennyNeural` for English and
+`zh-CN-XiaoxiaoNeural` for Chinese, with separate language service ports and a
+per-session voice header. The previous PolySpeak live path bypassed its provider
+setting and always used Qwen `Cherry` with `language_type=English`. Cherry is
+documented as multilingual, so this was not a call to a Chinese-only endpoint;
+it was a different provider/voice from the original English setup.
+
+The active default and local configuration now select EdgeTTS Jenny. Live jobs
+carry their language to synthesis, configuration rejects an Edge voice with the
+wrong language prefix, and both live and compatibility paths honor the selected
+provider. Failed synthesis does not silently switch voices.
+
+All 46 automated checks passed. The new cases cover English/Chinese voice
+selection, real MP3 decoding, complete-source buffering, Qwen language events,
+environment settings, mismatched voice rejection, and provider failure.
+An actual WebRTC greeting reported `edgetts / en-US-JennyNeural / en`, with
+8.784 seconds of source audio and 8.795 seconds between playback events. Extra
+underflow silence and audio/video drops were zero; maximum receive gaps were
+35.7 ms for audio and 57.0 ms for video. The local evidence is
+`speaking-runtime/qa/stream-timing-english-jenny.json` and its companion WAV.
+This verifies the selected provider and continuity in that run, not a subjective
+accent-quality comparison or a benchmark against the original running app.
+
+## Continuous speech repair
+
+The protected PolyInterview configuration selects EdgeTTS with batch size 8.
+Its adapter collects the complete utterance before queueing audio. The earlier
+PolySpeak Qwen adapter forwarded each arrival immediately; it did not preserve
+that buffering boundary. Core vendor scheduler, lip processing and WebRTC code
+otherwise match apart from imports. A deterministic test also reproduced a
+later silent batch overtaking a pending speech batch.
+
+The application adapter now collects complete audio, orders pending batches,
+and retains playback reserve. Before the later English voice change, a Qwen
+synthetic greeting produced 8.64 seconds
+of source audio and 8.643 seconds between speech start/end. Its counters showed
+zero input underruns, zero inserted speech silence and zero audio/video drops;
+maximum receive gaps were 38.1 ms audio and 59.6 ms video. This is one local
+measurement, not a guarantee for every network/device. The earlier baseline
+also had regular packet timing, demonstrating why timing alone misses inserted
+silence or batch-order defects. The original application was inspected, not
+launched for a head-to-head performance benchmark.
+
+Regression checks cover deferred batch ordering, interruption, retained media
+reserve, source-underflow counting, full-utterance buffering and short utterances.
+`scripts/verify_speaking_stream.py` saves a synthetic WAV and timing JSON under
+the ignored runtime QA folder. It does not capture a participant microphone.
+
 ## English interface update
 
 All 30 automated checks and the production frontend build passed. The English
