@@ -1,0 +1,1045 @@
+{
+  "source": "User-provided PolyInterview / LiveTalking",
+  "source_avatar": "Lisa",
+  "display_name": "Nora",
+  "fps": 25,
+  "width": 1276,
+  "height": 720,
+  "frames": [
+    {
+      "full": "full_imgs/00000000.png",
+      "face": "face_imgs/00000000.png",
+      "coords": [
+        136,
+        338,
+        674,
+        819
+      ],
+      "full_sha256": "174b82a55b8186014f06d050e0fa397c57304b2aa09b683c705cd0a955c0a5c6",
+      "face_sha256": "e492c6a90eafb373af65a1001c3c4c0e480058dea61194edc2a980ee14490341",
+      "original_full_sha256": "639cbe3f5514b00c1ee27e6dd3ccc4562114f3c23b72d0f678ad53a0d98ff257",
+      "lip_mask": "lip_masks/00000000.png",
+      "lip_mask_sha256": "9b6e2fbc943d963d9f524af7eff88ac3d4e8d6988eecf5c89f2d2a8f379c335e"
+    },
+    {
+      "full": "full_imgs/00000001.png",
+      "face": "face_imgs/00000001.png",
+      "coords": [
+        136,
+        338,
+        674,
+        819
+      ],
+      "full_sha256": "cc4f84ba9a2802876df4bb3f47279b15c591a253cf717de8c7d2a49697b5475e",
+      "face_sha256": "f7b835eb074b2693bac42a4bea7cbbabe6e78e4158c3ff0c04de21d5d93b93d2",
+      "original_full_sha256": "e60e04453ea83226a3fac09a151efd8bf96338801a7bf42cce0fb8debbf2411f",
+      "lip_mask": "lip_masks/00000001.png",
+      "lip_mask_sha256": "1481f78ee9837ca6327ebe143924c2c187ecef40ecb59409a7f23eb5428a8d9d"
+    },
+    {
+      "full": "full_imgs/00000002.png",
+      "face": "face_imgs/00000002.png",
+      "coords": [
+        136,
+        338,
+        674,
+        819
+      ],
+      "full_sha256": "5616fb61693f878c0297ca23fc885131a3c10bfc7e7aa85355610c5ff2dab87f",
+      "face_sha256": "d90df2b9ad1de8a20c34000f31441d39e430fe2f880d595211132eca569a9c33",
+      "original_full_sha256": "58f1539cbc6d924b26f929534851bd1e4f7fcfd15d31305292a111c37f73e0a0",
+      "lip_mask": "lip_masks/00000002.png",
+      "lip_mask_sha256": "ea3defd6921a3b6e51b6ded630cd886615f7373ab8bc12b3a53888f5fc47675b"
+    },
+    {
+      "full": "full_imgs/00000003.png",
+      "face": "face_imgs/00000003.png",
+      "coords": [
+        136,
+        339,
+        674,
+        819
+      ],
+      "full_sha256": "0209a4ac81b2401dd0b0815121863233bdff8b3a817ae22b353bd071d1e6eb14",
+      "face_sha256": "b82004f8321110fb2fc975999e5e8a025def5dd97b20a02321e7fd0e3343398f",
+      "original_full_sha256": "6ca2e8a406d1dd03871f79d37e641cea5b5cfe7d0894e7b573e504f64c7dd4cb",
+      "lip_mask": "lip_masks/00000003.png",
+      "lip_mask_sha256": "b526a8aa0d4904530c48197fe22a509a6701e30fa46c702e7258989bc21901bd"
+    },
+    {
+      "full": "full_imgs/00000004.png",
+      "face": "face_imgs/00000004.png",
+      "coords": [
+        136,
+        339,
+        674,
+        819
+      ],
+      "full_sha256": "208a3482996c9acbd697cd3cc8b5ea1ab97e6e008f3a387b0a2ab5ccd8d2ae3b",
+      "face_sha256": "47e06b588bd3ed8cb4814e6ca4a1f50efe64b30b84b3df6548215e3949eec44f",
+      "original_full_sha256": "2d999036983f46d61887df440966153715894039c76fe724756f6d3b4c71e2c5",
+      "lip_mask": "lip_masks/00000004.png",
+      "lip_mask_sha256": "520c0d9259639f0c5c555a86e439565fb42a3c5eddbc0c4f5b5da1ac8e8dd8e4"
+    },
+    {
+      "full": "full_imgs/00000005.png",
+      "face": "face_imgs/00000005.png",
+      "coords": [
+        136,
+        340,
+        673,
+        819
+      ],
+      "full_sha256": "cad74f3c5a3ec887d0e095d86c85a414c00e7116da95e4be10e0f0d5b8d33c46",
+      "face_sha256": "9c6bd70f3ffa0a78b16e745ac2f83f77d3657d22694e1023afd9a7e7b076b5b5",
+      "original_full_sha256": "a7809e9471bb346c7222cf5f59b83ca04b8a7e8f1f346d0f3057276cd6b3547f",
+      "lip_mask": "lip_masks/00000005.png",
+      "lip_mask_sha256": "225c5537c20d5b98395c69a8312a5d731dfb7f8e59d5de343edf409ff85bb460"
+    },
+    {
+      "full": "full_imgs/00000006.png",
+      "face": "face_imgs/00000006.png",
+      "coords": [
+        136,
+        340,
+        673,
+        819
+      ],
+      "full_sha256": "8b25ed4ba60f86cb87e5ae11982a58d2a433e3628052d7ddad28a2189869e9e2",
+      "face_sha256": "4bddb38fbd29cdbeb7195213349cbbab18fee134fb4f20aa1e77fae501792209",
+      "original_full_sha256": "a846dbc7e1e71447cf7556ee576c0c276cf29de94e28d226b5678376186872a6",
+      "lip_mask": "lip_masks/00000006.png",
+      "lip_mask_sha256": "8a5b1481807d4411051b8646e5bd6ce53b8c06e5cea41ef60ee71c729c1be286"
+    },
+    {
+      "full": "full_imgs/00000007.png",
+      "face": "face_imgs/00000007.png",
+      "coords": [
+        136,
+        340,
+        673,
+        819
+      ],
+      "full_sha256": "e57290effcc537b3ca550cb94b92ebe5b298a42ff2b6adf0e6cb2b064aee82dc",
+      "face_sha256": "e2f0e570d3b45a971366cbbfe0ceaac6f4ffc4b04b4ad6cc8304bac38f9703c9",
+      "original_full_sha256": "568895b621e0d1c9906293fca95f7dc45ab4a6a6ce678f8f5fbac295b17b40d7",
+      "lip_mask": "lip_masks/00000007.png",
+      "lip_mask_sha256": "aec929002e889400b018c81515453fb07b13e00ca3073f2345968bf8c9c3f304"
+    },
+    {
+      "full": "full_imgs/00000008.png",
+      "face": "face_imgs/00000008.png",
+      "coords": [
+        136,
+        340,
+        673,
+        819
+      ],
+      "full_sha256": "b98d61090ef562f93256f517a6b2dbfc964588cc5e3806d5017986553e9a961e",
+      "face_sha256": "580ce1a6f2f208bff9edf99b5b0b757dc70fae4dc83f0210e425bbf150397ac2",
+      "original_full_sha256": "556075ef2b50dc0f1aa690854ff2ea5d770a473fb9780f08debd31c7255dcc86",
+      "lip_mask": "lip_masks/00000008.png",
+      "lip_mask_sha256": "8192095a4bf8fce102eeefb4bafb5b2b14848a8f5934ec8d826adf67f31d67cd"
+    },
+    {
+      "full": "full_imgs/00000009.png",
+      "face": "face_imgs/00000009.png",
+      "coords": [
+        136,
+        340,
+        673,
+        819
+      ],
+      "full_sha256": "365a8eafc11a4a4cb660638caf5cc89ff089aebc88ecb85bb2142c3df8003473",
+      "face_sha256": "e3916f469e8555ddef3528a69a207427e894fd825b9f4cd974b79f76d9d32431",
+      "original_full_sha256": "20875161068c3b9f76f3db53a9f04fa123a68e24e430d04180cd83a4195e40b5",
+      "lip_mask": "lip_masks/00000009.png",
+      "lip_mask_sha256": "db635abc5f5240bf408befc982d0a6a306e7e70d8f0c7d6d4f03c4749fe717a9"
+    },
+    {
+      "full": "full_imgs/00000010.png",
+      "face": "face_imgs/00000010.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "b97951cfea8a3ff188751143a199d1742edd76b009bb02c32d10d3ad31ca5cf7",
+      "face_sha256": "45baa4aa842c965106280beb9e666f8db7ed95de30eadb207edaa81559735468",
+      "original_full_sha256": "9a678cfcc00f98a0b28178cdcc762a39cf76c5e758dc302a8e2896e7ceb579e6",
+      "lip_mask": "lip_masks/00000010.png",
+      "lip_mask_sha256": "bf481187309851d388a27b81ec4df94a59edd44adcf85b8eaf960f75fb3d7db8"
+    },
+    {
+      "full": "full_imgs/00000011.png",
+      "face": "face_imgs/00000011.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "7355de73ab6f13e3988a6c1e16bbd422a71d41d9b6719678f30b596097650b87",
+      "face_sha256": "4b2f8cfef28f9c26e289e225d3610de026bf59f4691396e23c6b7a5cfd09503c",
+      "original_full_sha256": "285909976faf628328c50ceb5ee680656bdc94fca61111910339cdf50269b3d0",
+      "lip_mask": "lip_masks/00000011.png",
+      "lip_mask_sha256": "c421aacf8b4da0ac1322facc8a3fc208ced2f1ef275afb9c4b4221bfd6b36ce2"
+    },
+    {
+      "full": "full_imgs/00000012.png",
+      "face": "face_imgs/00000012.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "01c68ec459b38ed28346978866bd3c1c686dbe0149fbcdc1c401bfc6c62d7c18",
+      "face_sha256": "1b0e8baf50c625b19f87cffcd0ef44ddf913704487ecd6dbc2e7e07b298c11e5",
+      "original_full_sha256": "e6035af8278083c760c8757dc448edfc3b3b704a897d9af8e10f6452ce565892",
+      "lip_mask": "lip_masks/00000012.png",
+      "lip_mask_sha256": "ecb0940a217b8915426a45e363cb910fd4571c3152abf2fdc1aa5a08b047d68a"
+    },
+    {
+      "full": "full_imgs/00000013.png",
+      "face": "face_imgs/00000013.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "2c7a94301b2acec2e695c4c373954678eabaaeca1b69cc2b2a0f6ceaebe84db4",
+      "face_sha256": "7f5c7843dac9061251fae6a830d1724d8597ccf8b7302d991ee31eb7cedd25b0",
+      "original_full_sha256": "d333a14ba0a7c757dad1fa6262925a8eed2d8610c34ddada7ce58efce96a9a25",
+      "lip_mask": "lip_masks/00000013.png",
+      "lip_mask_sha256": "91455f7695c781f8c9c0d415136044e1a42644ed067e11a87388ddae128b8d36"
+    },
+    {
+      "full": "full_imgs/00000014.png",
+      "face": "face_imgs/00000014.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "fe4dafe617bedb725b00813d14f12420e8eadc444a1afc6f60750cf3e4b049e9",
+      "face_sha256": "cc95f1c816c0bea65c79a817125916f044fbddb81af491981e5a18ecf5f99027",
+      "original_full_sha256": "56f4ff09cc4323e48741eb88a2f6479b2ac07954cac9367a5092ba3a303cbe5a",
+      "lip_mask": "lip_masks/00000014.png",
+      "lip_mask_sha256": "bab6fcd69ef199d933ad5859bb540973574eb6f0a3b94f700f5605f49ea3f3c1"
+    },
+    {
+      "full": "full_imgs/00000015.png",
+      "face": "face_imgs/00000015.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "bc6b5940c14ac5ad5c3776ebc1cb26ee58f74d44eb8ea9dee7b2d0498ef757de",
+      "face_sha256": "4a01b41d32c1c1ec6ee238fa223d76aab2310bc7bc7702b2da58390fec81166e",
+      "original_full_sha256": "2a589c2def48ebc96c5b069a16e8676b8de0222550b99404daea79155c2e8502",
+      "lip_mask": "lip_masks/00000015.png",
+      "lip_mask_sha256": "ca22a16a517e14460a0adc7cd98c683ba9a07937432bbc6d47a02864cbad1231"
+    },
+    {
+      "full": "full_imgs/00000016.png",
+      "face": "face_imgs/00000016.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "ff98b98958ba17256b0b3e30e56f0fa913fb08ef8a3c605d28ba7c5457ca2df1",
+      "face_sha256": "37d2ad572951a925fed68fb02cf3397e8f40affea378a8317f3196366fe156a6",
+      "original_full_sha256": "5cdb0b66596f49bb921c593c209604b9606a6c171535d1ff6da5cdb504fa5d97",
+      "lip_mask": "lip_masks/00000016.png",
+      "lip_mask_sha256": "1f3cb97cf169f0f79e511c05086b65b2e1ff13cdefe7921f751a43bf8b7b1567"
+    },
+    {
+      "full": "full_imgs/00000017.png",
+      "face": "face_imgs/00000017.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "28807984cfde4bcb80e7f7f484e44441c70816b5720313aef39281680d1c45e1",
+      "face_sha256": "cb0e51f964f19289327a4c693f2db0d4310c1bcbc9d47964ede1988f197359e3",
+      "original_full_sha256": "affbf2c6be1bab49832950bc7bffed13b8201de93e079004a3a077d9ce0265f8",
+      "lip_mask": "lip_masks/00000017.png",
+      "lip_mask_sha256": "49f21e7e6c166ee7bd6f4750b07a0e400af453382f5bcd823b9367d4fa9cb835"
+    },
+    {
+      "full": "full_imgs/00000018.png",
+      "face": "face_imgs/00000018.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "2b26fe32bf05d054eeaa7472135bfec2e77d2a0f892491e189f8fc4e5b5e2e26",
+      "face_sha256": "5e600af673e0a21a972c3b872ae74fe07c19f5b54124a780c37172f61b4ec31a",
+      "original_full_sha256": "cec46a30daeb47c6ba2039ae8f67033f9ae2ab55c2429d1e3d5fbd11b316ba41",
+      "lip_mask": "lip_masks/00000018.png",
+      "lip_mask_sha256": "c79f9b6d078d9aafff69144d7088786afdedc8bf3a9ea829ab71c6db116f222c"
+    },
+    {
+      "full": "full_imgs/00000019.png",
+      "face": "face_imgs/00000019.png",
+      "coords": [
+        136,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "a8525556bff10a479748d04e94467f759a09d3bd00cf6c293ba4b1bf63b3e8a9",
+      "face_sha256": "dcb3654e71ba4c18d6f1b1cd08cbc6f4e5d5a3f909174258dab343bd3c89520c",
+      "original_full_sha256": "fd4aaede3fc3328f54628709539c138bdfea6246bf2d5eb1d536da0746936788",
+      "lip_mask": "lip_masks/00000019.png",
+      "lip_mask_sha256": "ea89dec4a37360dbdea2de73ff7a5e20e03238bdc84cfa309062f910b2bc81cc"
+    },
+    {
+      "full": "full_imgs/00000020.png",
+      "face": "face_imgs/00000020.png",
+      "coords": [
+        136,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "7b15052f74fc9e90afcc452a25e024b1405378f151ab1c784906937ae848738f",
+      "face_sha256": "2c1ec492edc1dfe8296bef19298cadf169a007b40cdb346cfc6aec9167e498c2",
+      "original_full_sha256": "880754fd529f77ce671bf206336342572817ec52dd3b39002361498e64aceabb",
+      "lip_mask": "lip_masks/00000020.png",
+      "lip_mask_sha256": "a40552eba1810833b27ec33cf5c6c7be29a12566b2d0a8495e06f16a13585819"
+    },
+    {
+      "full": "full_imgs/00000021.png",
+      "face": "face_imgs/00000021.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "c8bbb8a9f966f7717d0a0851501a72ceaf798d7920379ca4178c135f7a4104e4",
+      "face_sha256": "2b21a7ed45f9cb3bece3172acccf9fd3c2c37e36b7268ff5d307e49fe840def3",
+      "original_full_sha256": "d4d8c4de1c96c3a80c141977e6f6453a39e8c3d20fb20481d6b0a07db0eba1d2",
+      "lip_mask": "lip_masks/00000021.png",
+      "lip_mask_sha256": "f70e58d8cd2e5a03ae0dcd9b4314239f5b473ce90b524bfa8cfd1da0a985f28c"
+    },
+    {
+      "full": "full_imgs/00000022.png",
+      "face": "face_imgs/00000022.png",
+      "coords": [
+        137,
+        340,
+        674,
+        819
+      ],
+      "full_sha256": "ff936cd79691c763f444c27182049585c80f06f30343998c2a442773b48248bc",
+      "face_sha256": "3647e2af2fe122a35ad79b35f41be076fff33eb01407988cd4f7aa9c67346ce4",
+      "original_full_sha256": "966b7c918fa52e8cecf728d96a8eaa48015bf3bfa9c71b2d151022e09eeeff8b",
+      "lip_mask": "lip_masks/00000022.png",
+      "lip_mask_sha256": "298274c1ae8589bc6b6dc3c3f376f7331a23b6f2a3d8a738dff4a42ec184ca98"
+    },
+    {
+      "full": "full_imgs/00000023.png",
+      "face": "face_imgs/00000023.png",
+      "coords": [
+        137,
+        341,
+        674,
+        819
+      ],
+      "full_sha256": "d39e1b790a71aae020bea11b4133f67aa96df571923b3197a9228b04f7896923",
+      "face_sha256": "51c579ba3ca5422a0fdd2e17c7aa73fa7901deed6b7b3f3a3024aa1f67610da2",
+      "original_full_sha256": "afa658dfdca15d48e9e8c1b09cf47cb07c923709bb2a449790085ffaee1349c4",
+      "lip_mask": "lip_masks/00000023.png",
+      "lip_mask_sha256": "e9b5f982c81f65472114c6c84d9f2201c4f8bb45f34cf53fd1b08bbdcaf589f3"
+    },
+    {
+      "full": "full_imgs/00000024.png",
+      "face": "face_imgs/00000024.png",
+      "coords": [
+        137,
+        341,
+        674,
+        819
+      ],
+      "full_sha256": "bf4e9118c082de9799340e73ffe2428d10abd4fde9e597b011b4f367a12261e4",
+      "face_sha256": "719dc4b4652ee15ffe080fbdc65c696e495caea22d29a11a0cdd49ca1c592f2e",
+      "original_full_sha256": "937182ef5453dec01d854c5f5c9981c7a209f8016f4968f7fb165370d4fb26f7",
+      "lip_mask": "lip_masks/00000024.png",
+      "lip_mask_sha256": "2a9b3a5a9e2ae2f49f2da3b7d1aba95afd19563e537c2068524c4f2480e84a43"
+    },
+    {
+      "full": "full_imgs/00000025.png",
+      "face": "face_imgs/00000025.png",
+      "coords": [
+        138,
+        341,
+        674,
+        819
+      ],
+      "full_sha256": "8488bd0fe1429339c202fea24f0a5e346c7faf8bd30ff35df7a46603cb2f8066",
+      "face_sha256": "f3f5a84c8d665eb6c9a1d6d36d4f7b0d4b0cd06db58fc78c346b5077af69721f",
+      "original_full_sha256": "3dfdc3f10fd2f35f71b0f8103cf9f5444a0701396f1778478efa61816b913994",
+      "lip_mask": "lip_masks/00000025.png",
+      "lip_mask_sha256": "af5296cd03697566f40ad904d7955f71003963fc58fbaeeca9c7d46e726f151a"
+    },
+    {
+      "full": "full_imgs/00000026.png",
+      "face": "face_imgs/00000026.png",
+      "coords": [
+        138,
+        341,
+        674,
+        819
+      ],
+      "full_sha256": "c34920d594c6d3b2fa857656374edfd808a3c822d8faf9347017f63aa254cf81",
+      "face_sha256": "7217f625ef3d2d4258ec76b2b70f5802e57c014cd5f104dfc26c431e806ecc87",
+      "original_full_sha256": "1d7a8d5a1a2217857f46374febc2d02877a00cedb107c8418df99b8aa92ace7d",
+      "lip_mask": "lip_masks/00000026.png",
+      "lip_mask_sha256": "87909cb98ecb9a62b0713fd6a3f9ebf67d0b56ffbacdb8fd858966fd43a11096"
+    },
+    {
+      "full": "full_imgs/00000027.png",
+      "face": "face_imgs/00000027.png",
+      "coords": [
+        138,
+        341,
+        674,
+        819
+      ],
+      "full_sha256": "afc3ccd2cf46749d0ceb2011a30cfddd5ecffecd2827396d991d3dd867abfe0a",
+      "face_sha256": "9ae12c1e15d87cd1f3ec6a4d517e0931b0a84e813e8a5f4fb9657455ae0a5aef",
+      "original_full_sha256": "d57d852d0f2b1e6322d4a0656808c2889f0885ee23e2b07fd0885a7ac3377407",
+      "lip_mask": "lip_masks/00000027.png",
+      "lip_mask_sha256": "830d6e14ff844cc3323203ef85ea60b7b1002d5d05b0f69341b812a74bb7d9ee"
+    },
+    {
+      "full": "full_imgs/00000028.png",
+      "face": "face_imgs/00000028.png",
+      "coords": [
+        139,
+        341,
+        674,
+        819
+      ],
+      "full_sha256": "319cfbf5c1b85064be4f6b4292527f77c91d780654fb886695417f9ff146e3ca",
+      "face_sha256": "d0fe0777b3779b8f41ece4432809bde09ea689925d2b9b7d6bce354e469b3371",
+      "original_full_sha256": "b9e5993f5b7e1f068cb58024bee6b56d13b0f949637f94e578e2dc1834186814",
+      "lip_mask": "lip_masks/00000028.png",
+      "lip_mask_sha256": "8aef47bc3e5c35ffd272cfed2208d361f9bdb167b19f959be46bdc6f256bd09c"
+    },
+    {
+      "full": "full_imgs/00000029.png",
+      "face": "face_imgs/00000029.png",
+      "coords": [
+        139,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "be17ee3d2db3f0bb8a30c4348bdbc948975f86d48a7bdc3eb7f75cc2c5cd2d89",
+      "face_sha256": "b75b6efbea6498c535d0f6ac35631ceb36e867e009f7fc1d042da103dfa7e4ed",
+      "original_full_sha256": "da250daea4a096a85787647401f769be0dfd1ba68a78ca1af6f417844485ef06",
+      "lip_mask": "lip_masks/00000029.png",
+      "lip_mask_sha256": "132672a6efbb506deb58a51680efa5a6da4d2ea7c2aedd3bf5d0deee550a081c"
+    },
+    {
+      "full": "full_imgs/00000030.png",
+      "face": "face_imgs/00000030.png",
+      "coords": [
+        139,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "d21f8ec30c24f09d903af4b079dbe648ddda8f43c0675b39f0ee2199c75fa102",
+      "face_sha256": "71db8bfc43df98db60bbecb9c6ec8a2084621f28e43977f91ac9629245d46ee2",
+      "original_full_sha256": "f70035005c62e592338ced7ccb967b893c1af8c05b633f707d3a5108c1843ed9",
+      "lip_mask": "lip_masks/00000030.png",
+      "lip_mask_sha256": "7efaebf2e057cb47cf3d6f1ee4c2bb0d860e9636e7dda50ea9cc379982b5f67f"
+    },
+    {
+      "full": "full_imgs/00000031.png",
+      "face": "face_imgs/00000031.png",
+      "coords": [
+        140,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "67dacbb2cfbd7e18164a16407194a0b9a8a7f54fc5bc8dbbe8c55a94686c1c75",
+      "face_sha256": "92777cb5dc921fbe821afc1f55c2cebf912b1f1db404566ec3aa5cf713ecba68",
+      "original_full_sha256": "2741b01c050cbbf4e7726a46b8cafcf62acb690407b0870f5bde3fc79061b83e",
+      "lip_mask": "lip_masks/00000031.png",
+      "lip_mask_sha256": "ec3ec50fb705da830c2bf70ecae47b9b3b232590648571b804233a085c8fb146"
+    },
+    {
+      "full": "full_imgs/00000032.png",
+      "face": "face_imgs/00000032.png",
+      "coords": [
+        140,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "bbb7af8f5281985b4d52e02b9692e7da148d054b38cfb4a87e79ca7b7b4a6b79",
+      "face_sha256": "1dd51ebb4a1e179cc1527881475a35453d93c4b8eef6327213c5c25794f7f648",
+      "original_full_sha256": "346959666e2667f9550c7017660abff4f5611f8922109816d15e230f6ea16a3f",
+      "lip_mask": "lip_masks/00000032.png",
+      "lip_mask_sha256": "a01beb4fe1575bade7f2724a1df9fcf2c299beb031a033c83513da6422c28a87"
+    },
+    {
+      "full": "full_imgs/00000033.png",
+      "face": "face_imgs/00000033.png",
+      "coords": [
+        140,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "47a5c5191f2e685bad141201c972fbb590a464bddcbd019ac404c3dddb84ebc8",
+      "face_sha256": "e1b09dd55f41954796b62d5c5731aa0c8bee1603fce94554ad4aa1a9b0b2eb6b",
+      "original_full_sha256": "672eb07f80fc07ee071d06508ad4d7432e916f42804352b1baddeb2718da241e",
+      "lip_mask": "lip_masks/00000033.png",
+      "lip_mask_sha256": "53892b1ca140e3d0926940d9a5c59270ba026526826f018b21829f64a5d90d8f"
+    },
+    {
+      "full": "full_imgs/00000034.png",
+      "face": "face_imgs/00000034.png",
+      "coords": [
+        140,
+        342,
+        674,
+        820
+      ],
+      "full_sha256": "0a0f4d8638ea00ea72fe71fd092c5fb0c5369ec677e40e9b9591e2131736d7d4",
+      "face_sha256": "5be60d4c42909c4df26f7665e6e486887f908b93065d590c62f27f2578ad46b9",
+      "original_full_sha256": "784d1bd7f0061a0c79ec60a51142ac9dadca3c4b3aa1b104dec408b35a9e2a4a",
+      "lip_mask": "lip_masks/00000034.png",
+      "lip_mask_sha256": "fff303e01c7722796b2cd1d6def373a8c23741ed52073611b0ecc00913e5ba01"
+    },
+    {
+      "full": "full_imgs/00000035.png",
+      "face": "face_imgs/00000035.png",
+      "coords": [
+        140,
+        342,
+        674,
+        820
+      ],
+      "full_sha256": "0a934d9809dd0883a002b51a8d45a71a4dad4649691e1487134d4cde9f03e190",
+      "face_sha256": "259e79602ccd11a5ba34ca43ad6c7bd7e51bc3b6aa2d6d32dfc366ca1fab8b73",
+      "original_full_sha256": "f2eae3269c75bc43c1dab57da926d5f5eb97afa18a586ebb41ba688cae4075e6",
+      "lip_mask": "lip_masks/00000035.png",
+      "lip_mask_sha256": "4936a92b8bd705332a08202083164759e1673d475bf61d9830206e99141bfa9c"
+    },
+    {
+      "full": "full_imgs/00000036.png",
+      "face": "face_imgs/00000036.png",
+      "coords": [
+        139,
+        343,
+        674,
+        819
+      ],
+      "full_sha256": "8047e0a522ad8052f7410554d6a0f4a0144b9f25e4b2c26688ff1faae86b87f6",
+      "face_sha256": "875e3f34b7f41b3f1cec369dc605db175eee56cec5865b58ca7057e60420a280",
+      "original_full_sha256": "968873a9699f2a8c348f3192ac5d9309cdb79d1f6f0782743232ba337d14fc19",
+      "lip_mask": "lip_masks/00000036.png",
+      "lip_mask_sha256": "c0ae57ccb2f01e9363d0ba4f4450ea1cf77aeba323293ccbdee34ba59db26e8b"
+    },
+    {
+      "full": "full_imgs/00000037.png",
+      "face": "face_imgs/00000037.png",
+      "coords": [
+        139,
+        343,
+        674,
+        819
+      ],
+      "full_sha256": "557398ed09362efd0f74acd47ac26f3d9eb51aa0d5c50b3d4f664e64adb176bd",
+      "face_sha256": "caf8a9aff01eddd5324966dd68b34f0756fd3775486ed51725590f37700ec723",
+      "original_full_sha256": "5b502418d65efb12dcd698aa060fa93813e37d2fbfb767d4c447a42f05c74b93",
+      "lip_mask": "lip_masks/00000037.png",
+      "lip_mask_sha256": "78741213aa724418141cda85b654ea7fe8d345abf0bb19b7826a2b3106b917c6"
+    },
+    {
+      "full": "full_imgs/00000038.png",
+      "face": "face_imgs/00000038.png",
+      "coords": [
+        138,
+        344,
+        674,
+        818
+      ],
+      "full_sha256": "4b3bb9327d327d6db18d85904fee440f65e6e2481386d3ac4e0dda0104b34d7d",
+      "face_sha256": "dbd24b477e44b9eb6b19b5eb4edd344de3697d0a027c3c050a6f0455d4c1936c",
+      "original_full_sha256": "28c0eb1c2af5b27c0bbc07ce44878eee74b745aeb38f1ffe8494f08e82b088c0",
+      "lip_mask": "lip_masks/00000038.png",
+      "lip_mask_sha256": "e9882e58b76f4fe1f7e80f638031db309fd4083977493837148323eafe98ece1"
+    },
+    {
+      "full": "full_imgs/00000039.png",
+      "face": "face_imgs/00000039.png",
+      "coords": [
+        138,
+        344,
+        674,
+        818
+      ],
+      "full_sha256": "35ad5238340350761231e8aef0b18110aa8dd0ee6087db52edcfcb15b18c6e2f",
+      "face_sha256": "5df28581297c4e0444e8b3103c7ae5ac75acd736fbbf5b649bd613da4ac6d728",
+      "original_full_sha256": "9c5dd55f312f5d14fa577731cbb0cbe2825b050288ddb045b1d67d12ec81a0b5",
+      "lip_mask": "lip_masks/00000039.png",
+      "lip_mask_sha256": "db28d512be683f6ab4e2fca0497a8394057a27a7a68cc655d12f3a8048fa470f"
+    },
+    {
+      "full": "full_imgs/00000040.png",
+      "face": "face_imgs/00000040.png",
+      "coords": [
+        137,
+        345,
+        674,
+        818
+      ],
+      "full_sha256": "cada67b983ae4a64ccba07d86befd952c8bfa2a1f95047ffebfda5116011ab8c",
+      "face_sha256": "d3561b113805ecae8ddded899df56487e0c5f07bf2382d63d8b7bc308e8ff289",
+      "original_full_sha256": "8f43894f9c47a067c84fdd205ad08e9e7e5b1c2130cfc0c6aeb44f51563bfd5e",
+      "lip_mask": "lip_masks/00000040.png",
+      "lip_mask_sha256": "3a89700eac5dca157d7c3da1631f54d358f07140f837821fcbe36d9ed67f8562"
+    },
+    {
+      "full": "full_imgs/00000041.png",
+      "face": "face_imgs/00000041.png",
+      "coords": [
+        137,
+        345,
+        674,
+        818
+      ],
+      "full_sha256": "d38e09b6003c7640f82ee5e1bfd9c8fe4d6dcfaab9052a2f13b68b944be3aa05",
+      "face_sha256": "01ac4bc9361734bfc25ca6af187e529f7de6a4d47f3b1a91845449bafb285b5e",
+      "original_full_sha256": "b78bb2e92a04a767ce038403ebc9e0c7838ebc6c33e4d569bcb3ed9a3447e288",
+      "lip_mask": "lip_masks/00000041.png",
+      "lip_mask_sha256": "8473ce954f086776eef5f151cd632c3b251eb3eb96ca87b531842c0478958622"
+    },
+    {
+      "full": "full_imgs/00000042.png",
+      "face": "face_imgs/00000042.png",
+      "coords": [
+        137,
+        345,
+        674,
+        818
+      ],
+      "full_sha256": "bf8c48ec34343d9146d814990ca6fea33eb490ac49dae44e552dd3c1ef9a2755",
+      "face_sha256": "f89f0f4172e956f40a08cc59550aa421d692d9b239f077a696276d8aa445489c",
+      "original_full_sha256": "9fadfd0c0221b2a67978e368f3ba0d6913fc71bfd5f2003c816848d8e521dabf",
+      "lip_mask": "lip_masks/00000042.png",
+      "lip_mask_sha256": "09801d5f2b7151d8c42c1c46d496eeb5ee2447d22e7e35b95c05b07b8f471963"
+    },
+    {
+      "full": "full_imgs/00000043.png",
+      "face": "face_imgs/00000043.png",
+      "coords": [
+        136,
+        344,
+        674,
+        818
+      ],
+      "full_sha256": "d534ce10d3ee3acde255635e2a716190e4c09988e958810a8686c8c9a4fe766e",
+      "face_sha256": "d94d3ef33e032cb6694eda753c73e813777e13a392a6a368a7dc59eda82d02e8",
+      "original_full_sha256": "a62a404d6036d5abe69a0832262ad6ea77ecee4911a369865f5b82ac4c50bd42",
+      "lip_mask": "lip_masks/00000043.png",
+      "lip_mask_sha256": "02fa4ee988391610c372742dac570231ab84cbdcb6453a2d07e8ec8f5cde2d40"
+    },
+    {
+      "full": "full_imgs/00000044.png",
+      "face": "face_imgs/00000044.png",
+      "coords": [
+        136,
+        344,
+        675,
+        818
+      ],
+      "full_sha256": "26f2434cab595a61232340ca23a0728526f76c75267632e899883f467c15acd0",
+      "face_sha256": "63d375247290f8607cfaa52aa6a203248cc8dc78c4e50dc0e901f7e663bc7168",
+      "original_full_sha256": "d40a9afaf4077274e56580c2a3fb67c5c1287cf68e8b6d9ce5e3887ffed0de02",
+      "lip_mask": "lip_masks/00000044.png",
+      "lip_mask_sha256": "4be334979b9f9e1c4971531b2ac4474f31d93ef05adbab0076c006e3d81a2bbb"
+    },
+    {
+      "full": "full_imgs/00000045.png",
+      "face": "face_imgs/00000045.png",
+      "coords": [
+        136,
+        343,
+        675,
+        819
+      ],
+      "full_sha256": "d77be61c6e4084a24310e1bf9e2ee4ef84759eee76efae5b4b685f3083dd9ffc",
+      "face_sha256": "71c41a694f51c40fe8081988d0fb54e236cae399643f55f9f36e20e663aba59d",
+      "original_full_sha256": "e4fcd13821fa6ae478cc4058d7588030917a8248a3eb8496577bf9027dba41f3",
+      "lip_mask": "lip_masks/00000045.png",
+      "lip_mask_sha256": "f91b4cc4bea84d845e866782177c05c596804de18f3a85dbc04aad9151701fc2"
+    },
+    {
+      "full": "full_imgs/00000046.png",
+      "face": "face_imgs/00000046.png",
+      "coords": [
+        136,
+        342,
+        675,
+        819
+      ],
+      "full_sha256": "094ee617652c294e5d81f009cc072c1867cd9ac2cd86df8e7138860ceee373cf",
+      "face_sha256": "00909ed6f563fa838a85d67ea568314d9913d5d3fb66ea759eb0f644646d0728",
+      "original_full_sha256": "ae8537f3e2dfd6cf7f33fe4b043c8b0afd605442a3fa8a918bac487f47b4f514",
+      "lip_mask": "lip_masks/00000046.png",
+      "lip_mask_sha256": "5ee2f7cbd59b0ea098ad367336f8c146a555067797798667b5157454f78f1089"
+    },
+    {
+      "full": "full_imgs/00000047.png",
+      "face": "face_imgs/00000047.png",
+      "coords": [
+        136,
+        342,
+        675,
+        819
+      ],
+      "full_sha256": "6ae3d790e1640641f45dc0057a0442db0d4a20f08004c8a605808591535b1320",
+      "face_sha256": "c0fd44800c4f78700e55ac38e8eccf664753f9cca7dd2371b5abc3d1eb371ee5",
+      "original_full_sha256": "3b04458b58f3655d8489a071db4b15cdb2a0a2bce12ac16b1ed64c02ae586b1e",
+      "lip_mask": "lip_masks/00000047.png",
+      "lip_mask_sha256": "8c992647070087b8968f5fa265412afad577cb02c70d94dc2646eb29f9c83ddf"
+    },
+    {
+      "full": "full_imgs/00000048.png",
+      "face": "face_imgs/00000048.png",
+      "coords": [
+        136,
+        341,
+        675,
+        819
+      ],
+      "full_sha256": "eaff916c495c796713ff12fdd7ea241a41135745bb142122edce9e3adf70fdaa",
+      "face_sha256": "2f38a0503fc815d0cd7b3be0b79241e3e5003a12d257123ae05bd8a0c60b60c9",
+      "original_full_sha256": "43e563c2dd67790fa4772268166053ffe01442d7832bb37583089337cb994fe0",
+      "lip_mask": "lip_masks/00000048.png",
+      "lip_mask_sha256": "ce0f7b42c45cc48bc425268de847b3d87dc9437fd5c10d885ad62c0a5cf98057"
+    },
+    {
+      "full": "full_imgs/00000049.png",
+      "face": "face_imgs/00000049.png",
+      "coords": [
+        136,
+        341,
+        675,
+        819
+      ],
+      "full_sha256": "0ff5d8dada9b5afb21c32e7938c1f4e5c3286824f3ae6a59a241e5238913f986",
+      "face_sha256": "528e8e7c45c60831f20185548b068d001f960302f8f0184b74e29c4c2ea0aa57",
+      "original_full_sha256": "bf5234d305110da006f4baf30aa5b736ef4339715b067f844f177b5271b45435",
+      "lip_mask": "lip_masks/00000049.png",
+      "lip_mask_sha256": "76ba1facb1c47a2dae3e546309e46d5f7493bce07e2e47c575ddc1af28d1a420"
+    },
+    {
+      "full": "full_imgs/00000050.png",
+      "face": "face_imgs/00000050.png",
+      "coords": [
+        136,
+        340,
+        675,
+        819
+      ],
+      "full_sha256": "9e9952514d873850c69709ff49eeaeb3117ce0d761c65f5ab3f023554c8663d9",
+      "face_sha256": "1ef9642fd9b28b538b121da124b706620c647bb3263914fa947af93acbf14673",
+      "original_full_sha256": "14c336f209ad093842190b588eb51fde29d4cf1c252eee46f3298151a59f520b",
+      "lip_mask": "lip_masks/00000050.png",
+      "lip_mask_sha256": "0d655f1517ff23804f8ab6e933ffcd5ccab51a9ee1bbca715790038aa49c276b"
+    },
+    {
+      "full": "full_imgs/00000051.png",
+      "face": "face_imgs/00000051.png",
+      "coords": [
+        136,
+        340,
+        675,
+        819
+      ],
+      "full_sha256": "204804a6cfff9ed47bb451500ff3d02227fd0ebed2e16426d064a3fdac67322b",
+      "face_sha256": "f91ad5db4d36b2bd8567306c25725e675b57aa94d31851162f95b5c4669ea150",
+      "original_full_sha256": "f52bec96561a70a6be872a609a3d4758226cd47bc1b8e264e36b621b590dab58",
+      "lip_mask": "lip_masks/00000051.png",
+      "lip_mask_sha256": "9f969b51f9f3d77ab586d465570685871c13be0cb0d3928744cf6d218992938d"
+    },
+    {
+      "full": "full_imgs/00000052.png",
+      "face": "face_imgs/00000052.png",
+      "coords": [
+        136,
+        340,
+        675,
+        818
+      ],
+      "full_sha256": "9d4a338e26e6fea3708718f0b03d9db334f65dd453dc298635fba488660475a8",
+      "face_sha256": "5b0c67f800128a51854d6fb11c23eb7c99ed3437da8a7fa6858616e800308f7e",
+      "original_full_sha256": "92c5dd0ea88996a6fedc605388a57b98d23bbb424d61ba0017b54c9879b8d8a4",
+      "lip_mask": "lip_masks/00000052.png",
+      "lip_mask_sha256": "4d563cc6817b19d0ea6d0e714da90ffdf3d77e61afd0e5921b7b3be40933a27b"
+    },
+    {
+      "full": "full_imgs/00000053.png",
+      "face": "face_imgs/00000053.png",
+      "coords": [
+        137,
+        340,
+        675,
+        818
+      ],
+      "full_sha256": "60fe49ff4833fe173c5419bbacfefe244033492355080d1b16e2104caaf32702",
+      "face_sha256": "6e0f2591387628ef31a5e08606530ba00d4dbafe484ba870b98b2694e29fb817",
+      "original_full_sha256": "3ee5604463a5f064d57de0c737224f50f163077c26ac8d7e5fa2968a666274d6",
+      "lip_mask": "lip_masks/00000053.png",
+      "lip_mask_sha256": "466387e05c568f340c73b0c1bd265632fc1e5c88c17c4d2b62e915dce863c7c1"
+    },
+    {
+      "full": "full_imgs/00000054.png",
+      "face": "face_imgs/00000054.png",
+      "coords": [
+        137,
+        341,
+        675,
+        818
+      ],
+      "full_sha256": "59c57867068425210eda1d6616677fbf7e54a91c891a7d3032486151170876b9",
+      "face_sha256": "80619b7712c7da8572780d9586b03bb1869772b10ea87694599278ff6eb33a3a",
+      "original_full_sha256": "b2138324a443a877c0e2934f14b830c61bbb61dc4fc7c77a404535b92fff3a47",
+      "lip_mask": "lip_masks/00000054.png",
+      "lip_mask_sha256": "3b0ab833a74b69ba6dae6ccb4b4f6cea6ffe9e842eb6dc4a0548a7b9bb5b0f3e"
+    },
+    {
+      "full": "full_imgs/00000055.png",
+      "face": "face_imgs/00000055.png",
+      "coords": [
+        137,
+        341,
+        674,
+        818
+      ],
+      "full_sha256": "336b1c3dd4da895c99c995dbbbc66cc74ba5a15f0aed17fa411a2a0a71c85654",
+      "face_sha256": "bd9d84caafdcec55d1e67b7e3659d6b9eebac628448886ee9b16ff52fe4c7ad7",
+      "original_full_sha256": "be44423967ca24153dc66f418e5d59a5cc7cc2033f827205000d1dd346efd227",
+      "lip_mask": "lip_masks/00000055.png",
+      "lip_mask_sha256": "65f33c2c0bf8e4b8bbccbf2c8c4aad569fd86c2a3e8dbffb7c78fe665be1cc73"
+    },
+    {
+      "full": "full_imgs/00000056.png",
+      "face": "face_imgs/00000056.png",
+      "coords": [
+        138,
+        341,
+        674,
+        818
+      ],
+      "full_sha256": "7e81f5a4708525de1bfbb3136b04b56e40b18eb09b5d35bdf6b1533b9f498f5c",
+      "face_sha256": "e14e3721df3c32bbe689aa0ae5e88548dffd75586ce92f8cbbe899add67db844",
+      "original_full_sha256": "dc61e6fa21826005858cadb2029aa4e95d29238be7a7ec5024f09bd2f7e2864a",
+      "lip_mask": "lip_masks/00000056.png",
+      "lip_mask_sha256": "dfa473ae416ba49941892c7cb68aace460009d5bf3b1dd25d9071e875d89bd42"
+    },
+    {
+      "full": "full_imgs/00000057.png",
+      "face": "face_imgs/00000057.png",
+      "coords": [
+        138,
+        342,
+        674,
+        818
+      ],
+      "full_sha256": "c0f644e7f3b9a5c3103596847bd1473f71297a4db2092ee5e7aaa27c8cbe57c0",
+      "face_sha256": "48fac82ee48e6eeb6a7d8840787fa3f6b56cb0f49b7b27823d013cb964a02960",
+      "original_full_sha256": "c99f004dfaea3924cb3cc072b515cfe166592f21f231adb57b8e63494d2a09e3",
+      "lip_mask": "lip_masks/00000057.png",
+      "lip_mask_sha256": "42e97d0570739a2791a22a3fee496587bc005e3dae12addd537fe6f21b253c48"
+    },
+    {
+      "full": "full_imgs/00000058.png",
+      "face": "face_imgs/00000058.png",
+      "coords": [
+        138,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "59da9a55f4f45abd299aee96c05f4a4ebc33a8442e342d887e73f63ed0fb064e",
+      "face_sha256": "a2e2658ca529842b639740e0d2bc2fe9f535359b5e77fe0e123d95f93f588e10",
+      "original_full_sha256": "3238010c2677c40f381f8597541f3394f4759daff953f4caf1f23fddfa16ef49",
+      "lip_mask": "lip_masks/00000058.png",
+      "lip_mask_sha256": "6ae90a39ff4b40e7739fd24318ce77c757be549028b41f08bed3088ba86e33a5"
+    },
+    {
+      "full": "full_imgs/00000059.png",
+      "face": "face_imgs/00000059.png",
+      "coords": [
+        138,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "2e85aea7a46a7c89bd04032ce0a99a20563014b605b62ad1029b68382b4a93f4",
+      "face_sha256": "9427991d56a9a28cba2193ba1885533d8b7ab2d17d2770892001f3dceb7b4515",
+      "original_full_sha256": "e82ff0e10c58b36c7609df6098727f0fdb9abd4f9048ccb5efe3f143e2689c7a",
+      "lip_mask": "lip_masks/00000059.png",
+      "lip_mask_sha256": "81ee49cbbe3f700cbb554ef0356c539552b466078aaf9737398b1de35ff273c1"
+    },
+    {
+      "full": "full_imgs/00000060.png",
+      "face": "face_imgs/00000060.png",
+      "coords": [
+        138,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "08938f20a870c4ef4ab2e58338f0e9864daa283d55aa2d92488e5602a0bbd1ae",
+      "face_sha256": "b308b62a9237b6be8e9d9eb93a66adf89d462bf1b72a0e6bfada6c1f954eb02a",
+      "original_full_sha256": "f09ca07b74b76b19f36f8cb68489027befa4c620dac4517a54152d3180a01425",
+      "lip_mask": "lip_masks/00000060.png",
+      "lip_mask_sha256": "b3b30efe531c8b0a7fea47654649affcc79a31a828b8e1450c6a112458a39bbb"
+    },
+    {
+      "full": "full_imgs/00000061.png",
+      "face": "face_imgs/00000061.png",
+      "coords": [
+        138,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "e63aa81e67b31de071c634e37429e572091fb300432d08d430cfdcfe967282f3",
+      "face_sha256": "6d86d7f821de204418408a1ee6e2d49de5003db84f70d84e772e6f7c4246ac07",
+      "original_full_sha256": "a6d03decc1fdccd5bb161ae8eb5a85fdc61d5599409fcaed5763779c49a0d0f8",
+      "lip_mask": "lip_masks/00000061.png",
+      "lip_mask_sha256": "5514dec894e92a20a944c5e6260abdc2be3f728ad6b0458ac50199902222f388"
+    },
+    {
+      "full": "full_imgs/00000062.png",
+      "face": "face_imgs/00000062.png",
+      "coords": [
+        138,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "f3ba8c5e2cbaa079c475b69397e64161475d66c8dc3d66c0743570cb7c3c8c0a",
+      "face_sha256": "ad5113bde7854a2334f803dde0ab8bee160bce0a13c761734fb795964d0771a6",
+      "original_full_sha256": "be349a79de6f8c949741ae81a387ec7ceb11c72e10b9d3d171b31edef0d0a10c",
+      "lip_mask": "lip_masks/00000062.png",
+      "lip_mask_sha256": "80a957b0a20e8598ccd415f02613ec03845448342f2570efa6fd4d67f90d5eaa"
+    },
+    {
+      "full": "full_imgs/00000063.png",
+      "face": "face_imgs/00000063.png",
+      "coords": [
+        138,
+        342,
+        674,
+        819
+      ],
+      "full_sha256": "b26b2423f3becc57cd20b09e9387e92336148dde49db49cc707b9091f5aefc83",
+      "face_sha256": "a78328c92e05d991256543297ffbbcdaffd7a8ea45075e8878d4b9c41e12e917",
+      "original_full_sha256": "5a2775c530f62aecebe14aff69122a8a44cdf088ec8927a4af83741d716e0513",
+      "lip_mask": "lip_masks/00000063.png",
+      "lip_mask_sha256": "51e628d6a1ac34e394429e1def9be86e8c7785abce1750a3481ec2d41ecd0f79"
+    }
+  ],
+  "scene": {
+    "id": "ielts-practice-room-v2-desk",
+    "background_sha256": "dcb320583c680b5ecd334e83b54ee7d0b70258ae2f5238d3263dc56eeb2031df",
+    "foreground_desk_y": 620,
+    "generation": "built-in imagegen, reference-assisted generation",
+    "matting": "offline Robust Video Matting mobilenetv3 fp32, recurrent states retained",
+    "matting_model_sha256": "f01e0c9338b9a6a31b881ea6d4360d70c1e549701b3792e14c9ed88d6196c5a1",
+    "description": "Fictional English speaking-test practice room"
+  },
+  "source_frame_repeats": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+  ]
+}

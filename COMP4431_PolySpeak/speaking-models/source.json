@@ -1,0 +1,9 @@
+{
+  "name": "PolyInterview / LiveTalking Wav2Lip 256 checkpoint",
+  "architecture": "vendor.wav2lip.model.Wav2Lip (reference wav2lip_v2.py)",
+  "filename": "wav2lip.pth",
+  "file_sha256": "b22d7ac86295df667644b17254dc71250c2600b89e20403e90e58812450bc173",
+  "archive_sha256": "3e0b106e1256b51f0c3b0408677798598b88623ea4feef862d9b8dbaebf6cef8",
+  "share_url": "https://polyuit-my.sharepoint.com/:u:/g/personal/zijiawang_polyu_edu_hk/IQCW_tSmZAsTTIpl26BDz1nXASb9UujC-_9_lIwDV4QJSnE?e=hmC2v8",
+  "reference": "https://github.com/lipku/LiveTalking"
+}
