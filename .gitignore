@@ -30,3 +30,4 @@ output/
 Thumbs.db
 .vscode/
 .idea/
+*.safetensors
