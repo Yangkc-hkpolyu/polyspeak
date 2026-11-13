@@ -207,7 +207,12 @@ export default {
       try { player.currentTime = Math.max(0, word.offset_seconds - .15); await player.play(); } catch { this.toast('Load the audio using the recording player, then select a word to replay it.'); }
     },
     exportReport() { window.location.href = this.path('/export'); },
-    printReport() { window.print(); },
+    printReport() {
+      const closed = [...document.querySelectorAll('#reportPanel details:not([open])')];
+      closed.forEach(item => { item.open = true; });
+      window.addEventListener('afterprint', () => closed.forEach(item => { item.open = false; }), { once: true });
+      window.print();
+    },
     dateLabel(value) { return new Date(value).toLocaleString('en-GB'); },
     async testConnection() {
       this.testingConnection = true;

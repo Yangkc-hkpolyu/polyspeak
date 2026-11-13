@@ -10,7 +10,7 @@
 - 报告：逐题特征、语言维度、原话修订、录音复听、JSON 导出和打印。
 
 这是公开仓库，可以直接分享链接、克隆代码或下载源码，无需添加协作者。API Key、录音、历史记录和本机环境不在 Git 中。
-模型和人物素材可从 [v3.0.0 Release](https://github.com/Yangkc-hkpolyu/polyspeak/releases/tag/v3.0.0) 直接下载。
+数字人口型模型和人物素材可从 [v3.0.0 Release](https://github.com/Yangkc-hkpolyu/polyspeak/releases/tag/v3.0.0) 直接下载。
 
 ## 第一次启动（Windows）
 

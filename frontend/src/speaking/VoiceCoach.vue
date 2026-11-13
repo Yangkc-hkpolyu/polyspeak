@@ -1,7 +1,7 @@
 <template>
   <section class="voice-review" aria-label="Voice practice advice">
     <h5>Pace and pause review</h5>
-    <p class="fine-print">Review estimated pace, pauses and recording level. Optional fine-tuned advice uses these measurements only.</p>
+    <p class="fine-print">Get advice on your pace and pauses.</p>
     <p v-if="!result && availability && !availability.ready" class="fine-print">{{availability.message}}</p>
     <button class="button subtle" :disabled="busy" @click="review">{{busy ? 'Reviewing your recording…' : result ? 'Review again' : 'Review pace and pauses'}}</button>
     <p v-if="error" role="alert">{{error}}</p>
@@ -13,7 +13,7 @@
       </dl>
       <p v-if="result.advice.status==='ok'"><strong>Fine-tuned voice advice</strong><br>{{result.advice.advice}}</p>
       <p v-else class="fine-print">{{result.advice.message}}</p>
-      <p class="fine-print">{{result.scope}}</p>
+      <details class="voice-method"><summary>About these estimates</summary><p class="fine-print">{{result.scope}}</p></details>
     </div>
   </section>
 </template>
@@ -41,5 +41,6 @@ export default {
 .voice-review h5{margin:0;font-size:15px}.voice-review p{line-height:1.7}
 .voice-measurements{display:flex;flex-wrap:wrap;gap:18px;margin:18px 0}
 .voice-measurements dt{font-size:12px;color:#52635a}.voice-measurements dd{margin:6px 0 0;font-weight:600}
+.voice-method{font-size:12px;color:#52635a;margin-top:12px}.voice-method summary{cursor:pointer}
 @media print{button{display:none}}
 </style>

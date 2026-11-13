@@ -39,6 +39,7 @@ function wav() {
     await page.goto(origin, {waitUntil:'networkidle'});
     await page.getByRole('button',{name:'Practice history',exact:true}).click();
     await page.locator('.history-item').first().click();
+    await page.locator('.answer-review > summary').first().click();
     await page.getByRole('button',{name:'Review pace and pauses',exact:true}).click();
     await page.locator('.voice-measurements').waitFor({timeout:150000});
     assert.match(await page.locator('.voice-review').innerText(), realModel ? /Fine-tuned voice advice/ : /adapter weights are missing/);
@@ -50,15 +51,18 @@ function wav() {
     assert.deepEqual(exported.turns[0].voice_coach, saved.turns[0].voice_coach);
     fs.mkdirSync(folder,{recursive:true});
     await page.locator('.voice-review').screenshot({path:path.join(folder,'voice-coach-desktop.png')});
-    await page.setViewportSize({width:390,height:844});
-    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-    await page.locator('.voice-review').screenshot({path:path.join(folder,'voice-coach-mobile.png')});
+    if (!process.argv.includes('--desktop-only')) {
+      await page.setViewportSize({width:390,height:844});
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      await page.locator('.voice-review').screenshot({path:path.join(folder,'voice-coach-mobile.png')});
+    }
     await page.reload({waitUntil:'networkidle'});
     await page.getByRole('button',{name:'Practice history',exact:true}).click();
     await page.locator('.history-item').first().click();
+    await page.locator('.answer-review > summary').first().click();
     await page.locator('.voice-measurements').waitFor();
     await assertEnglishUI(page, 'saved voice review');
     assert.deepEqual(errors,[]);
-    console.log(`Voice review UI, persisted measurements, ${realModel ? 'real adapter inference' : 'unavailable-adapter message'}, export, English and mobile layout passed.`);
+    console.log(`Voice review UI, persisted measurements, ${realModel ? 'real adapter inference' : 'unavailable-adapter message'}, export and English passed (${process.argv.includes('--desktop-only') ? 'desktop only' : 'desktop and mobile'}).`);
   } finally { await browser.close(); }
 })().catch(error => {console.error(error);process.exitCode=1;});
