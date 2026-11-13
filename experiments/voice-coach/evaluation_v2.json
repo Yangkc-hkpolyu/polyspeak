@@ -1,0 +1,3630 @@
+{
+  "evaluation_note": "Synthetic held-out cases; automated checks are incomplete and require human review.",
+  "test_path": "C:\\Users\\王健沣\\Documents\\Codex\\2026-11-12\\new-chat-3\\work\\finetune\\eval_samples_v2.jsonl",
+  "base": {
+    "summary": {
+      "examples": 38,
+      "flagged_examples": 27,
+      "flag_counts": {
+        "empty": 0,
+        "too_long": 0,
+        "format_flag": 0,
+        "pronunciation_claim": 16,
+        "unsupported_pace": 9,
+        "unsupported_pause": 0,
+        "wpm_number_mismatch": 3,
+        "pause_number_mismatch": 0,
+        "unsupported_exam_score": 0,
+        "contradictory_low_level_advice": 0,
+        "contradictory_clipping_claim": 0,
+        "unsupported_clarity_claim": 17,
+        "unsupported_noise_claim": 1,
+        "unsupported_personal_inference": 3
+      },
+      "quality_coverage_counts": {
+        "missed_clipping_cue": 6,
+        "missed_low_level_cue": 13
+      },
+      "scope": "Heuristic flags and cue coverage only; manually assess relevance, grounding and quality."
+    },
+    "cases": [
+      {
+        "index": 0,
+        "group": "1-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 24.0,
+          "transcript_word_count": 21,
+          "words_per_minute": 52.5,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0619
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 24.0 seconds of speaking, the rate is about 52.5 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speech is clear and well-paced. You maintain a steady speaking rate throughout the session, which is great for understanding. Your energy estimate suggests you have about 6% of your audio clipped off, but this doesn't significantly impact comprehension. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 1,
+        "group": "0-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 28.7,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 14.3,
+              "end_seconds": 15.3,
+              "duration_seconds": 1.0
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -4.3,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "Your speaking rate is slightly slower than usual, but it's still within acceptable limits. You have one pause of about 1 second that doesn't significantly impact your overall delivery. Your pacing seems natural, with just the right amount of time between words. The recording quality is good; there's no clipping or excessive background noise. Overall, you did well! Keep up the great work.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": true,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 2,
+        "group": "1-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 31.2,
+          "transcript_word_count": 60,
+          "words_per_minute": 115.4,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -41.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 31.2 seconds of speaking, the rate is about 115.4 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speech is clear and well-paced throughout the recording. The VAD detection method indicates that you spoke for exactly 31.2 seconds at an average speaking rate of about 115 words per minute. Your performance was excellent with no pauses detected, and your word count matches the transcript length accurately. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 3,
+        "group": "0-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 26.8,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 6.7,
+              "end_seconds": 7.8,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 13.4,
+              "end_seconds": 14.7,
+              "duration_seconds": 1.3
+            },
+            {
+              "start_seconds": 20.1,
+              "end_seconds": 21.2,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -50.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking rate is very fast at times, but overall it's good. You have a clear pause count of 3, which helps with clarity. The recording quality seems to be excellent; there's no clipping or distortion. Your pauses are well-timed, adding to your natural flow. Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 4,
+        "group": "1-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 36.5,
+          "transcript_word_count": 84,
+          "words_per_minute": 138.1,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0398
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 36.5 seconds of speaking, the rate is about 138.1 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speech is clear and well-paced throughout the recording. You maintain a steady speaking rate of approximately 138 words per minute without any noticeable pauses or hesitations. Your delivery is smooth and natural, with no apparent issues that would affect comprehension. Keep up this good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": true,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 5,
+        "group": "1-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 25.5,
+          "transcript_word_count": 45,
+          "words_per_minute": 105.9,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 6.4,
+              "end_seconds": 7.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 12.8,
+              "end_seconds": 14.0,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 19.1,
+              "end_seconds": 19.8,
+              "duration_seconds": 0.7
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0684
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 25.5 seconds of speaking, the rate is about 105.9 words per minute. Try replaying the 3 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speaking rate is very fast at times, but overall it's clear and easy to follow. You have good pacing with just enough pause for clarity. Your pronunciation assessment was not done due to technical issues. The recording quality seems good, though there is some clipping. Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 6,
+        "group": "1-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 20.4,
+          "transcript_word_count": 19,
+          "words_per_minute": 55.9,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 10.2,
+              "end_seconds": 11.5,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -8.5,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 20.4 seconds of speaking, the rate is about 55.9 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "Your speaking rate is quite fast at 56 words per minute, which can be challenging to follow for listeners. You might consider slowing down slightly to make your speech more digestible. Your pause count of one indicates that you have some natural breaks in your speech, but it's worth noting if you could add more pauses to help with comprehension. Overall, your delivery is clear and on point, though maintaining a steady pace would enhance clarity. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 7,
+        "group": "0-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 35.8,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 17.9,
+              "end_seconds": 18.5,
+              "duration_seconds": 0.6
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -36.5,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking rate is slightly slower than usual, but it's still within acceptable limits. The pause you had at approximately 17.9 seconds was just over one minute long, which might be considered too long for this context. Your overall delivery is clear and on point, with no issues detected during transcription. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 8,
+        "group": "0-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 35.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -44.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking is clear and steady at 35.5 seconds of speech per minute. The VAD detection method indicates no pauses during your segment, which is great for maintaining focus on your content. Your delivery is smooth and easy to follow, making it perfect for any audience. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 9,
+        "group": "1-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 36.9,
+          "transcript_word_count": 46,
+          "words_per_minute": 74.8,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 9.2,
+              "end_seconds": 10.3,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 18.4,
+              "end_seconds": 19.0,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 27.7,
+              "end_seconds": 28.9,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -14.3,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 36.9 seconds of speaking, the rate is about 74.8 words per minute. Try replaying the 3 estimated pauses to see whether they fit your phrasing.",
+        "response": "Your speech is clear and well-paced throughout, with just a few minor pauses that don't detract from your flow. Your speaking rate of about 75 words per minute is excellent for maintaining engagement without losing clarity. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 10,
+        "group": "1-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 37.1,
+          "transcript_word_count": 79,
+          "words_per_minute": 127.8,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 18.6,
+              "end_seconds": 19.5,
+              "duration_seconds": 0.9
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0442
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 37.1 seconds of speaking, the rate is about 127.8 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speaking rate is very fast at around 128 words per minute, which can be challenging to follow. You might consider slowing down slightly for better comprehension. Your pause count is correct with one pause of about 1 second. The VAD detection method indicates that you were detected correctly without any issues. Overall, your performance is good despite the high speed. Keep up the great effort!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": true,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 11,
+        "group": "1-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 15.1,
+          "transcript_word_count": 59,
+          "words_per_minute": 234.4,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 7.5,
+              "end_seconds": 8.9,
+              "duration_seconds": 1.4
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0626
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 15.1 seconds of speaking, the rate is about 234.4 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speaking rate is very fast at around 234 words per minute, which can be challenging to follow. You maintain good pacing throughout your speech, with just one pause that adds about 1.4 seconds of silence. Your energy estimate suggests you have enough stamina for this length of speech without needing breaks. Keep up the great effort!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": true,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 12,
+        "group": "0-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 26.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 6.6,
+              "end_seconds": 7.4,
+              "duration_seconds": 0.8
+            },
+            {
+              "start_seconds": 13.2,
+              "end_seconds": 14.4,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 19.9,
+              "end_seconds": 21.0,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -5.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing.",
+        "response": "Your speaking is clear and steady throughout, with just a few minor pauses that don't detract from your flow. Your pacing is excellent; you maintain a consistent speed without rushing through any part of your speech. The energy estimate suggests you have a good grasp on the topic, but there's room for improvement in terms of fluency and naturalness. Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 13,
+        "group": "0-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 34.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0188
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speaking rate is just right at about 26 words per minute, which is excellent for maintaining clarity without rushing through your delivery. Your pacing seems perfectly natural, with no need to slow down or speed up. The energy estimate suggests you have a good level of confidence in your performance, so keep it up! Keep practicing until you feel comfortable with this tempo.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": true,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": true
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": true,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 14,
+        "group": "0-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 17.1,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -24.9,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "Your speaking rate is very fast at 17.1 seconds per word, which is great for efficiency but might be challenging to follow if you're reading from a script. Your speech is clear and free of errors, so your delivery is excellent. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 15,
+        "group": "1-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 38.6,
+          "transcript_word_count": 34,
+          "words_per_minute": 52.8,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -42.2,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 38.6 seconds of speaking, the rate is about 52.8 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speech is clear and well-paced throughout the recording. You maintain a steady speaking rate of approximately 53 words per minute, which is excellent for maintaining focus on your content without losing clarity. Your delivery is smooth with no noticeable pauses, ensuring that you can cover all points effectively within the given time frame. Keep up this good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 16,
+        "group": "1-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 20.6,
+          "transcript_word_count": 48,
+          "words_per_minute": 139.8,
+          "pause_count": 4,
+          "pauses": [
+            {
+              "start_seconds": 4.1,
+              "end_seconds": 5.2,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 8.2,
+              "end_seconds": 9.0,
+              "duration_seconds": 0.8
+            },
+            {
+              "start_seconds": 12.4,
+              "end_seconds": 13.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 16.5,
+              "end_seconds": 17.4,
+              "duration_seconds": 0.9
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0144
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 20.6 seconds of speaking, the rate is about 139.8 words per minute. Try replaying the 4 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speech is clear and well-paced throughout, with just a few minor pauses that do not detract from your flow. Your speaking rate of approximately 140 words per minute is very efficient for this length of text. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": true,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 17,
+        "group": "insufficient-audio",
+        "input": {
+          "status": "insufficient_audio",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": null,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": null,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -37.31,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is insufficient detected audio to estimate pace or pauses. Try recording a longer response after checking the microphone.",
+        "response": "The detection method indicates that no audio was captured for analysis. Please ensure you're speaking into the microphone correctly to capture your voice. Your speech is clear but there's insufficient audio for accurate assessment. Try again with better audio quality.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 18,
+        "group": "0-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 15.3,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 3.8,
+              "end_seconds": 4.4,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 7.7,
+              "end_seconds": 8.9,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 11.5,
+              "end_seconds": 12.7,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -37.1,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking is clear and steady throughout, with just a few minor pauses that don't detract from your performance. Your pacing is excellent; you maintain a consistent speed without rushing through any part of your speech. The energy estimate suggests you have a strong presence and confidence in what you're saying. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": true
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 19,
+        "group": "0-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 27.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 13.6,
+              "end_seconds": 14.9,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0452
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speaking rate is just right at about 8 words per second, which is excellent for maintaining clarity without rushing through your delivery. Your pause count of one is appropriate; it allows you to emphasize key points while keeping the conversation flowing smoothly. The energy estimate suggests that you have good control over your voice, with no noticeable clipping or distortion. Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 20,
+        "group": "0-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 14.9,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 7.5,
+              "end_seconds": 8.9,
+              "duration_seconds": 1.4
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -18.9,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "Your speech is clear and well-paced throughout, with just one pause that doesn't significantly disrupt your flow. Your speaking rate is comfortable for most listeners, at about 2 words per second. The VAD detection method indicates you were active during the entire recorded segment without any interruptions. Your microphone capture was clean, with no clipping issues detected. Overall, great job! Keep up the good work.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 21,
+        "group": "0-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 36.6,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 18.3,
+              "end_seconds": 19.6,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -48.7,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking rate is very fast at times, but overall it's clear and easy to follow. You pause appropriately between sentences, which helps maintain clarity. Your pronunciation is good; you don't need to improve your intonation or stress placement. Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 22,
+        "group": "insufficient-audio",
+        "input": {
+          "status": "insufficient_audio",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": null,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": null,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -24.98,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is insufficient detected audio to estimate pace or pauses. Try recording a longer response after checking the microphone.",
+        "response": "The detection method indicates that no audio was captured for analysis. Please ensure you're speaking into the microphone correctly to capture your voice.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 23,
+        "group": "0-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 14.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -40.7,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking is clear and steady at 85 words per minute. Your pacing is perfect for this length of speech, with no noticeable pauses. The energy estimate suggests you have strong vocal control. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": true,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 24,
+        "group": "0-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 17.6,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 4.4,
+              "end_seconds": 5.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 8.8,
+              "end_seconds": 10.2,
+              "duration_seconds": 1.4
+            },
+            {
+              "start_seconds": 13.2,
+              "end_seconds": 14.0,
+              "duration_seconds": 0.8
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0712
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speech is clear and well-paced throughout, with just a few minor pauses that do not detract from your flow. Your speaking rate is comfortable for most listeners, and you maintain good rhythm without any noticeable stutters. The VAD detection method indicates that there were 3 detected segments of silence, which is within acceptable limits. Your pause count matches the information provided, but it's worth noting that the actual number might be slightly higher due to natural breathing patterns. Overall, your performance is excellent;",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": true,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 25,
+        "group": "0-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 33.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 8.3,
+              "end_seconds": 9.0,
+              "duration_seconds": 0.7
+            },
+            {
+              "start_seconds": 16.6,
+              "end_seconds": 17.3,
+              "duration_seconds": 0.7
+            },
+            {
+              "start_seconds": 24.9,
+              "end_seconds": 26.0,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -5.2,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing.",
+        "response": "Your speaking is clear and steady throughout, with just a few minor pauses that don't detract from your flow. Your pacing is excellent; you maintain a consistent speed without rushing through any part of your speech. The energy estimate suggests you have a strong presence and confidence in what you're saying. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": true
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 26,
+        "group": "1-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 17.6,
+          "transcript_word_count": 67,
+          "words_per_minute": 228.4,
+          "pause_count": 4,
+          "pauses": [
+            {
+              "start_seconds": 3.5,
+              "end_seconds": 4.1,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 7.0,
+              "end_seconds": 7.6,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 10.6,
+              "end_seconds": 11.5,
+              "duration_seconds": 0.9
+            },
+            {
+              "start_seconds": 14.1,
+              "end_seconds": 15.1,
+              "duration_seconds": 1.0
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -42.1,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 17.6 seconds of speaking, the rate is about 228.4 words per minute. Try replaying the 4 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speech is clear and well-paced throughout, with just a few minor pauses that do not detract from your delivery. Your speaking rate of approximately 228 words per minute is excellent for this content. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 27,
+        "group": "1-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 25.4,
+          "transcript_word_count": 71,
+          "words_per_minute": 167.7,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 12.7,
+              "end_seconds": 13.9,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -39.5,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 25.4 seconds of speaking, the rate is about 167.7 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking rate is very fast at around 168 words per minute, which can be challenging to follow. You maintain good pacing throughout your speech, with just one pause that adds about 1.2 seconds of silence. Your energy estimate suggests you have a strong presence; however, consider slowing down slightly for better comprehension. Overall, your performance is excellent! Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 28,
+        "group": "0-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 32.6,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0376
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speaking rate is very fast at 9.8 words per second, which can be challenging to follow. Your pacing seems perfect for this speed, with no noticeable pauses that might slow down comprehension. The energy estimate suggests you have about 1% of your audio clipped off, but it's still within acceptable limits. Overall, your delivery is clear and on point. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 29,
+        "group": "1-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 16.7,
+          "transcript_word_count": 83,
+          "words_per_minute": 298.2,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -26.7,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 16.7 seconds of speaking, the rate is about 298.2 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "Your speaking rate is very fast at 298 words per minute, which can be challenging to follow. Your pacing seems perfect for this speed, with no noticeable pauses that might slow down comprehension. The energy estimate of -26.7 dBFS indicates your voice has good dynamics but could benefit from more control over volume levels. Overall, you did an excellent job maintaining a steady pace throughout the session without any issues. Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 30,
+        "group": "1-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 37.2,
+          "transcript_word_count": 70,
+          "words_per_minute": 112.9,
+          "pause_count": 2,
+          "pauses": [
+            {
+              "start_seconds": 12.4,
+              "end_seconds": 13.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 24.8,
+              "end_seconds": 25.8,
+              "duration_seconds": 1.0
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -22.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 37.2 seconds of speaking, the rate is about 112.9 words per minute. Try replaying the 2 estimated pauses to see whether they fit your phrasing.",
+        "response": "Your speech is clear and well-paced throughout, with just a slight pause at the end of your sentence. Your speaking rate is very fast, matching the speed of an average native speaker. The energy level is appropriate for the content you're conveying. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 31,
+        "group": "0-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 19.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 2,
+          "pauses": [
+            {
+              "start_seconds": 6.4,
+              "end_seconds": 7.3,
+              "duration_seconds": 0.9
+            },
+            {
+              "start_seconds": 12.8,
+              "end_seconds": 14.1,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0458
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 2 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "Your speaking rate is slightly slower than usual, but it's clear and easy to follow. You have good pacing with just two natural pauses that don't disrupt your flow. Your pronunciation is excellent; there were no issues detected during playback. The audio clip was well recorded without any clipping or distortion. Overall, you did an excellent job! Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 32,
+        "group": "0-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 36.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 18.2,
+              "end_seconds": 19.5,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0219
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "The speech is clear and well-paced, with just one pause that doesn't significantly impact understanding. The speaking rate is appropriate for the given length of text, and there's no noticeable distortion or clipping in the audio. Overall, it sounds natural and professional. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 33,
+        "group": "1-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 20.7,
+          "transcript_word_count": 78,
+          "words_per_minute": 226.1,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 10.3,
+              "end_seconds": 11.5,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -7.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 20.7 seconds of speaking, the rate is about 226.1 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "Your speaking rate is very fast at 226 words per minute, which can be challenging to follow. You maintain good pacing throughout your speech, with just one pause that doesn't significantly disrupt the flow. Your microphone capture was clean, with no clipping issues. Keep up the great effort!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 34,
+        "group": "1-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 31.7,
+          "transcript_word_count": 26,
+          "words_per_minute": 49.2,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -25.0,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 31.7 seconds of speaking, the rate is about 49.2 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "Your speaking rate is very fast at 49 words per minute, which can be challenging to follow. Your pacing seems perfect for this speed, with no noticeable pauses that might slow down comprehension. The energy estimate of -25 dBFS indicates your voice has good volume but could be even louder without losing clarity. Overall, you did an excellent job maintaining a steady pace throughout the session. Keep up the great work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 35,
+        "group": "1-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 27.4,
+          "transcript_word_count": 68,
+          "words_per_minute": 148.9,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 13.7,
+              "end_seconds": 15.1,
+              "duration_seconds": 1.4
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -46.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 27.4 seconds of speaking, the rate is about 148.9 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speaking rate is very fast at around 150 words per minute, which can be challenging to follow. You maintain good pacing throughout your delivery, with just one pause that doesn't significantly impact comprehension. Your energy estimate suggests you have a strong presence; however, consider slowing down slightly for better clarity. Keep up the great effort!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 36,
+        "group": "0-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 38.8,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -25.0,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "Your speaking is clear and steady at about 14 words per minute. Your pacing is excellent; you maintain a consistent speed throughout your delivery. The energy estimate of -25 dB suggests that your voice has good volume control and maintains a strong presence during your presentation. Well done! Keep up the great work.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": true,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": true,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 37,
+        "group": "1-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 32.5,
+          "transcript_word_count": 41,
+          "words_per_minute": 75.7,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 8.1,
+              "end_seconds": 8.8,
+              "duration_seconds": 0.7
+            },
+            {
+              "start_seconds": 16.2,
+              "end_seconds": 17.4,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 24.4,
+              "end_seconds": 25.5,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -39.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 32.5 seconds of speaking, the rate is about 75.7 words per minute. Try replaying the 3 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "Your speech is clear and well-paced throughout, with just a few minor pauses that do not detract from your flow. Your speaking rate of about 76 words per minute is excellent for maintaining engagement without losing clarity. Keep up the good work!",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": true,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": true,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      }
+    ]
+  },
+  "adapter": {
+    "summary": {
+      "examples": 38,
+      "flagged_examples": 3,
+      "flag_counts": {
+        "empty": 0,
+        "too_long": 0,
+        "format_flag": 0,
+        "pronunciation_claim": 0,
+        "unsupported_pace": 0,
+        "unsupported_pause": 0,
+        "wpm_number_mismatch": 0,
+        "pause_number_mismatch": 0,
+        "unsupported_exam_score": 0,
+        "contradictory_low_level_advice": 3,
+        "contradictory_clipping_claim": 0,
+        "unsupported_clarity_claim": 0,
+        "unsupported_noise_claim": 0,
+        "unsupported_personal_inference": 0
+      },
+      "quality_coverage_counts": {
+        "missed_clipping_cue": 0,
+        "missed_low_level_cue": 1
+      },
+      "scope": "Heuristic flags and cue coverage only; manually assess relevance, grounding and quality."
+    },
+    "cases": [
+      {
+        "index": 0,
+        "group": "1-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 24.0,
+          "transcript_word_count": 21,
+          "words_per_minute": 52.5,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0619
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 24.0 seconds of speaking, the rate is about 52.5 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "The recording suggests about 52.5 words per minute over 24.0 seconds. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 1,
+        "group": "0-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 28.7,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 14.3,
+              "end_seconds": 15.3,
+              "duration_seconds": 1.0
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -4.3,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "A pace estimate is unavailable without a transcript. Listen back to the 1 estimated pause and consider whether it feels natural.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 2,
+        "group": "1-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 31.2,
+          "transcript_word_count": 60,
+          "words_per_minute": 115.4,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -41.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 31.2 seconds of speaking, the rate is about 115.4 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "The recording suggests about 115.4 words per minute over 31.2 seconds. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 3,
+        "group": "0-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 26.8,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 6.7,
+              "end_seconds": 7.8,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 13.4,
+              "end_seconds": 14.7,
+              "duration_seconds": 1.3
+            },
+            {
+              "start_seconds": 20.1,
+              "end_seconds": 21.2,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -50.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "A pace estimate is unavailable without a transcript. Replay the 3 estimated pauses; decide whether they fit your phrasing. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 4,
+        "group": "1-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 36.5,
+          "transcript_word_count": 84,
+          "words_per_minute": 138.1,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0398
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 36.5 seconds of speaking, the rate is about 138.1 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "The estimated pace is 138.1 words per minute over 36.5 seconds. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 5,
+        "group": "1-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 25.5,
+          "transcript_word_count": 45,
+          "words_per_minute": 105.9,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 6.4,
+              "end_seconds": 7.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 12.8,
+              "end_seconds": 14.0,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 19.1,
+              "end_seconds": 19.8,
+              "duration_seconds": 0.7
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0684
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 25.5 seconds of speaking, the rate is about 105.9 words per minute. Try replaying the 3 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "The estimated pace is 105.9 words per minute over 25.5 seconds. Replay the 3 estimated pauses; decide whether they fit your phrasing. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 6,
+        "group": "1-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 20.4,
+          "transcript_word_count": 19,
+          "words_per_minute": 55.9,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 10.2,
+              "end_seconds": 11.5,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -8.5,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 20.4 seconds of speaking, the rate is about 55.9 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "The estimated pace is 55.9 words per minute over 20.4 seconds. Listen back to the 1 estimated pause and consider whether it feels natural.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 7,
+        "group": "0-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 35.8,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 17.9,
+              "end_seconds": 18.5,
+              "duration_seconds": 0.6
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -36.5,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "A pace estimate is unavailable without a transcript. Listen back to the 1 estimated pause and consider whether it feels natural. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 8,
+        "group": "0-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 35.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -44.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "A pace estimate is unavailable without a transcript. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 9,
+        "group": "1-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 36.9,
+          "transcript_word_count": 46,
+          "words_per_minute": 74.8,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 9.2,
+              "end_seconds": 10.3,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 18.4,
+              "end_seconds": 19.0,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 27.7,
+              "end_seconds": 28.9,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -14.3,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 36.9 seconds of speaking, the rate is about 74.8 words per minute. Try replaying the 3 estimated pauses to see whether they fit your phrasing.",
+        "response": "The estimated pace is 74.8 words per minute over 36.9 seconds. Replay the 3 estimated pauses; decide whether they fit your phrasing.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 10,
+        "group": "1-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 37.1,
+          "transcript_word_count": 79,
+          "words_per_minute": 127.8,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 18.6,
+              "end_seconds": 19.5,
+              "duration_seconds": 0.9
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0442
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 37.1 seconds of speaking, the rate is about 127.8 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "The estimated pace is 127.8 words per minute over 37.1 seconds. Listen back to the 1 estimated pause and consider whether it feels natural. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 11,
+        "group": "1-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 15.1,
+          "transcript_word_count": 59,
+          "words_per_minute": 234.4,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 7.5,
+              "end_seconds": 8.9,
+              "duration_seconds": 1.4
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0626
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 15.1 seconds of speaking, the rate is about 234.4 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "The estimated pace is 234.4 words per minute over 15.1 seconds. Listen back to the 1 estimated pause and consider whether it feels natural. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 12,
+        "group": "0-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 26.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 6.6,
+              "end_seconds": 7.4,
+              "duration_seconds": 0.8
+            },
+            {
+              "start_seconds": 13.2,
+              "end_seconds": 14.4,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 19.9,
+              "end_seconds": 21.0,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -5.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing.",
+        "response": "A pace estimate is unavailable without a transcript. Replay the 3 estimated pauses; decide whether they fit your phrasing.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 13,
+        "group": "0-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 34.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0188
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "A pace estimate is unavailable without a transcript. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 14,
+        "group": "0-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 17.1,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -24.9,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "A pace estimate is unavailable without a transcript. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 15,
+        "group": "1-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 38.6,
+          "transcript_word_count": 34,
+          "words_per_minute": 52.8,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -42.2,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 38.6 seconds of speaking, the rate is about 52.8 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "The estimated pace is 52.8 words per minute over 38.6 seconds. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 16,
+        "group": "1-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 20.6,
+          "transcript_word_count": 48,
+          "words_per_minute": 139.8,
+          "pause_count": 4,
+          "pauses": [
+            {
+              "start_seconds": 4.1,
+              "end_seconds": 5.2,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 8.2,
+              "end_seconds": 9.0,
+              "duration_seconds": 0.8
+            },
+            {
+              "start_seconds": 12.4,
+              "end_seconds": 13.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 16.5,
+              "end_seconds": 17.4,
+              "duration_seconds": 0.9
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0144
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 20.6 seconds of speaking, the rate is about 139.8 words per minute. Try replaying the 4 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "The estimated pace is 139.8 words per minute over 20.6 seconds. Replay the 4 estimated pauses; decide whether they fit your phrasing. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 17,
+        "group": "insufficient-audio",
+        "input": {
+          "status": "insufficient_audio",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": null,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": null,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -37.31,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is insufficient detected audio to estimate pace or pauses. Try recording a longer response after checking the microphone.",
+        "response": "There is not enough detected audio to estimate pace or pauses. Check your microphone and try a longer recording.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": true
+        }
+      },
+      {
+        "index": 18,
+        "group": "0-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 15.3,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 3.8,
+              "end_seconds": 4.4,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 7.7,
+              "end_seconds": 8.9,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 11.5,
+              "end_seconds": 12.7,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -37.1,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "A pace estimate is unavailable without a transcript. Replay the 3 estimated pauses; decide whether they fit your phrasing. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 19,
+        "group": "0-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 27.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 13.6,
+              "end_seconds": 14.9,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0452
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "A pace estimate is unavailable without a transcript. Listen back to the 1 estimated pause and consider whether it feels natural. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 20,
+        "group": "0-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 14.9,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 7.5,
+              "end_seconds": 8.9,
+              "duration_seconds": 1.4
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -18.9,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "A pace estimate is unavailable without a transcript. Listen back to the 1 estimated pause and consider whether it feels natural.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 21,
+        "group": "0-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 36.6,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 18.3,
+              "end_seconds": 19.6,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -48.7,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "A pace estimate is unavailable without a transcript. Listen back to the 1 estimated pause and consider whether it feels natural. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 22,
+        "group": "insufficient-audio",
+        "input": {
+          "status": "insufficient_audio",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": null,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": null,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -24.98,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is insufficient detected audio to estimate pace or pauses. Try recording a longer response after checking the microphone.",
+        "response": "There is not enough detected audio to estimate pace or pauses. Check your microphone and try a longer recording.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 23,
+        "group": "0-low-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 14.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -40.7,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. The recording peak is low; try checking the microphone and its input level.",
+        "response": "A pace estimate is unavailable without a transcript. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 24,
+        "group": "0-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 17.6,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 4.4,
+              "end_seconds": 5.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 8.8,
+              "end_seconds": 10.2,
+              "duration_seconds": 1.4
+            },
+            {
+              "start_seconds": 13.2,
+              "end_seconds": 14.0,
+              "duration_seconds": 0.8
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0712
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "A pace estimate is unavailable without a transcript. Replay the 3 estimated pauses; decide whether they fit your phrasing. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 25,
+        "group": "0-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 33.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 8.3,
+              "end_seconds": 9.0,
+              "duration_seconds": 0.7
+            },
+            {
+              "start_seconds": 16.6,
+              "end_seconds": 17.3,
+              "duration_seconds": 0.7
+            },
+            {
+              "start_seconds": 24.9,
+              "end_seconds": 26.0,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -5.2,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 3 estimated pauses to see whether they fit your phrasing.",
+        "response": "A pace estimate is unavailable without a transcript. Replay the 3 estimated pauses; decide whether they fit your phrasing.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 26,
+        "group": "1-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 17.6,
+          "transcript_word_count": 67,
+          "words_per_minute": 228.4,
+          "pause_count": 4,
+          "pauses": [
+            {
+              "start_seconds": 3.5,
+              "end_seconds": 4.1,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 7.0,
+              "end_seconds": 7.6,
+              "duration_seconds": 0.6
+            },
+            {
+              "start_seconds": 10.6,
+              "end_seconds": 11.5,
+              "duration_seconds": 0.9
+            },
+            {
+              "start_seconds": 14.1,
+              "end_seconds": 15.1,
+              "duration_seconds": 1.0
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -42.1,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 17.6 seconds of speaking, the rate is about 228.4 words per minute. Try replaying the 4 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "The estimated pace is 228.4 words per minute over 17.6 seconds. Replay the 4 estimated pauses; decide whether they fit your phrasing. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 27,
+        "group": "1-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 25.4,
+          "transcript_word_count": 71,
+          "words_per_minute": 167.7,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 12.7,
+              "end_seconds": 13.9,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -39.5,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 25.4 seconds of speaking, the rate is about 167.7 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "The estimated pace is 167.7 words per minute over 25.4 seconds. Listen back to the 1 estimated pause and consider whether it feels natural. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 28,
+        "group": "0-clip-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 32.6,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0376
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "A pace estimate is unavailable without a transcript. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 29,
+        "group": "1-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 16.7,
+          "transcript_word_count": 83,
+          "words_per_minute": 298.2,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -26.7,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 16.7 seconds of speaking, the rate is about 298.2 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "The recording suggests about 298.2 words per minute over 16.7 seconds. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": true,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 30,
+        "group": "1-normal-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 37.2,
+          "transcript_word_count": 70,
+          "words_per_minute": 112.9,
+          "pause_count": 2,
+          "pauses": [
+            {
+              "start_seconds": 12.4,
+              "end_seconds": 13.5,
+              "duration_seconds": 1.1
+            },
+            {
+              "start_seconds": 24.8,
+              "end_seconds": 25.8,
+              "duration_seconds": 1.0
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -22.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 37.2 seconds of speaking, the rate is about 112.9 words per minute. Try replaying the 2 estimated pauses to see whether they fit your phrasing.",
+        "response": "The recording suggests about 112.9 words per minute over 37.2 seconds. Replay the 2 estimated pauses; decide whether they fit your phrasing.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 31,
+        "group": "0-clip-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 19.2,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 2,
+          "pauses": [
+            {
+              "start_seconds": 6.4,
+              "end_seconds": 7.3,
+              "duration_seconds": 0.9
+            },
+            {
+              "start_seconds": 12.8,
+              "end_seconds": 14.1,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0458
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 2 estimated pauses to see whether they fit your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "A pace estimate is unavailable without a transcript. Listen back to the 2 estimated pauses and consider whether they feel natural. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 32,
+        "group": "0-clip-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 36.5,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 18.2,
+              "end_seconds": 19.5,
+              "duration_seconds": 1.3
+            }
+          ],
+          "recording": {
+            "peak_dbfs": 0.0,
+            "clipped_fraction": 0.0219
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. Try replaying the 1 estimated pause to see whether it fits your phrasing. Clipping was detected in the recording; try moving back from the microphone or lowering its gain.",
+        "response": "A pace estimate is unavailable without a transcript. Listen back to the 1 estimated pause and consider whether it feels natural. The recording shows clipping; try lowering the input gain or moving the microphone farther away.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 33,
+        "group": "1-normal-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 20.7,
+          "transcript_word_count": 78,
+          "words_per_minute": 226.1,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 10.3,
+              "end_seconds": 11.5,
+              "duration_seconds": 1.2
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -7.6,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 20.7 seconds of speaking, the rate is about 226.1 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing.",
+        "response": "The estimated pace is 226.1 words per minute over 20.7 seconds. Listen back to the 1 estimated pause and consider whether it feels natural.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 34,
+        "group": "1-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 31.7,
+          "transcript_word_count": 26,
+          "words_per_minute": 49.2,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -25.0,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 31.7 seconds of speaking, the rate is about 49.2 words per minute. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "The recording suggests about 49.2 words per minute over 31.7 seconds. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": true,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 35,
+        "group": "1-low-one",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 27.4,
+          "transcript_word_count": 68,
+          "words_per_minute": 148.9,
+          "pause_count": 1,
+          "pauses": [
+            {
+              "start_seconds": 13.7,
+              "end_seconds": 15.1,
+              "duration_seconds": 1.4
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -46.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 27.4 seconds of speaking, the rate is about 148.9 words per minute. Try replaying the 1 estimated pause to see whether it fits your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "The estimated pace is 148.9 words per minute over 27.4 seconds. Listen back to the 1 estimated pause and consider whether it feels natural. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 36,
+        "group": "0-normal-zero",
+        "input": {
+          "status": "ok",
+          "detection_method": "energy_estimate",
+          "speaking_span_seconds": 38.8,
+          "transcript_word_count": null,
+          "words_per_minute": null,
+          "pause_count": 0,
+          "pauses": [],
+          "recording": {
+            "peak_dbfs": -25.0,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "There is no transcript to use for a pace estimate. The check found no pauses of at least 0.6 seconds; replay the answer to review its rhythm.",
+        "response": "A pace estimate is unavailable without a transcript. No longer pauses were detected; you can replay the answer and compare the rhythm with another attempt. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": true,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      },
+      {
+        "index": 37,
+        "group": "1-low-many",
+        "input": {
+          "status": "ok",
+          "detection_method": "silero_vad",
+          "speaking_span_seconds": 32.5,
+          "transcript_word_count": 41,
+          "words_per_minute": 75.7,
+          "pause_count": 3,
+          "pauses": [
+            {
+              "start_seconds": 8.1,
+              "end_seconds": 8.8,
+              "duration_seconds": 0.7
+            },
+            {
+              "start_seconds": 16.2,
+              "end_seconds": 17.4,
+              "duration_seconds": 1.2
+            },
+            {
+              "start_seconds": 24.4,
+              "end_seconds": 25.5,
+              "duration_seconds": 1.1
+            }
+          ],
+          "recording": {
+            "peak_dbfs": -39.4,
+            "clipped_fraction": 0.0
+          },
+          "pronunciation_assessed": false
+        },
+        "reference": "For the estimated 32.5 seconds of speaking, the rate is about 75.7 words per minute. Try replaying the 3 estimated pauses to see whether they fit your phrasing. The recording peak is low; try checking the microphone and its input level.",
+        "response": "The estimated pace is 75.7 words per minute over 32.5 seconds. Listen back to the 3 estimated pauses and consider whether they feel natural. The recorded level is low; try moving the microphone closer or checking input gain.",
+        "flags": {
+          "empty": false,
+          "too_long": false,
+          "format_flag": false,
+          "pronunciation_claim": false,
+          "unsupported_pace": false,
+          "unsupported_pause": false,
+          "wpm_number_mismatch": false,
+          "pause_number_mismatch": false,
+          "unsupported_exam_score": false,
+          "contradictory_low_level_advice": false,
+          "contradictory_clipping_claim": false,
+          "unsupported_clarity_claim": false,
+          "unsupported_noise_claim": false,
+          "unsupported_personal_inference": false
+        },
+        "quality_coverage": {
+          "missed_clipping_cue": false,
+          "missed_low_level_cue": false
+        }
+      }
+    ]
+  }
+}

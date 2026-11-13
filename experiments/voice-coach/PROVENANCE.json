@@ -1,0 +1,86 @@
+{
+  "repository": "https://github.com/Yangkc-hkpolyu/polyspeak",
+  "commit": "92d84575062ee177a0a5e6a3880d562cc2a69815",
+  "author": "yukiiqwq245",
+  "files": [
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/README.md",
+      "destination": "experiments/voice-coach/README.md",
+      "source_sha256": "e7e869ac452e6d1192c5aaed034590d5f8d7995c59169f97d90adb3e3ccfc6d5"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/train.py",
+      "destination": "experiments/voice-coach/train.py",
+      "source_sha256": "7867fc7445700c04bac6170e068b3ca96d803a8035bfe7084cf422284dd787d6"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/evaluate.py",
+      "destination": "experiments/voice-coach/evaluate.py",
+      "source_sha256": "d21476537edd6f22c72b2b9d76cc935b30e4e8905a32ce1dabf0f5f9a464b4e8"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/generate_dataset.py",
+      "destination": "experiments/voice-coach/generate_dataset.py",
+      "source_sha256": "7b14b7b8e4b54c17dca3b0df05efbfe58a88e854de7af424ca2239e58a8db601"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/generate_dataset_v2.py",
+      "destination": "experiments/voice-coach/generate_dataset_v2.py",
+      "source_sha256": "396f7c1d4775b4af136d30dc6c72d946ab10cd100142782de58d88cbfdc218c0"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/eval_samples_v2.jsonl",
+      "destination": "experiments/voice-coach/eval_samples_v2.jsonl",
+      "source_sha256": "820f4b4a1b2557bcbabec767496237bf6b7f761a0d23ebe461ee255145387e1d"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/evaluation_v2.json",
+      "destination": "experiments/voice-coach/evaluation_v2.json",
+      "source_sha256": "079a532146e750696fdef7ef518a29a06e8c5163baebc8a725eb953ccf5a1d50"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/data/README.md",
+      "destination": "experiments/voice-coach/data/README.md",
+      "source_sha256": "6ad68d0648022365697762d5091834aae26a76b6dca160e1678b8e6233d1cf08"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/data/train.jsonl",
+      "destination": "experiments/voice-coach/data/train.jsonl",
+      "source_sha256": "cef2609fdc67879e86882098bf7f20eaf92b2517db2ebdf6a57c656c12f0bebd"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/data/validation.jsonl",
+      "destination": "experiments/voice-coach/data/validation.jsonl",
+      "source_sha256": "643339545ebd456c0d543de442c6fb6be111eb6d12b56f55c3e69be34e22e7b0"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/data/test.jsonl",
+      "destination": "experiments/voice-coach/data/test.jsonl",
+      "source_sha256": "820aeb4ad36c3d038419bf525d4c69044b8b839b3896564d2744e4df18874fc1"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/adapter/adapter_config.json",
+      "destination": "experiments/voice-coach/adapter/adapter_config.json",
+      "source_sha256": "1a0d373a2db67877441cdf94aae1fa859f3d8c7662584a8625abebcf661a7405"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/adapter/training_summary.json",
+      "destination": "experiments/voice-coach/adapter/training_summary.json",
+      "source_sha256": "307278e09b8e19547b572b8668673bd177b9acce5818d14ae33047b9d44d567c"
+    },
+    {
+      "source": "polyspeak-main/voice-coach-finetuned/inference_worker.py",
+      "destination": "backend/speaking/voice_coach/worker.py",
+      "source_sha256": "69bf774c7932187b0093f239d0edcf5c9eea422326f74e4426195a08141947e6"
+    }
+  ],
+  "adaptations": "Runtime worker relocated and isolated on CPU; original training scripts and results retained. No avatar, speech or bundled dependencies copied.",
+  "weights_delivery": {
+    "artifact": "PolySpeak-Coursework-With-Models/PolySpeak/voice-coach-finetuned",
+    "received_date": "2026-11-13",
+    "adapter_sha256": "911120929075507066c461d4f00a2a9b08b15792cb8c4a0d00bdcf632ab7792c",
+    "adapter_bytes": 4372840,
+    "base_sha256": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+    "verified": "Worker source, adapter configuration, training summary and training examples match the submitted branch, allowing for line endings."
+  }
+}

@@ -24,9 +24,11 @@ from .provider import ModelProvider, ProviderError
 from .schemas import AnswerRequest, ExamSetup, QuestionRequest, SpeechRequest
 from .speech import SpeechService
 from .store import ConflictError, InterviewStore
+from .voice_coach.metrics import measure_recording
+from .voice_coach.service import VoiceCoach
 
 
-def create_app(settings=None, provider=None, speech=None, pronunciation=None, clock=time.time):
+def create_app(settings=None, provider=None, speech=None, pronunciation=None, clock=time.time, voice_coach=None):
     settings = settings or load_settings()
     settings.runtime.mkdir(parents=True, exist_ok=True)
     recordings_folder = settings.runtime / "recordings"
@@ -39,12 +41,14 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
     renderer = AvatarRenderer(settings)
     media = MediaManager(settings.runtime / "media", speech, renderer)
     live = LiveAvatarManager(settings, renderer)
+    voice_coach = voice_coach or VoiceCoach(ROOT / "speaking-models/voice-coach", settings.runtime)
 
     @asynccontextmanager
     async def lifespan(_app):
         yield
         await live.close()
         await engine.close()
+        await voice_coach.close()
         for task in list(media.tasks):
             task.cancel()
         if media.tasks:
@@ -54,6 +58,7 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
     app = FastAPI(title="PolySpeak · Speaking Practice", version="3.0.0", lifespan=lifespan)
     app.state.engine, app.state.media = engine, media
     app.state.live = live
+    app.state.voice_coach = voice_coach
     app.include_router(live_router(live, store, engine))
 
     @app.websocket("/api/speaking/sessions/{session_id}/stt")
@@ -90,7 +95,7 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
     @app.get("/api/speaking/status")
     async def status():
         output = settings.tts_profile("en")
-        return {"name": "PolySpeak", "api_configured": bool(settings.api_key), "chat_model": settings.chat_model, "asr_model": settings.realtime_asr_model, "avatar_available": settings.model_path.is_file() and (settings.avatar_directory / "avatar.json").is_file(), "pronunciation_configured": bool(settings.azure_key), "model_finetuned": False, "format_version": "TOEFL 2026 / IELTS Speaking", "speech_input": "Qwen realtime WebSocket ASR", "speech_output": output["model"], "speech_provider": output["provider"], "speech_voice": output["voice"], "speech_language": output["language"], "avatar": "Nora · PolyInterview LiveTalking", "avatar_pipeline": "livetalking_webrtc", "original_project_modified": False}
+        return {"name": "PolySpeak", "api_configured": bool(settings.api_key), "chat_model": settings.chat_model, "asr_model": settings.realtime_asr_model, "avatar_available": settings.model_path.is_file() and (settings.avatar_directory / "avatar.json").is_file(), "pronunciation_configured": bool(settings.azure_key), "model_finetuned": False, "voice_coach": voice_coach.status(), "format_version": "TOEFL 2026 / IELTS Speaking", "speech_input": "Qwen realtime WebSocket ASR", "speech_output": output["model"], "speech_provider": output["provider"], "speech_voice": output["voice"], "speech_language": output["language"], "avatar": "Nora · PolyInterview LiveTalking", "avatar_pipeline": "livetalking_webrtc", "original_project_modified": False}
 
     @app.get("/api/speaking/library")
     async def library():
@@ -99,6 +104,36 @@ def create_app(settings=None, provider=None, speech=None, pronunciation=None, cl
             if (ROOT / "speaking-resources/official" / source["filename"]).is_file():
                 source["local_url"] = f"/api/speaking/resources/{source['id']}"
         return value
+
+    @app.get("/api/speaking/voice-coach/status")
+    async def voice_coach_status():
+        return voice_coach.status()
+
+    @app.post("/api/speaking/sessions/{session_id}/turns/{turn_id}/voice-coach")
+    async def review_voice(session_id: str, turn_id: str):
+        async with engine.lock(session_id):
+            current = store.get(session_id)
+            if current["status"] != "completed":
+                raise HTTPException(409, "Finish this practice session before reviewing your voice.")
+            turn = next((item for item in current["turns"] if item["id"] == turn_id), None)
+            if turn is None:
+                raise HTTPException(404, "This answer could not be found.")
+            recording = current["recordings"].get(turn.get("audio_id"))
+            if not recording or turn.get("skipped"):
+                raise HTTPException(409, "Voice review requires a saved recording.")
+            cached = turn.get("voice_coach")
+            if cached and cached.get("advice", {}).get("status") == "ok":
+                return cached
+            path = recordings_folder / f"{recording['id']}.wav"
+            try:
+                metrics = await asyncio.to_thread(measure_recording, path, recording.get("text", ""))
+            except (OSError, ValueError, EOFError, wave.Error):
+                raise HTTPException(422, "The saved recording could not be measured. Other feedback remains available.")
+            result = {"metrics": metrics, "advice": await voice_coach.advise(metrics),
+                      "scope": "Activity and pauses are energy-based estimates; background sound can affect them. Pace depends on the original automatic transcript. These measurements do not assess pronunciation or give exam scores."}
+            turn["voice_coach"] = result
+            store.save(current)
+            return result
 
     @app.get("/api/speaking/resources/{source_id}")
     async def resource(source_id: str):

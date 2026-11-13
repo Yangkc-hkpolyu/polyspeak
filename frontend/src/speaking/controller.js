@@ -3,6 +3,7 @@ import { LiveAvatar } from './live-avatar'
 import { api, post } from './api'
 import QuestionLibrary from './QuestionLibrary.vue'
 import LayeredReport from './LayeredReport.vue'
+import VoiceCoach from './VoiceCoach.vue'
 
 const recorder = new VoiceRecorder();
 const stages = { part1: 'Part 1 · Introduction & interview', part2: 'Part 2 · Individual long turn', rounding: 'Part 2 · Rounding off', part3: 'Part 3 · Two-way discussion', repeat: 'Listen and Repeat', interview: 'Take an Interview' };
@@ -11,7 +12,7 @@ const sections = { ielts: [{ value: 'full', label: 'Full test · Parts 1–3' },
 
 export default {
   name: 'SpeakingApp',
-  components: { QuestionLibrary, LayeredReport },
+  components: { QuestionLibrary, LayeredReport, VoiceCoach },
   data: () => ({
     view: 'practice', status: {}, library: { sets: [], sources: [], format_sources: [] }, history: [], session: null,
     form: { exam: 'ielts', set_id: 'ielts-learning', mode: 'mock', section: 'full', candidate_name: '' },

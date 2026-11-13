@@ -66,7 +66,8 @@ sh start-speaking.sh
 
 ## 能力和限制
 
-- 当前文本模型尚未微调，默认调用 `qwen-plus-latest`。
+- 已选择性接入可选的本地 LoRA 语音建议模块：完成练习后，在录音下点击 **Review pace and pauses**。本机已安装并验证提供的微调权重；仓库已包含 4.37 MB 的微调适配器，其他电脑运行 `.\.venv\Scripts\python.exe -s scripts/setup_voice_coach.py` 即可安装依赖并下载官方基础模型。原有云端对话、语音和数字人继续使用当前实现。安装与使用见 [微调模块说明](docs/SPEAKING_VOICE_COACH.md)。
+- 负责考官对话的主模型尚未微调，默认调用 `qwen-plus-latest`。
 - Azure 发音评测可选。配置 `AZURE_SPEECH_KEY` 和 `AZURE_REGION` 后才能取得实际音频评测；未配置时显示未评估。
 - 不采集考生视频，目光、表情、姿态等指标保持未评估。
 - 实时视频已验证本机连接。公网部署仍需 STUN/TURN、HTTPS 和媒体网络配置；`deploy/speaking/` 是未验证的部署骨架。

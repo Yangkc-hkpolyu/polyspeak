@@ -13,7 +13,8 @@ def main(include_assets=False):
     output = ROOT / "output/COMP4431_PolySpeak_source.zip"
     output.parent.mkdir(exist_ok=True)
     files = ["README.md", "THIRD_PARTY_SPEAKING.md", "requirements-speaking.txt", "speaking.env.example", "run-speaking.py", "start-speaking.bat", "speaking-models/source.json", "frontend/package.json", "frontend/package-lock.json", "frontend/vue.config.js", "frontend/babel.config.js", "frontend/public/speaking.html", "frontend/src/speaking-main.js", "frontend/scripts/speaking.cjs", "speaking-resources/manifest.json", "docs/SPEAKING_RESEARCH.md", "docs/SPEAKING_AVATAR.md", "docs/SPEAKING_TESTING.md"]
-    for directory in ("backend/speaking", "frontend/src/speaking", "frontend/dist-speaking", "speaking-tests"):
+    files.extend(["requirements-voice-coach.txt", "scripts/setup_voice_coach.py", "scripts/verify_voice_coach_ui.cjs", "docs/SPEAKING_VOICE_COACH.md"])
+    for directory in ("backend/speaking", "frontend/src/speaking", "frontend/dist-speaking", "speaking-tests", "experiments/voice-coach"):
         files.extend(p.relative_to(ROOT).as_posix() for p in (ROOT / directory).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc")
     files.append("docs/SPEAKING_QUESTION_BANK.md")
     files.append("docs/IELTS_ROOM_PROMPT.md")
