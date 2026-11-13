@@ -16,9 +16,12 @@ from aiortc import RTCConfiguration, RTCPeerConnection, RTCSessionDescription, R
 from .avatar import apply_scene_face_mask
 from .errors import public_error_message
 from .provider import ProviderError
-from .vendor.livetalking.gpu_inference_scheduler import GPUInferenceScheduler
+from .vendor.livetalking.gpu_inference_scheduler import GPUInferenceScheduler, InferenceRequest
 from .vendor.livetalking.lipreal import LipReal
-from .vendor.livetalking.webrtc import HumanPlayer
+from .media_clock import PairedHumanPlayer
+from .video_encoder import install_speaking_encoder
+
+install_speaking_encoder()
 
 
 class OrderedBatchScheduler:
@@ -206,6 +209,24 @@ class SpeakingLipReal(LipReal):
     def _pending_video_frames(self):
         return self.res_frame_queue.pending_frames()
 
+    def prepare_speech(self):
+        # After an idle period the laptop GPU may need > 1 s to wake up.
+        # Run the actual scheduler/copy path before publishing any utterance PCM;
+        # neutral live frames keep playing and audio/video clocks stay together.
+        started = time.monotonic()
+        mailbox = Queue(maxsize=1)
+        count = self.batch_size
+        self.owner.manager.scheduler.submit(InferenceRequest(
+            device_id=self.renderer.device, session_id=self.opt.sessionid,
+            mel_batch=np.zeros((count, 1, 80, 16), dtype=np.float32),
+            img_batch=np.ascontiguousarray(self.renderer.face_inputs[np.arange(count) % len(self.renderer.face_inputs)]),
+            audio_frames=[(np.zeros(320, np.float32), 1, None)] * (count * 2),
+            frame_indices=list(range(count)), result_queue=mailbox))
+        result = mailbox.get(timeout=30)
+        if not result or any(item[0] is None for item in result):
+            raise RuntimeError("The avatar could not prepare speech frames.")
+        self.stats["speech_warmup_seconds"] = time.monotonic() - started
+
     def render(self, quit_event, loop=None, audio_track=None, video_track=None):
         self._render_quit = quit_event
         self._audio_track, self._video_track = audio_track, video_track
@@ -381,7 +402,7 @@ class LiveAvatarManager:
         try:
             session.avatar = await asyncio.to_thread(SpeakingLipReal, self.renderer, self.scheduler, self.settings, session)
             session.avatar.attach_session_mgr(session)
-            session.player = HumanPlayer(session.avatar, event_loop=session.loop)
+            session.player = PairedHumanPlayer(session.avatar, event_loop=session.loop)
 
             @session.pc.on("datachannel")
             def datachannel(channel):
@@ -398,7 +419,9 @@ class LiveAvatarManager:
                     session.expiry.cancel()
                     session.expiry = None
 
-            await session.pc.setRemoteDescription(RTCSessionDescription(sdp=sdp, type=description_type))
+            # aiortc chooses its send codec while applying the remote offer.
+            # Preferences set afterwards only reorder the answer, leaving the
+            # actual sender on VP8 (with visible quality pumping as it adapts).
             session.pc.addTrack(session.player.audio)
             session.pc.addTrack(session.player.video)
             for transceiver in session.pc.getTransceivers():
@@ -406,6 +429,7 @@ class LiveAvatarManager:
                     codecs = RTCRtpSender.getCapabilities("video").codecs
                     transceiver.setCodecPreferences([c for c in codecs if c.mimeType == "video/H264"] +
                                                      [c for c in codecs if c.mimeType != "video/H264"])
+            await session.pc.setRemoteDescription(RTCSessionDescription(sdp=sdp, type=description_type))
             await session.pc.setLocalDescription(await session.pc.createAnswer())
             session.expiry = session.loop.call_later(35, lambda: asyncio.create_task(session.close())
                                                     if session.pc.connectionState != "connected" else None)

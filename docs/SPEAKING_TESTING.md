@@ -1,5 +1,11 @@
 # Speaking platform validation
 
+Current status (2026-11-14): **audio/video synchronization is still unresolved**,
+as confirmed by the user after the latest playback changes. Earlier automated
+checks and estimated timing improvements are diagnostic results, not acceptance
+of the lip-sync behavior. This checkpoint must not be presented as a verified
+fix for the reported mouth-before-audio problem.
+
 Latest verification: 2026-11-11 in the E: sharing checkout.
 
 ## Shared changes from the Live2D branch
@@ -262,3 +268,55 @@ establish end-to-end official test-duration equivalence.
 
 Frontend production build passed with the existing dependency lockfile. Its
 Browserslist data produces an age notice; that did not prevent compilation.
+
+## Desktop, recording-clock and video regression checks (2026-11-14)
+
+- 65 Python tests passed, including delayed microphone setup, preparation timing,
+  idempotent answer deadlines, decoder continuity across bitrate changes, and
+  holding speech PCM until avatar warm-up completes.
+- `scripts/verify_recording_timer.cjs` used the actual browser AudioWorklet with
+  a synthetic microphone and mocked ASR socket. A failed connection left the
+  deadline unset; a subsequent 3.5-second setup delay left all 30 seconds intact.
+  Recording stopped after 29,986 ms. This validates timing, not cloud ASR accuracy.
+  Run it against an isolated test server with `POLYSPEAK_TEST_URL` (default 8009).
+- Desktop question-library navigation/filter/practice checks passed. Home and
+  active practice screenshots were inspected at 1440 px; no new mobile work.
+- Browser receive statistics changed from VP8 / 11 keyframes to H.264 / 3
+  keyframes over comparable approximately 28-second idle samples (699 vs 709
+  decoded frames, zero lost packets). Visual samples retained facial detail.
+- The final live English greeting used EdgeTTS Jenny with the real lip model.
+  Maximum arrival gaps were 57.0 ms audio / 84.4 ms video, with no gaps above
+  100 ms, no dropped frames and no source underruns. Quiet lip markers remained
+  active. The initial default H.264 experiment stalled and was superseded by
+  the low-latency encoder and pre-speech warm-up; only the final run passed.
+
+Local evidence: `speaking-runtime/qa/recording-timer.json`,
+`browser-quality-before.json`, `browser-quality-final.json`,
+`stream-timing-h264-ready-first.json`, `timer-recording.png`, and
+`browser-final-15.png`. These measure one local computer, not cloud throughput
+or perceptual quality across all networks.
+
+Follow-up regression: 67 Python tests pass with paired media clocks and stale
+frame rejection. Six explicit interruptions reproduced a 160 ms decoded lip
+lead before the fix; `verify_av_sync.py paired-final` measured 20 ms afterwards.
+The fresh real-adapter desktop test passed automatic report review, persisted
+`model: local_lora` advice, export and cache reuse without another inference.
+
+Run `node speaking-tests/test_live_avatar_client.cjs` for the complete-stream
+startup regression. It delays each track in both possible arrival orders,
+checks that no partial stream is attached/played, checks one unmuted binding,
+and verifies that blocked or pending playback cannot trigger generated speech.
+It also checks that stopping an idle avatar does not flush the media pipeline.
+These client lifecycle tests do not measure physical lip/audio alignment.
+
+A real in-app browser check used the current LiveAvatar client for three
+consecutive English utterances and verified that the same complete, unmuted
+stream remained attached throughout. In an isolated run, median receiver
+playout differences were -35 ms, +2 ms and -1 ms. The first run overlapped
+the Python regression suite and had much larger startup variance; that run is
+not used as normal-playback evidence. Local reports are
+`speaking-runtime/qa/browser-playout-combined.json` and
+`browser-playout-combined-under-test-load.json`.
+These are browser estimates, not a physical speaker/display recording or a
+phoneme-by-phoneme assessment. The statistic follows the
+[W3C estimatedPlayoutTimestamp definition](https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-estimatedplayouttimestamp).

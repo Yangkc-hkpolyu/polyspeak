@@ -119,12 +119,32 @@ def test_ielts_long_turn_preparation_is_not_reset_or_skipped_in_mock(ctx):
     assert first["current_question"]["card"] and not session["current_question"]["card"]
     assert first["current_question"]["prepare_seconds"] == 60
     assert first["current_question"]["answer_seconds"] == 120
+    assert first["current_question"]["answer_until"] is None
     assert client.post(path + "/begin-answer", json=body).status_code == 422
     clock[0] += 20
     again = client.post(path + "/ready", json=body).json()
     assert again["current_question"]["prepare_until"] == first["current_question"]["prepare_until"]
-    clock[0] += 40
-    assert client.post(path + "/begin-answer", json=body).json()["current_question"]["phase"] == "answering"
+    clock[0] += 47  # Preparation finished; microphone/ASR took another 7 seconds.
+    begun = client.post(path + "/begin-answer", json=body).json()["current_question"]
+    assert begun["phase"] == "answering"
+    assert begun["answer_until"] == clock[0] + 120
+
+
+def test_answer_clock_waits_for_capture_and_does_not_reset_on_retry(ctx):
+    session = start(ctx, mode="mock", section="part1")
+    client, _, _, clock, _ = ctx
+    path = f"/api/speaking/sessions/{session['id']}"
+    body = {"question_id": session["pending_question_id"]}
+    ready = client.post(path + "/ready", json=body).json()["current_question"]
+    assert ready["phase"] == "ready" and ready["answer_until"] is None
+    clock[0] += 35  # Even a failed connection / permission wait uses no answer time.
+    retry = client.post(path + "/ready", json=body).json()["current_question"]
+    assert retry["answer_until"] is None
+    begun = client.post(path + "/begin-answer", json=body).json()["current_question"]
+    assert begun["answer_until"] == clock[0] + ready["answer_seconds"]
+    clock[0] += 5
+    again = client.post(path + "/begin-answer", json=body).json()["current_question"]
+    assert again["answer_until"] == begun["answer_until"]
 
 
 def test_ielts_mock_part3_is_adaptive_without_adding_extra_tasks(ctx):

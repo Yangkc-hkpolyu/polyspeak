@@ -10,8 +10,9 @@ export class LiveAvatar {
     window.addEventListener('pagehide',this.unload)
   }
   async connect() {
-    if (this.pc?.connectionState === 'connected' && this.channel?.readyState === 'open') return
     if (this.connecting) return this.connecting
+    if (this.pc?.connectionState === 'connected' && this.channel?.readyState === 'open' &&
+        this.video.srcObject?.getAudioTracks().length && this.video.srcObject?.getVideoTracks().length) return
     this.connecting = this.open()
     try { await this.connecting } catch (error) { await this.close(); throw error } finally { this.connecting = null }
   }
@@ -23,14 +24,29 @@ export class LiveAvatar {
     this.pc = pc
     this.channel = pc.createDataChannel('dh-state')
     this.channel.onmessage = event => this.event(JSON.parse(event.data))
+    const videoTransceiver = pc.addTransceiver('video', { direction: 'recvonly' })
     pc.addTransceiver('audio', { direction: 'recvonly' })
-    pc.addTransceiver('video', { direction: 'recvonly' })
-    const stream = new MediaStream()
+    // Advertise the same codec preference as the avatar sender, before SDP.
+    const codecs = window.RTCRtpReceiver?.getCapabilities?.('video')?.codecs
+    if (codecs && videoTransceiver.setCodecPreferences) {
+      videoTransceiver.setCodecPreferences([
+        ...codecs.filter(codec => codec.mimeType.toLowerCase() === 'video/h264'),
+        ...codecs.filter(codec => codec.mimeType.toLowerCase() !== 'video/h264'),
+      ])
+    }
+    // Match PolyInterview: attach a complete A/V stream once. Starting the
+    // element with one track, or starting it muted, can initialise the audio
+    // renderer later than the video renderer on the first utterance.
+    this.tracks = new Map()
     pc.ontrack = event => {
-      stream.addTrack(event.track)
-      this.video.srcObject = stream
-      this.video.muted = true
-      this.video.play().catch(() => {})
+      this.tracks.set(event.track.kind, event.track)
+      if (!this.tracks.has('audio') || !this.tracks.has('video')) return
+      const tracks = [this.tracks.get('video'), this.tracks.get('audio')]
+      if (tracks.every(track => this.video.srcObject?.getTracks().includes(track))) return
+      this.video.srcObject = new MediaStream(tracks)
+      this.play().catch(error => {
+        if (!this.closed && error.name === 'NotAllowedError') this.state({ type: 'playback.blocked' })
+      })
     }
     pc.onconnectionstatechange = () => {
       if (['failed', 'disconnected', 'closed'].includes(pc.connectionState) && !this.closed) {
@@ -52,9 +68,13 @@ export class LiveAvatar {
     await new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('The live avatar connection timed out. Check your network and try again.')), 20000)
       const ready = () => {
-        if (this.channel.readyState === 'open' && pc.connectionState === 'connected') { clearTimeout(timer); resolve() }
+        if (this.channel.readyState === 'open' && pc.connectionState === 'connected' &&
+            this.video.srcObject?.getAudioTracks().length && this.video.srcObject?.getVideoTracks().length) {
+          clearTimeout(timer); pc.removeEventListener('track', ready); pc.removeEventListener('connectionstatechange', ready); resolve()
+        }
       }
       this.channel.onopen = ready
+      pc.addEventListener('track', ready)
       pc.addEventListener('connectionstatechange', ready)
       ready()
     })
@@ -62,6 +82,7 @@ export class LiveAvatar {
   }
   event(event) {
     if (!event.job_id || event.job_id === this.currentJob) this.state(event)
+    if (event.job_id === this.currentJob && ['speech.end', 'speech.error', 'speech.interrupted'].includes(event.type)) this.currentJob = null
     const waiter = this.jobs.get(event.job_id)
     if (waiter && event.type === 'speech.end') { this.jobs.delete(event.job_id); waiter.resolve() }
     if (waiter && ['speech.error', 'speech.interrupted'].includes(event.type)) {
@@ -69,11 +90,19 @@ export class LiveAvatar {
       waiter.reject(new Error(event.message || 'Speech playback stopped.'))
     }
   }
+  async play() {
+    // A resolved play() means playback has started, unlike connection.ready.
+    // If autoplay is blocked, let the existing Play button provide the gesture;
+    // never generate speech while only silent video is able to play.
+    this.video.muted = false
+    this.video.volume = 1
+    await this.video.play()
+    if (!this.closed) this.state({ type: 'playback.ready' })
+  }
   async speak(create) {
     await this.connect()
     await this.interrupting
-    this.video.muted = false
-    await this.video.play()
+    await this.play()
     const job = await create(this.id)
     this.currentJob = job.id
     return new Promise((resolve, reject) => {
@@ -85,7 +114,7 @@ export class LiveAvatar {
     })
   }
   async interrupt() {
-    if (!this.id || this.closed) return
+    if (!this.id || this.closed || !this.currentJob) return
     if (this.interrupting) return this.interrupting
     this.interrupting = post(`/api/speaking/live/${this.id}/interrupt`, {}).catch(() => {})
     try { await this.interrupting } finally { this.interrupting = null }

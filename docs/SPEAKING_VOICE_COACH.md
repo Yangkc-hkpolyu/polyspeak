@@ -1,4 +1,4 @@
-# Optional fine-tuned voice advice
+# Fine-tuned recording feedback
 
 This integration selectively imports the experiment from `yukiiqwq245`, commit
 `92d84575062ee177a0a5e6a3880d562cc2a69815` on `fine-tuned`. File provenance is in
@@ -13,8 +13,10 @@ It does not score pronunciation, accents, IELTS bands or TOEFL performance.
 
 ## Using it
 
-Complete a practice session, then choose **Review pace and pauses** under a saved
-recording in the report. Measurements and advice are saved with that answer and
+Complete a practice session with a recording. The report automatically reviews
+the latest recorded answer and displays **Your speaking feedback** near the top.
+Earlier recordings retain the optional **Review pace and pauses** action.
+Measurements and advice are saved with that answer and
 included in JSON export. Typed answers have no voice review. Existing recordings
 can be reviewed without re-recording. Missing weights, rejected outputs or a slow
 worker do not prevent the ordinary report from working; no cloud or base-model
@@ -60,13 +62,21 @@ The source archive includes the 4.37 MB trained adapter; the 3.09 GB base is dow
 separately. Base revision: `989aa7980e4cf806f80c7fef2b1adb7bc71aa306`.
 
 Inference uses an isolated FP16 CPU subprocess with two threads and a 120-second
-timeout. It runs only on explicit review requests after a session has completed.
+timeout. It runs after a session has completed, automatically for the latest
+recording when the report is opened, or on request for earlier recordings.
 CUDA is hidden from this subprocess to keep the avatar GPU available. CPU inference
 uses more RAM than the original experiment's 4-bit GPU path and is slower;
 the first verified local inference took 51.05 seconds, including loading.
 Successful advice is saved, so reopening or exporting it does not rerun the model.
 Real speech quality and broad reliability have not been established by these smoke
 tests. This integration does not replace any speech, WebRTC or avatar modules.
+
+On 2026-11-14, the desktop browser test verified automatic inference with the
+installed adapter (SHA-256 above), persistence, export, and no second request on
+reload. Synthetic input generated: "The estimated pace is 120.0 words per minute
+over 2.0 seconds. Listen back to the 1 estimated pause and consider whether it
+feels natural." A concurrent stress run timed out; the normal report-only run
+passed. The report closes its avatar connection before starting feedback.
 
 `GET /api/speaking/voice-coach/status` reports setup readiness (file/package
 presence, not proof of successful inference). `model_finetuned` on the existing

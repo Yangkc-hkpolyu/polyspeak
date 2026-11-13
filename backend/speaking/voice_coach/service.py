@@ -35,7 +35,7 @@ class VoiceCoach:
         elif not all((self.runtime / "voice-coach-deps" / name / "__init__.py").is_file() for name in ("peft", "transformers", "accelerate")):
             reason = "dependencies_missing"
         return {"ready": reason is None, "reason": reason,
-                "message": REASONS.get(reason, "Optional fine-tuned voice advice is ready to try."),
+                "message": REASONS.get(reason, "Fine-tuned recording feedback is ready."),
                 "model": "Qwen2.5-1.5B-Instruct + LoRA", "scope": "Pace, pauses and recording level only; no pronunciation or exam scores."}
 
     async def close(self):

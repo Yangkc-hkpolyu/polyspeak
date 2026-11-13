@@ -1,5 +1,16 @@
 # PolyInterview realtime interaction port
 
+## Open issue: audio/video synchronization (2026-11-14)
+
+The user still observes audio/video desynchronization after the combined-track
+playback change. The previously reported symptom is mouth movement preceding
+audible speech. This issue remains unresolved; the current commit is a progress
+checkpoint, not a completed synchronization fix.
+
+Decoded timestamps, browser playout estimates and passing regression checks
+below do not establish acceptable perceptual lip sync. Preserve those results
+as diagnostic evidence, and verify actual playback before closing the issue.
+
 Updated 2026-11-11. The selected scope is the original application's live avatar,
 streaming speech input, and feature/aspect/proficiency feedback architecture.
 The IELTS/TOEFL product, current Lisa/Nora visual and exam-room scene remain.
@@ -145,6 +156,51 @@ matching UI images. Runtime evidence, recordings and local databases are not
 included in public source archives.
 
 ## Deployment boundaries
+
+### Desktop playback and recording update (2026-11-14)
+
+H.264 preferences are now installed before applying the remote offer; the
+browser advertises the same preference. Previously the answer advertised H.264
+first, but the sender still used VP8. Browser inbound statistics confirmed this.
+`video_encoder.py` keeps aiortc packetization and bandwidth feedback, uses a
+two-thread `veryfast` libx264 encoder, and adjusts bitrate without recreating the
+encoding context. Other codecs retain the aiortc fallback. No installed library
+or original PolyInterview file is modified.
+
+Before publishing utterance PCM, the real inference worker runs a disposable
+warm-up batch. Idle video continues during preparation. This keeps GPU wake-up
+work out of speech playback; PCM samples, quiet lip markers and AV clocks are
+unchanged.
+
+Question readiness now starts only preparation time. The answer deadline is set
+after the browser receives its first microphone PCM chunk, with a local recording
+deadline anchored to that chunk. ASR connection failures leave answer time intact.
+Starting an already-started answer does not reset its deadline. IELTS preparation
+and each task's configured answer duration remain separate.
+
+An additional interruption regression was found after the encoder change:
+clearing audio/video queues independently retained separate consumed-frame
+counters. Unequal numbers of cleared frames accumulated lip/audio timestamp
+offset. `media_clock.py` assigns timestamps to each video frame and its two
+20 ms audio chunks as a pair, rebases both together on explicit interruption,
+and discards obsolete frames already fetched by a queue bridge. It reuses the
+vendored HumanPlayer lifecycle without editing the original project.
+
+`scripts/verify_av_sync.py` measures decoded mouth/audio onset after six
+interruptions. The observed video lead changed from 160 ms to 20 ms. This is a
+media timestamp check, not a physical speaker/display latency measurement.
+Three consecutive browser previews also reduced average audio/video jitter-buffer
+delay differences from 132/306/319 ms to 50/59/34 ms respectively; those buffer
+statistics are diagnostic evidence, not direct lip-sync measurements.
+
+The browser now follows the original PolyInterview `useDigitalHuman.js`
+combined-stream setup: it waits for both received tracks, attaches one
+`MediaStream` to one video element, and starts with audio enabled. It no longer
+starts a partially populated muted stream and unmutes only for speech.
+`speak()` waits for `video.play()` to resolve before requesting speech; blocked
+autoplay offers the Play button without starting an unheard utterance. Idle
+replays also avoid unnecessary interruption/queue resets. Connection readiness
+and playback readiness are separate events.
 
 Windows localhost with the available NVIDIA GPU was tested. Mac/MPS, Linux cloud,
 internet NAT traversal and multiple simultaneous speakers have not been tested.

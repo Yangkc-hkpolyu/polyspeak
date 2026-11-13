@@ -6,6 +6,7 @@ export class VoiceRecorder {
   }
   async start({ path, onTranscript }) {
     this.stopping = false
+    let firstFrameTimer
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 }, video: false })
       this.context = new AudioContext({ sampleRate: 16000 })
@@ -37,14 +38,26 @@ export class VoiceRecorder {
       await ready
       this.source = this.context.createMediaStreamSource(this.stream)
       this.processor = new AudioWorkletNode(this.context, 'speaking-pcm')
-      this.processor.port.onmessage = event => { if (!this.stopping && socket.readyState === WebSocket.OPEN) socket.send(event.data) }
+      const firstFrame = new Promise((resolve, reject) => {
+        firstFrameTimer = setTimeout(() => reject(new Error('No microphone audio arrived. Check your input device and try again.')), 8000)
+        this.processor.port.onmessage = event => {
+          if (!this.stopping && socket.readyState === WebSocket.OPEN) {
+            socket.send(event.data)
+            clearTimeout(firstFrameTimer)
+            resolve(Date.now())
+          }
+        }
+      })
+      firstFrame.catch(() => {})
       this.silence = this.context.createGain()
       this.silence.gain.value = 0
       this.source.connect(this.processor)
       this.processor.connect(this.silence)
       this.silence.connect(this.context.destination)
       await this.context.resume()
+      return await firstFrame
     } catch (error) { this.abort(); throw error }
+    finally { clearTimeout(firstFrameTimer) }
   }
   async stop() {
     if (!this.socket || !this.completed) throw new Error('There is no active recording.')

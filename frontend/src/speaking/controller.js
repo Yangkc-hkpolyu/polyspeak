@@ -17,16 +17,17 @@ export default {
     view: 'practice', status: {}, library: { sets: [], sources: [], format_sources: [] }, history: [], session: null,
     form: { exam: 'ielts', set_id: 'ielts-learning', mode: 'mock', section: 'full', candidate_name: '' },
     offlineMode: false, quickMode: false, busy: false, busyLabel: '', draft: '', notes: '', recordingResult: null,
-    recording: false, startingRecording: false, transcribing: false, recordStarted: 0, recordTimer: null,
+    recording: false, startingRecording: false, transcribing: false, recordStarted: 0, recordDeadline: null, recordTimer: null,
     mediaBusy: false, mediaToken: 0, mediaProgress: 0, mediaLabel: '', videoVisible: false, playBlocked: false,
     playing: false, mediaQuestionId: null, mediaFailed: false, avatarCaption: 'Ready when you are.',
-    liveConnected: false, liveConnecting: false,
+    liveConnected: false, liveConnecting: false, autoRecordQuestionId: null,
     now: Date.now(), serverOffset: 0, ticker: null, toastMessage: '', toastTimer: null, settingsOpen: false, testingConnection: false,
     showTranscript: false, dimensionName: { coherence: 'Coherence & cohesion', vocabulary: 'Vocabulary', grammar: 'Grammar', task_response: 'Task response & development' },
   }),
   computed: {
     navigationLocked() { return this.busy || this.recording || this.transcribing || this.mediaBusy || this.playing || this.startingRecording || this.isMock && !!this.currentQuestion; },
     currentQuestion() { return this.session?.current_question || null; },
+    latestRecordedTurn() { return [...(this.session?.turns || [])].reverse().find(turn => turn.audio_id) || null; },
     availableSets() { return this.library.sets.filter(x => x.exam === this.form.exam && (this.form.mode === 'coach' || x.mock_allowed) && (!x.from_collection || x.id === this.form.set_id)); },
     officialSets() { return this.library.sets.filter(x => x.kind === 'official_excerpt'); },
     selectedSet() { return this.library.sets.find(x => x.id === this.form.set_id); },
@@ -40,15 +41,17 @@ export default {
       return selected?.mock_allowed ? items : items.filter(x => selected?.sections.some(s => x.includes.includes(s)));
     },
     secondsLeft() {
-      const q = this.currentQuestion; if (!q || !q.answer_until) return null;
+      const q = this.currentQuestion; if (!q || q.phase === 'listening') return null;
+      if (this.recording && this.recordDeadline) return Math.max(0, Math.ceil((this.recordDeadline - (this.now - this.serverOffset)) / 1000));
+      if (q.phase !== 'preparing' && !q.answer_until) return q.answer_seconds;
       const deadline = q.phase === 'preparing' ? q.prepare_until : q.answer_until;
       return Math.max(0, Math.ceil(deadline - this.now / 1000));
     },
     timerDisplay() { const value = this.secondsLeft; return value === null ? '— : —' : `${String(Math.floor(value / 60)).padStart(2, '0')} : ${String(value % 60).padStart(2, '0')}`; },
-    timerPhase() { return !this.currentQuestion ? 'YOUR MOMENT' : !this.isMock ? 'Practice timer' : this.currentQuestion.phase === 'listening' ? 'Listen first' : this.currentQuestion.phase === 'preparing' ? 'Preparation time' : this.recording ? 'Time remaining' : 'Answer time'; },
-    timerHint() { const q = this.currentQuestion; return !q ? 'Start with what you want to say.' : !this.isMock ? 'Use the timer as a guide. Each recording can last up to two minutes.' : q.phase === 'listening' ? 'The timer starts after the question finishes playing.' : q.phase === 'preparing' ? 'Take notes, then start speaking when preparation time ends.' : 'Your recording stops and submits automatically when time runs out.'; },
+    timerPhase() { return this.recording ? 'Time remaining' : this.startingRecording ? 'Connecting microphone' : !this.currentQuestion ? 'YOUR MOMENT' : !this.isMock ? 'Practice timer' : this.currentQuestion.phase === 'listening' ? 'Listen first' : this.currentQuestion.phase === 'preparing' ? 'Preparation time' : 'Ready to record'; },
+    timerHint() { const q = this.currentQuestion; return !q ? 'Start with what you want to say.' : this.startingRecording ? 'Your answer time starts when recording begins.' : !this.isMock ? 'Each recording can last up to two minutes.' : q.phase === 'listening' ? 'Listen to the question. Recording starts next.' : q.phase === 'preparing' ? 'Take notes, then start speaking when preparation time ends.' : this.recording ? 'Your answer submits automatically when time runs out.' : 'Your full answer time is available when recording starts.'; },
     composerHint() { return !this.currentQuestion ? 'Choose a practice session to begin' : this.currentQuestion.phase === 'listening' ? 'Listen to Nora first' : this.currentQuestion.phase === 'preparing' ? 'Preparation time: organise your ideas' : this.isMock ? 'Mock test recordings submit automatically' : 'Your turn to speak'; },
-    canRecord() { return this.recording || (!!this.currentQuestion && !this.busy && !this.mediaBusy && !this.playing && !this.startingRecording && !this.transcribing && (!this.isMock || this.currentQuestion.phase === 'answering' && this.secondsLeft > 0)); },
+    canRecord() { return this.recording || (!!this.currentQuestion && !this.busy && !this.mediaBusy && !this.playing && !this.startingRecording && !this.transcribing && (!this.isMock || ['ready', 'answering'].includes(this.currentQuestion.phase) && this.secondsLeft > 0 || this.currentQuestion.phase === 'preparing' && this.secondsLeft === 0)); },
     canSend() { return !!this.currentQuestion && !this.busy && !this.recording && !this.transcribing && !this.startingRecording && (this.draft.trim().length > 1 || !!this.recordingResult); },
     canReplay() { return !!this.currentQuestion && !this.busy && !this.recording && !this.transcribing && !this.startingRecording && !this.mediaBusy && !this.playing && (!this.isMock || this.currentQuestion.phase === 'listening'); },
   },
@@ -84,7 +87,9 @@ export default {
     },
     disconnectAvatar() { this.liveConnected = false; this.videoVisible = false; if (this.live) this.live.close(); },
     liveEvent(event) {
-      if (event.type === 'connection.ready') { this.liveConnected = true; this.videoVisible = true; this.avatarCaption = 'Connected and ready to listen.'; }
+      if (event.type === 'connection.ready') { this.liveConnected = true; this.avatarCaption = 'Connected and ready to listen.'; }
+      if (event.type === 'playback.ready') { this.videoVisible = true; this.playBlocked = false; }
+      if (event.type === 'playback.blocked') { this.videoVisible = false; this.playBlocked = true; }
       if (event.type === 'connection.error') { this.liveConnected = false; this.videoVisible = false; this.avatarCaption = event.message; }
       if (event.type === 'speech.start') { this.playing = true; this.mediaBusy = false; this.avatarCaption = 'Listen closely. Your turn is next.'; }
       if (event.type === 'speech.end') this.playing = false;
@@ -100,7 +105,7 @@ export default {
       const changed = this.currentQuestion?.id !== value.current_question?.id;
       this.session = value; this.serverOffset = value.server_time * 1000 - Date.now(); this.now = Date.now() + this.serverOffset;
       localStorage.setItem('polyspeak-session', value.id);
-      if (changed) { this.draft = ''; this.notes = ''; this.recordingResult = null; this.mediaFailed = false; }
+      if (changed) { this.draft = ''; this.notes = ''; this.recordingResult = null; this.mediaFailed = false; this.recordDeadline = null; this.autoRecordQuestionId = null; }
       if (value.report) { this.stopMedia(); this.disconnectAvatar(); }
     },
     async startSession() {
@@ -149,26 +154,29 @@ export default {
     async questionReady() {
       try {
         this.takeSession(await post(this.path('/ready'), { question_id: this.currentQuestion.id }));
-        if (this.isMock && this.currentQuestion.phase === 'answering') await this.beginRecording();
+        if (this.isMock && this.currentQuestion.phase === 'ready') await this.beginRecording();
       } catch (error) { this.toast(error.message); }
     },
     tick() {
       this.now = Date.now() + this.serverOffset;
       const q = this.currentQuestion; if (!q || this.busy || this.transcribing || this.startingRecording) return;
-      if (this.isMock && q.phase === 'preparing' && this.secondsLeft === 0) this.beginRecording();
+      if (this.isMock && q.phase === 'preparing' && this.secondsLeft === 0 && !this.recording && this.autoRecordQuestionId !== q.id) this.beginRecording();
       else if (this.isMock && q.phase === 'answering' && this.secondsLeft === 0 && this.recording) this.stopRecording();
     },
     async beginRecording() {
       if (!this.currentQuestion || this.recording || this.startingRecording || this.transcribing || this.busy) return;
       this.startingRecording = true;
+      this.autoRecordQuestionId = this.currentQuestion.id;
       try {
-        this.takeSession(await post(this.path('/begin-answer'), { question_id: this.currentQuestion.id }));
-        if (this.isMock && this.secondsLeft <= 0) throw new Error('Time is up for this question. Skip it to continue.');
-        await recorder.start({ path: this.path(`/stt?question_id=${encodeURIComponent(this.currentQuestion.id)}`), onTranscript: text => { this.draft = text; } }); this.recording = true; this.recordStarted = Date.now();
+        const question = this.currentQuestion;
+        if (this.isMock && question.answer_until && this.secondsLeft <= 0) throw new Error('Time is up for this question. Skip it to continue.');
         this.recordingResult = null; this.draft = '';
-        const duration = this.isMock ? Math.max(0.3, this.currentQuestion.answer_until - (Date.now() + this.serverOffset) / 1000) : 120;
-        this.recordTimer = setTimeout(this.stopRecording, duration * 1000);
-      } catch (error) { this.toast(error.name === 'NotAllowedError' ? 'Microphone access was denied. Allow recording in your browser.' : error.message); }
+        this.recordStarted = await recorder.start({ path: this.path(`/stt?question_id=${encodeURIComponent(question.id)}`), onTranscript: text => { this.draft = text; } });
+        this.recordDeadline = this.isMock && question.answer_until ? question.answer_until * 1000 - this.serverOffset : this.recordStarted + (this.isMock ? question.answer_seconds : 120) * 1000;
+        this.recording = true; this.now = Date.now() + this.serverOffset;
+        this.recordTimer = setTimeout(this.stopRecording, Math.max(0, this.recordDeadline - Date.now()));
+        this.takeSession(await post(this.path('/begin-answer'), { question_id: question.id }));
+      } catch (error) { recorder.abort(); clearTimeout(this.recordTimer); this.recording = false; this.recordDeadline = null; this.toast(error.name === 'NotAllowedError' ? 'Microphone access was denied. Allow recording in your browser.' : error.message); }
       finally { this.startingRecording = false; }
     },
     async stopRecording() {

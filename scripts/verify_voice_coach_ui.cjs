@@ -26,6 +26,8 @@ function wav() {
   try {
     const page = await browser.newPage({viewport: {width: 1440, height: 1000}});
     const errors = [];
+    let modelRequests = 0;
+    page.on('request', request => { if(request.url().endsWith('/voice-coach')) modelRequests++; });
     page.on('pageerror', error => errors.push(error.message));
     await page.route('**/api/speaking/live/offer', route => route.fulfill({status:503, contentType:'application/json', body:JSON.stringify({detail:'Voice review QA: avatar disabled.'})}));
     let response = await page.request.post(origin + '/api/speaking/sessions', {data:{exam:'ielts',set_id:'ielts-learning',mode:'coach',section:'part1',execution:'demo'}});
@@ -39,9 +41,15 @@ function wav() {
     await page.goto(origin, {waitUntil:'networkidle'});
     await page.getByRole('button',{name:'Practice history',exact:true}).click();
     await page.locator('.history-item').first().click();
-    await page.locator('.answer-review > summary').first().click();
-    await page.getByRole('button',{name:'Review pace and pauses',exact:true}).click();
+    if (!realModel) {
+      assert.match(await page.locator('.voice-review.featured').innerText(), /adapter weights are missing/);
+      assert.equal(modelRequests, 0);
+      assert.deepEqual(errors, []);
+      console.log('Unavailable model is shown honestly; no automatic fallback request.');
+      return;
+    }
     await page.locator('.voice-measurements').waitFor({timeout:150000});
+    assert.equal(modelRequests, 1, 'Report must automatically invoke the trained model without a button click');
     assert.match(await page.locator('.voice-review').innerText(), realModel ? /Fine-tuned voice advice/ : /adapter weights are missing/);
     await assertEnglishUI(page, realModel ? 'voice review generated' : 'voice review unavailable');
     const saved = await (await page.request.get(base)).json();
@@ -59,8 +67,8 @@ function wav() {
     await page.reload({waitUntil:'networkidle'});
     await page.getByRole('button',{name:'Practice history',exact:true}).click();
     await page.locator('.history-item').first().click();
-    await page.locator('.answer-review > summary').first().click();
     await page.locator('.voice-measurements').waitFor();
+    assert.equal(modelRequests, 1, 'Saved advice must be reused on reload');
     await assertEnglishUI(page, 'saved voice review');
     assert.deepEqual(errors,[]);
     console.log(`Voice review UI, persisted measurements, ${realModel ? 'real adapter inference' : 'unavailable-adapter message'}, export and English passed (${process.argv.includes('--desktop-only') ? 'desktop only' : 'desktop and mobile'}).`);

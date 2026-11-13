@@ -97,14 +97,15 @@ class SpeakingEngine:
             now = self.clock()
             if q["phase"] == "listening":
                 q["prepare_until"] = now + q["prepare_seconds"]
-                q["answer_until"] = q["prepare_until"] + q["answer_seconds"]
-                q["phase"] = "preparing" if q["prepare_seconds"] else "answering"
-            if begin and q["phase"] == "preparing":
+                q["phase"] = "preparing" if q["prepare_seconds"] else "ready"
+            if begin and q["phase"] in ("preparing", "ready"):
                 if session["setup"]["mode"] == "mock" and now < q["prepare_until"]:
                     raise ValueError("The preparation time has not ended yet.")
                 if session["setup"]["mode"] == "coach":
                     q["prepare_until"] = now
-                    q["answer_until"] = now + q["answer_seconds"]
+                # Microphone permission and ASR setup must not consume answer time.
+                # Repeated begin requests keep the original deadline.
+                q["answer_until"] = now + q["answer_seconds"]
                 q["phase"] = "answering"
             self.store.save(session)
             return self.public(session)

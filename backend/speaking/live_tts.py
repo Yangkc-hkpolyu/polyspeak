@@ -125,6 +125,9 @@ class StreamingTTS:
         speech_begin, speech_end = speech_sample_bounds(buffered)
         stats["leading_quiet_ms"] = speech_begin / 16
         stats["trailing_quiet_ms"] = (len(buffered) - speech_end) / 16
+        prepare = getattr(self.parent, "prepare_speech", None)
+        if prepare:
+            await asyncio.to_thread(prepare)
         offset = 0
 
         def frame_info():

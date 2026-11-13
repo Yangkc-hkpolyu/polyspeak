@@ -19,7 +19,7 @@ def main(include_assets=False):
     files.append("docs/SPEAKING_QUESTION_BANK.md")
     files.append("docs/IELTS_ROOM_PROMPT.md")
     files.append("scripts/prepare_exam_room.py")
-    files.extend("scripts/" + name for name in ["port_speaking_realtime.py", "verify_realtime_speaking.cjs", "verify_realtime_mock.cjs", "assert_english_ui.cjs", "verify_speaking_stream.py"])
+    files.extend("scripts/" + name for name in ["port_speaking_realtime.py", "verify_realtime_speaking.cjs", "verify_realtime_mock.cjs", "assert_english_ui.cjs", "verify_speaking_stream.py", "verify_recording_timer.cjs", "verify_av_sync.py"])
     files.append("docs/SPEAKING_REALTIME.md")
     files.append("start-speaking.sh")
     files.extend("deploy/speaking/" + name for name in ["Dockerfile", "Dockerfile.dockerignore", "start.sh", "compose.yaml", "Caddyfile", "cloud.env.example", "README.md"])

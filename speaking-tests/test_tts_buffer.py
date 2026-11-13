@@ -118,6 +118,28 @@ async def test_short_utterance_flushes_without_waiting_for_full_reserve(monkeypa
 
 
 @run_async
+async def test_avatar_warmup_finishes_before_any_speech_pcm_is_published(monkeypatch):
+    async def stream(_settings, _text, language="en"):
+        yield pcm(.08)
+
+    monkeypatch.setattr(live_tts, 'stream_tts', stream)
+    tts, _events = adapter()
+    started, proceed = Event(), Event()
+    def prepare():
+        started.set()
+        assert proceed.wait(2)
+    tts.parent.prepare_speech = prepare
+    task = asyncio.create_task(tts.synthesize('yes', {'job_id': 'warm'}, 0, Event()))
+    try:
+        assert await asyncio.to_thread(started.wait, 2)
+        assert tts.parent.asr.queue.empty()
+    finally:
+        proceed.set()
+    await task
+    assert len(drain(tts)) == 5
+
+
+@run_async
 async def test_interrupt_during_priming_does_not_play_stale_audio(monkeypatch):
     first = asyncio.Event()
 
