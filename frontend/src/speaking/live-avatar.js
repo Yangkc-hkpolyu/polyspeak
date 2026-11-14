@@ -1,12 +1,14 @@
 import { api, post } from './api'
+import { VideoPlayout } from './video-playout'
 
 export class LiveAvatar {
-  constructor(video, state) {
+  constructor(video, state, { canvas, playoutDelayMs = 180 } = {}) {
     this.video = video
     this.state = state
+    this.playout = canvas ? new VideoPlayout(video, canvas, playoutDelayMs) : null
     this.jobs = new Map()
     this.closed = false
-    this.unload = () => { this.pc?.close(); if(this.id) navigator.sendBeacon(`/api/speaking/live/${this.id}/close`) }
+    this.unload = () => { this.playout?.stop(); this.pc?.close(); if(this.id) navigator.sendBeacon(`/api/speaking/live/${this.id}/close`) }
     window.addEventListener('pagehide',this.unload)
   }
   async connect() {
@@ -43,6 +45,7 @@ export class LiveAvatar {
       if (!this.tracks.has('audio') || !this.tracks.has('video')) return
       const tracks = [this.tracks.get('video'), this.tracks.get('audio')]
       if (tracks.every(track => this.video.srcObject?.getTracks().includes(track))) return
+      this.playout?.stop()
       this.video.srcObject = new MediaStream(tracks)
       this.play().catch(error => {
         if (!this.closed && error.name === 'NotAllowedError') this.state({ type: 'playback.blocked' })
@@ -97,7 +100,11 @@ export class LiveAvatar {
     this.video.muted = false
     this.video.volume = 1
     await this.video.play()
-    if (!this.closed) this.state({ type: 'playback.ready' })
+    if (this.closed) throw new Error('The avatar connection is closed.')
+    // Reveal the source element before waiting for its first video callback.
+    this.state({ type: 'playback.ready' })
+    await this.playout?.start()
+    if (this.closed) throw new Error('The avatar connection is closed.')
   }
   async speak(create) {
     await this.connect()
@@ -121,6 +128,7 @@ export class LiveAvatar {
   }
   async close() {
     this.closed = true
+    this.playout?.stop()
     window.removeEventListener('pagehide',this.unload)
     for (const waiter of this.jobs.values()) waiter.reject(new Error('The avatar connection is closed.'))
     this.jobs.clear()

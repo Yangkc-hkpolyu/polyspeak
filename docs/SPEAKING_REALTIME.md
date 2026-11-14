@@ -1,11 +1,25 @@
 # PolyInterview realtime interaction port
 
-## Open issue: audio/video synchronization (2026-11-14)
+## Known issue: A/V synchronization remains unresolved and can be severe (2026-11-14)
 
-The user still observes audio/video desynchronization after the combined-track
-playback change. The previously reported symptom is mouth movement preceding
-audible speech. This issue remains unresolved; the current commit is a progress
-checkpoint, not a completed synchronization fix.
+After the latest playback-compensation change, the user confirmed that audio/video
+desynchronization still occurs and is sometimes very severe. The reported symptom
+is mouth movement preceding audible speech. This is an unresolved defect, not
+merely pending acceptance. This commit is a troubleshooting checkpoint, not a
+completed fix. Short controlled measurements below do not override this report.
+
+The combined-track change alone did not resolve mouth movement preceding audible
+speech. The next frontend change adds a bounded 180 ms video presentation buffer
+while retaining native, unmuted audio from the complete WebRTC stream. This is
+compensation calibrated on the local Windows output, not a universal model fix.
+The user has confirmed that this compensation does not resolve the issue.
+
+`VideoPlayout` copies full-resolution decoded frames without re-encoding the face.
+It waits for the first displayed frame before requesting speech, keeps one buffer
+across utterances, discards overdue frames after a display stall, and releases
+callbacks and frames on disconnect. Unsupported browsers use native playback.
+The optional `LiveAvatar` constructor setting `playoutDelayMs` controls the delay
+(0 disables compensation); changing audio hardware may require recalibration.
 
 Decoded timestamps, browser playout estimates and passing regression checks
 below do not establish acceptable perceptual lip sync. Preserve those results

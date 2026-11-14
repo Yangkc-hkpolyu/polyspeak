@@ -1,10 +1,47 @@
 # Speaking platform validation
 
-Current status (2026-11-14): **audio/video synchronization is still unresolved**,
-as confirmed by the user after the latest playback changes. Earlier automated
-checks and estimated timing improvements are diagnostic results, not acceptance
-of the lip-sync behavior. This checkpoint must not be presented as a verified
-fix for the reported mouth-before-audio problem.
+Current status (2026-11-14): **audio/video synchronization remains unresolved
+and is sometimes very severe**, as confirmed by the user after the latest
+180 ms video-buffer change. Mouth movement still precedes audible speech.
+This is a troubleshooting checkpoint, not a verified fix. The short controlled
+measurements below showed improvement in that test only; they do not represent
+the user's actual experience or establish reliable synchronization.
+
+### Output-device comparison
+
+Same cached 9.68-second English speech, two consecutive utterances per run,
+current backend, IAB, Windows Realtek output. Compare first displayed mouth
+change to the first non-silent WASAPI loopback packet (RMS > 0.001), using the
+packet's QPC sample timestamp rather than Python callback delivery time. Exclude
+packets with timestamp-error flags. Browser/system clock cross-check was within
+5 ms. Canvas presentation uses requestAnimationFrame, with display-vsync
+uncertainty; this is not an acoustic microphone/photodiode measurement.
+
+| Presentation | Round 1: audio minus mouth | Round 2: audio minus mouth |
+| --- | ---: | ---: |
+| Native, no compensation | +238.7 ms | +141.8 ms |
+| Full-resolution canvas, 180 ms buffer | +13.2 ms | -17.5 ms |
+
+Positive means mouth first. Buffered run: 592 displayed frames, maximum interval
+55.7 ms, no interval above 100 ms. This short local test does not establish
+cross-device or long-session synchronization. Receiver audio-level timestamps
+alone omit the device output delay and must not be reported as audible onset.
+Local raw evidence is in ignored `speaking-runtime/qa/endpoint-baseline.json`,
+`endpoint-buffered.json`, `playback-endpoint-baseline.json`, and
+`playback-buffered.json`. The original PolyInterview source remains unchanged.
+
+Regression checks:
+
+```text
+node speaking-tests/test_video_playout.cjs
+node speaking-tests/test_live_avatar_client.cjs
+cd frontend
+node scripts/speaking.cjs build
+```
+
+These cover no early presentation, bounded memory, late-frame skipping,
+full-resolution copying, cancellation/reconnect, complete A/V attachment,
+autoplay blocking, and waiting for the display buffer before speech generation.
 
 Latest verification: 2026-11-11 in the E: sharing checkout.
 

@@ -79,7 +79,7 @@ export default {
       try {
         if (!this.live || this.live.video !== video || this.live.closed) {
           if (this.live) await this.live.close();
-          this.live = new LiveAvatar(video, this.liveEvent);
+          this.live = new LiveAvatar(video, this.liveEvent, { canvas: this.$refs.avatarCanvas });
         }
         await this.live.connect();
       } catch (error) { this.liveConnected = false; this.videoVisible = false; this.avatarCaption = error.message; }

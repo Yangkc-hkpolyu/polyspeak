@@ -32,3 +32,6 @@
 .avatar-stage video.dynamic-avatar{object-position:85% center}
 @media(max-width:1050px){.bank-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bank-stats>div{display:block}.bank-stats span{display:block;margin-top:7px}}
 @media(max-width:760px){.bank-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.bank-stats>div{padding:15px 18px}.bank-stats strong{font-size:25px}.bank-filter{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:18px}.bank-grid,.bank-access{grid-template-columns:1fr}.bank-question{padding:20px}.bank-question .bank-prompt{font-size:16px}.bank-pagination{gap:15px}.bank-pagination .button{font-size:11px;padding:10px}.bank-filter input::placeholder{font-size:11px}.bank-filter .bank-search{font-size:12px}.bank-results h2{font-size:17px}}
+
+/* Match the native video crop without re-encoding its full-resolution frames. */
+.avatar-stage > canvas.avatar-playout { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:85% center; pointer-events:none; }

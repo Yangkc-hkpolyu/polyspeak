@@ -47,7 +47,7 @@ function harness() {
     post: async url => { requests.push(url); return { type: 'answer', sdp: 'answer', live_id: 'test' } },
   })
   const source = fs.readFileSync(path.join(__dirname, '../frontend/src/speaking/live-avatar.js'), 'utf8')
-    .replace(/^import .*\r?\n/, '').replace('export class LiveAvatar', 'class LiveAvatar')
+    .replace(/^import .*\r?\n/gm, '').replace('export class LiveAvatar', 'class LiveAvatar')
   const Avatar = vm.runInContext(source + '\nLiveAvatar', context)
   return { avatar: new Avatar(video, e => states.push(e)), video, requests, bindings, plays, states }
 }
@@ -85,10 +85,18 @@ async function run() {
     started(); await tick()
     assert.equal(generated, 1)
     h.avatar.event({ type: 'speech.end', job_id: 'speech' }); await speech
+    let buffered, stopped = false
+    const bufferReady = new Promise(resolve => { buffered = resolve })
+    h.avatar.playout = { start: () => bufferReady, stop: () => { stopped = true } }
+    const bufferedSpeech = h.avatar.speak(async () => { generated++; return { id: 'buffered' } })
+    await tick(); assert.equal(generated, 1, 'Do not request speech until the display buffer is ready')
+    buffered(true); await tick(); assert.equal(generated, 2)
+    h.avatar.event({ type: 'speech.end', job_id: 'buffered' }); await bufferedSpeech
     assert.equal(h.avatar.currentJob, null)
     assert.equal(h.bindings.length, 1, 'Speaking must reuse the existing complete stream')
     assert(h.plays.every(p => !p.muted && p.tracks.length === 2))
     await h.avatar.close()
+    assert.equal(stopped, true, 'Closing a connection must release its display buffer')
   }
   console.log('PASS: both track arrival orders, one-time binding, unmuted playback readiness, blocked autoplay, idle interruption')
 }
